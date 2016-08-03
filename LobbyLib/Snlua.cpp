@@ -54,7 +54,6 @@ lcallback(lua_State *L)
     
 }
 
-
 extern "C" int 
 luaopen_lobbylib_snlua(lua_State *L)
 {

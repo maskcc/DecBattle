@@ -40,8 +40,7 @@ Socket::closeHandle()
         close(this->m_fd);    
         reset();
         return 0;
-    }
-    //_LOG("TRY to close listen fd??", _WARN);
+    }    
     __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "TRY to close listen fd??");
     return 0;
 }

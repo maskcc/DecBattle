@@ -14,8 +14,7 @@ LobbyServer::loadConfig()
 }
 void 
 LobbyServer::start()
-{
-    //_LOG("------------- main LobbyServer started!-----", _WARN);
+{    
     __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "------------- main LobbyServer started!-----");
     
     this->loadConfig();
@@ -50,8 +49,7 @@ void
 LobbyServer::sockServer(void *argc)
 {
     if(NULL == argc)
-    {
-        //_LOG("the argc is null, can not run sock server", _ERROR);
+    {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "the argc is null, can not run sock server");
         
     }
@@ -59,17 +57,15 @@ LobbyServer::sockServer(void *argc)
     SockServer *svr = new SockServer();
     if(0 != svr->initServer(addr->ip, addr->port))
     {
-        free(addr);
-        //_LOG("Init Server failed", _ERROR);
+        free(addr);        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "Init Sock Server failed");
         return;
     }
     free(addr);
-    //_LOG("Init sock server success", _DEBUG);
+    
     __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Init sock server success");
     if(0 != svr->run())
-    {
-       // _LOG("run Server failed", _ERROR);
+    {       
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "run Server failed");
         return;
     }

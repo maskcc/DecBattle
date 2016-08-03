@@ -73,8 +73,7 @@ int ContextMgr::loadScript()
     {        
         const char *buff;
         buff = lua_tostring(L, -1);
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, buff);
-        //_LOG(buff, _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, buff);        
         return -1;
     }
 
@@ -101,8 +100,7 @@ int
 ContextMgr::call(int type, void *msg, int sz)
 {
     if(NULL == this->m_Ctx->cb)
-    {
-        //_LOG("function not registered!", _ERROR);
+    {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "function not registered!");
         return -1;
     }

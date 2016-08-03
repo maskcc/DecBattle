@@ -18,11 +18,7 @@ void
 MQueue::push(InerMsg_t *msg)
 {
     if(msg->service != this->service)
-    {
-        //char buff[128] = {0};
-        //snprintf(buff, 128, "Push the wrong msg into msg queue[%d] wrongqueue[%d] source[%d] ", 
-        //                                                this->service, msg->service, msg->source);
-        //_LOG(buff, _ERROR);
+    {     
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "Push the wrong msg into msg queue[%d] wrongqueue[%d] source[%d] ", 
                                                         this->service, msg->service, msg->source);
         return;
@@ -31,10 +27,7 @@ MQueue::push(InerMsg_t *msg)
     if(m_MQ.size() >= MESSAGEQUEUE_WARN_LENGTH)
     {
         this->isBusy = true;
-        //char buff[128] = {0};
-        //snprintf(buff, 128, "MQueue is busy now!, size is %d", m_MQ.size());
-        //_LOG(buff, _WARN);
-        
+  
         __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "MQueue is busy now!, size is %d", m_MQ.size());
         //队列超标该如何处理???
     }

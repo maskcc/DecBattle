@@ -19,18 +19,8 @@ ConnectionMgr::ConnectionMgr()
 int32_t
 ConnectionMgr::addConnection(Socket *s) 
 {
-//    Socket *client = getPeer(s->getFD());
-//    if (NULL != client) 
-//    {//客户端已经连接.不可能走到这来.连接没关闭, 应该不会生成到新连接的fd
-//        _LOG("Client socket has been connected!", _ERROR);
-//
-//        s->closeHandle();
-//        return -1;
-//    }
-
-
     ++m_connCount;
-//    m_connMap.insert(make_pair(s->getFD(), s));
+
     return 0;
 
 }
@@ -45,21 +35,18 @@ Socket*
 ConnectionMgr::acceptPeer(Socket* s) 
 {
     if(NULL == s )
-    {
-        //_LOG("accept sock is null", _ERROR);
+    {        
         __log(_ERROR , __FILE__, __LINE__, __FUNCTION__, "accept sock is null");
         return NULL;
     }
      if (m_connCount >= MAX_CLIENT_CONNECTION) 
-    {
-        //_LOG("connection is more than 1000", _ERROR);
+    {       
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "connection is more than [%d]", MAX_CLIENT_CONNECTION);
         //exit(0); //just for test to exit program pg
         return NULL;
     }
     int connfd = accept(s->getFD(), NULL, NULL);
-    if (connfd <= 0) {
-        //_LOG("accept client fail!", _ERROR);
+    if (connfd <= 0) {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept client fail! return code [%d]", connfd);
         return NULL;
     }
@@ -83,8 +70,7 @@ ConnectionMgr::connectPeer(const char* serverip, int32_t port)
     addr.sin_port = htons(port);
     int connfd = connect(sockfd, (struct sockaddr *) &addr, sizeof (struct sockaddr_in));
     if (-1 == connfd) 
-    {
-        //_LOG("Connect to server failed!", _ERROR);
+    {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "connect to server fail! return code [%d]", connfd);
         return -1;
     }
@@ -98,16 +84,14 @@ void
 ConnectionMgr::disconnect(Socket *sock) 
 {    
     if(NULL == sock)
-    {
-        //_LOG("disconnect sock is null", _ERROR);
+    {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "disconnect sock is null");
         return;
     }
     Socket* s = getPeer(sock->getIdx());
     
     if(NULL == s)
-    {
-        //_LOG("disconnect s is null", _ERROR);
+    {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "disconnect s is null");
         return;
     }
@@ -121,15 +105,13 @@ int32_t
 ConnectionMgr::receiveMsg(Socket *s, BaseMsg *msg) 
 {
     if(NULL == s || NULL == msg)
-    {
-        //_LOG("socket or msg is null", _ERROR);
+    {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "socket or msg is null");
         return -1;
     }
     Socket *client = getPeer(s->getIdx());
     if (NULL == client) 
-    {//客户端没连接
-        //_LOG("Client socket is not connected!", _ERROR);
+    {//客户端没连接        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "Client socket is not connected");
         return ERROR_TYPE_NULL_SOCKET;
     }

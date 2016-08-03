@@ -42,16 +42,14 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
         //读出字符串大小
         bool ret = readInt(m_bodySize, m_stream);
         if( false == ret)
-        {
-            //_LOG("read int fail!", _ERROR);
+        {            
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "read int fail!");
             this->reset();
             return ERROR_TYPE_READNUM_FAIL;
         }   
         
         if(m_bodySize > BUFF_LENGTH)
-        {
-            //_LOG("read body size over flow!", _ERROR);
+        {            
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "read body size over flow!");
             this->reset();
             return ERROR_TYPE_BODY_OVER_FLOW;  //包体超过缓冲区, 客户端不可能发送这么大的包体, 错误
@@ -90,9 +88,7 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
     msg->msg = malloc(m_bodySize);
     memcpy(msg->msg, this->m_stream, m_bodySize);
     msg->sz = m_bodySize;
-    //char buff[1024] = {0};
-    //snprintf(buff, 1024, "recived msg, msg size[%d] msg msg[%s]", msg->sz, (char*)msg->msg);
-    //_LOG(buff, _WARN);
+  
     __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "recived msg, msg size[%d] msg msg[%s]", msg->sz, (char*)msg->msg);
     
     

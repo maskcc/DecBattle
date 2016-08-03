@@ -27,8 +27,7 @@ int32_t
 NameService::reg(int32_t s, string name)
 {
     if(-1 != search(name))
-    {
-        //_LOG("find the repeated name service!", _ERROR);
+    {        
         __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "find the repeated name service!");
         return -1; //重复注册
     }

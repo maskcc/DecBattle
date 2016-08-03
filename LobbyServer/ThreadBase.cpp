@@ -16,8 +16,7 @@ ThreadBase::start(void *argc)
     
     int ret = pthread_create(&m_threadID, NULL, proc, (void*)this);
     if(0 != ret)
-    {
-        //_LOG("create thread fail!", _ERROR);
+    {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "create thread fail!");
         
     }

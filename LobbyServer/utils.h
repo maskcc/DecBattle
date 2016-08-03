@@ -73,12 +73,8 @@ namespace LOG{
       
         }
         
-        
-        
-        vsprintf(last, buff, vlist);
+        vsnprintf(last, 2048, buff, vlist);
         std::cout << last << std::endl;
-        
-        
         va_end(vlist);
        
         

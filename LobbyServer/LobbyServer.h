@@ -15,6 +15,7 @@
 #define LOBBYSERVER_H
 #include <map>
 #include <string>
+#include <stdlib.h>
 #include "GameDef.h"
 #include "ContextMgr.h"
 #include "ContextMap.h"

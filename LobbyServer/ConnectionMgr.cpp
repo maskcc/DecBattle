@@ -54,7 +54,7 @@ ConnectionMgr::acceptPeer(Socket* s)
     {
         //_LOG("connection is more than 1000", _ERROR);
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "connection is more than [%d]", MAX_CLIENT_CONNECTION);
-        exit(0); //just for test to exit program pg
+        //exit(0); //just for test to exit program pg
         return NULL;
     }
     int connfd = accept(s->getFD(), NULL, NULL);

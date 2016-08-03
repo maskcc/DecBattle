@@ -15,6 +15,7 @@
 #define SOCKSTREAM_H
 
 #include <unistd.h>
+#include <stdlib.h>
 #include "GameDef.h"
 #include "utils.h"
 

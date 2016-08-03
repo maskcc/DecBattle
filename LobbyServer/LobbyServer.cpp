@@ -39,7 +39,7 @@ LobbyServer::runSockServer()
 {
     Addr *addr = (Addr*) malloc(sizeof(Addr));
     memset(addr, 0, sizeof(Addr));
-    char *ip = "0.0.0.0";
+    const char *ip = "0.0.0.0";
     strncpy(addr->ip, ip, strlen(ip) + 1);
     addr->port = 10077;
     m_threads.spawn(sockServer, (void*)addr);

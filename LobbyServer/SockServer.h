@@ -17,6 +17,7 @@
 #include <sys/epoll.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include "ConnectionMgr.h"
 #include "utils.h"
 

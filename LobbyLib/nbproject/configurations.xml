@@ -35,6 +35,7 @@
         </ccTool>
         <linkerTool>
           <output>../libs/lobbylib.so</output>
+          <commandLine>-llua -Wl,-E</commandLine>
         </linkerTool>
       </compileType>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">

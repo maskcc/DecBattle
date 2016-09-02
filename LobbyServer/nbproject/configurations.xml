@@ -49,7 +49,7 @@
           <linkerLibItems>
             <linkerLibLibItem>lua</linkerLibLibItem>
           </linkerLibItems>
-          <commandLine>-ldl</commandLine>
+          <commandLine>-ldl -Wl,-E</commandLine>
         </linkerTool>
       </compileType>
       <item path="ContextMgr.cpp" ex="false" tool="1" flavor2="0">

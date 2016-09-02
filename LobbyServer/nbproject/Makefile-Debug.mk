@@ -64,7 +64,7 @@ LDLIBSOPTIONS=-llua
 
 ../libs/LobbyServer: ${OBJECTFILES}
 	${MKDIR} -p ../libs
-	${LINK.cc} -o ../libs/LobbyServer ${OBJECTFILES} ${LDLIBSOPTIONS} -ldl
+	${LINK.cc} -o ../libs/LobbyServer ${OBJECTFILES} ${LDLIBSOPTIONS} -ldl -Wl,-E
 
 ${OBJECTDIR}/ContextMgr.o: ContextMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}

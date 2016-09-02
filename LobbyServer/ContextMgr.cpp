@@ -47,18 +47,21 @@ int ContextMgr::loadScript()
     luaL_openlibs(L);
     lua_pushlightuserdata(L, this->m_Ctx);
     lua_setfield(L, LUA_REGISTRYINDEX, "Context");
-    lua_pushcfunction(L, traceback);
+    //lua_pushcfunction(L, traceback);
     
-    assert(lua_gettop(L) == 1);
+    assert(lua_gettop(L) == 0);
     
     //可以在这加个loader, 用lua来控制读取的文件以及其他信息
-    //int r = luaL_dofile(L, this->scriptName.c_str());    
-    int r = luaL_loadfile(L, this->scriptName.c_str());
+    int r = luaL_dofile(L, this->scriptName.c_str());    
+    //int r = luaL_loadfile(L, this->scriptName.c_str());
+   //lua_pcall(L, 0,0,0);
     
     if (r != LUA_OK) 
     {
-        char buff[1024] = {0};
-        snprintf(buff, 1024, "load script load file fail[%s]", this->scriptName.c_str());
+        //char buff[1024] = {0};
+        //snprintf(buff, 1024, "load script load file fail[%s]", this->scriptName.c_str());
+        const char *buff;
+        buff = lua_tostring(L, -1);
         _LOG(buff, _ERROR);
         return -1;
     }

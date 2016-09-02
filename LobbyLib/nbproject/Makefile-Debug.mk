@@ -60,7 +60,7 @@ LDLIBSOPTIONS=
 
 ../libs/lobbylib.so: ${OBJECTFILES}
 	${MKDIR} -p ../libs
-	${LINK.cc} -o ../libs/lobbylib.so ${OBJECTFILES} ${LDLIBSOPTIONS} -shared -fPIC
+	${LINK.cc} -o ../libs/lobbylib.so ${OBJECTFILES} ${LDLIBSOPTIONS} -llua -Wl,-E -shared -fPIC
 
 ${OBJECTDIR}/utils.o: utils.cpp 
 	${MKDIR} -p ${OBJECTDIR}

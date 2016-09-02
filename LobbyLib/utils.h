@@ -14,7 +14,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include <stdio.h>
 #include "lua.hpp"
 

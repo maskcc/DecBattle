@@ -13,6 +13,7 @@
 
 #ifndef UTILS_H
 #define UTILS_H
+#include <cstring>
 #include <iostream>
 #include "GameDef.h"
 #include <errno.h>

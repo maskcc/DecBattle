@@ -53,19 +53,18 @@ int ContextMgr::loadScript()
     
     //可以在这加个loader, 用lua来控制读取的文件以及其他信息
     int r = luaL_dofile(L, this->scriptName.c_str());    
-    //int r = luaL_loadfile(L, this->scriptName.c_str());
-   //lua_pcall(L, 0,0,0);
+  
     
     if (r != LUA_OK) 
-    {
-        //char buff[1024] = {0};
-        //snprintf(buff, 1024, "load script load file fail[%s]", this->scriptName.c_str());
+    {        
         const char *buff;
         buff = lua_tostring(L, -1);
         _LOG(buff, _ERROR);
         return -1;
     }
-    
+    char buff[1024] = {0};
+    snprintf(buff, 1024, "Load file %s success!", this->scriptName.c_str());
+    _LOG(buff, _DEBUG);
     lua_gc(L, LUA_GCRESTART, 0);
     return 0;
     
@@ -80,5 +79,16 @@ lua_State*
 ContextMgr::getLuaState()
 {
     return this->m_Ctx->state;
+    
+}
+
+int 
+ContextMgr::call(int type, void *msg, int sz)
+{
+    this->m_Ctx->cb(this->m_Ctx, type, msg, sz);
+    
+    char buff[1024] = {};
+    snprintf(buff, 1024, "Handle[%d] called!", this->getHandle());
+    _LOG(buff, _DEBUG);
     
 }

@@ -22,7 +22,10 @@ void LobbyServer::start()
 void LobbyServer::newContext()
 {
     ContextMgr *ctx = new ContextMgr(this->config);
+    
     ctx->Init();
     m_CtxMap.insert(make_pair(ctx->getHandle(), ctx));
+    
+    
     
 }

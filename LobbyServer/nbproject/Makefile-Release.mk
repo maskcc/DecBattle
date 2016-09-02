@@ -35,9 +35,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/ClientConnection.o \
 	${OBJECTDIR}/ContextMgr.o \
+	${OBJECTDIR}/Dispatch.o \
 	${OBJECTDIR}/LobbyServer.o \
 	${OBJECTDIR}/MQueue.o \
+	${OBJECTDIR}/NetSocket.o \
+	${OBJECTDIR}/Socket.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/utils.o
 
@@ -66,10 +70,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lobbyserver: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lobbyserver ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/ClientConnection.o: ClientConnection.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientConnection.o ClientConnection.cpp
+
 ${OBJECTDIR}/ContextMgr.o: ContextMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ContextMgr.o ContextMgr.cpp
+
+${OBJECTDIR}/Dispatch.o: Dispatch.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Dispatch.o Dispatch.cpp
 
 ${OBJECTDIR}/LobbyServer.o: LobbyServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -80,6 +94,16 @@ ${OBJECTDIR}/MQueue.o: MQueue.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MQueue.o MQueue.cpp
+
+${OBJECTDIR}/NetSocket.o: NetSocket.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NetSocket.o NetSocket.cpp
+
+${OBJECTDIR}/Socket.o: Socket.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

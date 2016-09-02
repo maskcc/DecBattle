@@ -21,13 +21,18 @@ using namespace std;
 /**
  c struct 里面只保存指向类的指针
  */
+struct Context_t;
+typedef int(*callback)(Context_t* ctx, int type, void* msg, int sz);
+
 typedef struct Context_t
 {
-    uint32_t  handle;
-    lua_State *state;
-    MQueue    *queue;    
+    uint32_t  handle;   //标识符
+    lua_State *state;   //虚拟机
+    MQueue    *queue;   //消息队列
+    callback  cb;       //回调函数
     
 }Context;
+
 
 class ContextMgr
 {
@@ -37,6 +42,7 @@ public:
     int Init();
     int getHandle();
     lua_State* getLuaState();
+    int call(int type, void *msg, int sz);
     
 protected:
     int loadScript();

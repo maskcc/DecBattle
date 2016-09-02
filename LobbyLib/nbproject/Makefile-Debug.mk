@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Snlua.o \
 	${OBJECTDIR}/utils.o
 
 
@@ -62,10 +63,15 @@ LDLIBSOPTIONS=
 	${MKDIR} -p ../libs
 	${LINK.cc} -o ../libs/lobbylib.so ${OBJECTFILES} ${LDLIBSOPTIONS} -llua -Wl,-E -shared -fPIC
 
+${OBJECTDIR}/Snlua.o: Snlua.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Snlua.o Snlua.cpp
+
 ${OBJECTDIR}/utils.o: utils.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.cpp
+	$(COMPILE.cc) -g -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.cpp
 
 # Subprojects
 .build-subprojects:

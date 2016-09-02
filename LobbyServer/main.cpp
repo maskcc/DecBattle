@@ -13,7 +13,7 @@
 
 #include <cstdlib>
 #include <dlfcn.h>
-
+#include <signal.h>
 #include "LobbyServer.h"
 
 
@@ -22,8 +22,15 @@ using namespace std;
 /*
  * 
  */
+void handler(int h)
+{
+    
+}
+
 int main(int argc, char** argv) 
 {
+    signal(SIGINT, handler);
+    signal(SIGPIPE, handler);
     LobbyServer s;
     s.start();
     

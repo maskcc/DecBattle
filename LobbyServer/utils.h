@@ -49,21 +49,26 @@ namespace LOG{
     static void log( char const*filename,  char const*funcname, int line,   char const*msg, int level  = _DEBUG )
     {
         char buff[1024] = {0};
-
+        char timestamp[128] = {0};
+         time_t stamp = time(NULL);
+        const char *timestr = ctime(&stamp);
+        memcpy(timestamp, timestr, strlen(timestr) - 1);        
+        //strftime(s, 1000, "%A, %B %d %Y", p);
+        
         switch (level)
         {
             case _DEBUG:
-                snprintf(buff, 1024, "%s[%s]:[%d] [%s] MSG[%s]%s", GREEN, filename, line, funcname, msg, NONE);
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", GREEN, timestamp,filename, line, funcname, msg, NONE);
                 break;
             case _WARN:
-                snprintf(buff, 1024, "%s[%s]:[%d] [%s] MSG[%s]%s", YELLOW, filename, line, funcname, msg, NONE);
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", YELLOW, timestamp,filename, line, funcname, msg, NONE);
                 break;
             case _ERROR:
-                snprintf(buff, 1024, "%s[%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", L_RED, filename, line, \
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", L_RED, timestamp,filename, line, \
                          funcname, msg,errno, strerror(errno), NONE);
                 break;
             default:
-                snprintf(buff, 1024, "%s[%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", BLINK, filename, line, \
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", BLINK, timestamp,filename, line, \
                          funcname, msg, errno, strerror(errno),NONE);
         }
 

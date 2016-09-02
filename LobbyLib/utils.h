@@ -16,6 +16,7 @@
 #include <iostream>
 #include <cstring>
 #include <stdio.h>
+#include <errno.h>
 #include "lua.hpp"
 
 namespace LOG{
@@ -46,13 +47,44 @@ namespace LOG{
     #define CLRLINE              "\r\e[K" //or "\e[1K\r"
 
     
-    
-    static void lualog( char const*filename,  char const*funcname, char const*msg, int level );
-}
-
 const int _DEBUG = 1;   // green
 const int _WARN = 2;  //yellow
 const int _ERROR = 4; //red
+    
+    
+    static void lualog( char const*filename,  char const*funcname, char const*msg, int level );
+    static void log( char const*filename,  char const*funcname, int line,   char const*msg, int level  = _DEBUG )
+    {
+        char buff[1024] = {0};
+        char timestamp[128] = {0};
+         time_t stamp = time(NULL);
+        const char *timestr = ctime(&stamp);
+        memcpy(timestamp, timestr, strlen(timestr) - 1);        
+        //strftime(s, 1000, "%A, %B %d %Y", p);
+        
+        switch (level)
+        {
+            case _DEBUG:
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", GREEN, timestamp,filename, line, funcname, msg, NONE);
+                break;
+            case _WARN:
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", YELLOW, timestamp,filename, line, funcname, msg, NONE);
+                break;
+            case _ERROR:
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", L_RED, timestamp,filename, line, \
+                         funcname, msg,errno, strerror(errno), NONE);
+                break;
+            default:
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", BLINK, timestamp,filename, line, \
+                         funcname, msg, errno, strerror(errno),NONE);
+        }
+
+        std::cout << buff << std::endl;   
+    
+    }
+}
+#define _LOG(msg,l) (LOG::log(__FILE__, __FUNCTION__, __LINE__, msg, l)) 
+
 
 
 int

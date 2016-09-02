@@ -2,9 +2,11 @@
 <configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles" displayName="头文件" projectFiles="true">
+      <itemPath>Snlua.h</itemPath>
       <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
+      <itemPath>Snlua.cpp</itemPath>
       <itemPath>utils.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles" displayName="资源文件" projectFiles="true">
@@ -32,12 +34,19 @@
       <compileType>
         <ccTool>
           <commandlineTool>g++</commandlineTool>
+          <incDir>
+            <pElem>../LobbyServer</pElem>
+          </incDir>
         </ccTool>
         <linkerTool>
           <output>../libs/lobbylib.so</output>
           <commandLine>-llua -Wl,-E</commandLine>
         </linkerTool>
       </compileType>
+      <item path="Snlua.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Snlua.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="utils.h" ex="false" tool="3" flavor2="0">
@@ -63,6 +72,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Snlua.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Snlua.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="utils.h" ex="false" tool="3" flavor2="0">

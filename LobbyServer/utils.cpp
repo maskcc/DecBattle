@@ -6,4 +6,10 @@
 #include "utils.h"
 
 
-
+bool 
+readInt(int32_t& ret, char* stream)
+{
+    ret = ntohl(*(int32_t*)stream);
+    return true;
+    
+}

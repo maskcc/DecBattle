@@ -16,17 +16,29 @@
 
 #include <string>
 #include <stdint.h>
+#include <sys/socket.h>
+#include "SockStream.h"
 
 using namespace std;
 class Socket
 {
 public:
+    int32_t init(int connfd);
+    int32_t readHandle();
+    int32_t writeHandle();
+    int32_t closeHandle();
+    int32_t getFD();
     
     
 protected:
+    SockStream m_stream;
+protected:
     string   m_addr;   //地址
-    uint32_t m_port;   //端口号
+    uint16_t m_port;   //端口号
     int32_t  m_fd;     //连接信息
+    
+    uint64_t m_lastRecvTime; //上次接收或发送消息的时间戳
+    
     
     
 };

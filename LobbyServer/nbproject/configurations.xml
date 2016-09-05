@@ -2,23 +2,25 @@
 <configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles" displayName="头文件" projectFiles="true">
-      <itemPath>ClientConnection.h</itemPath>
+      <itemPath>ConnectionMgr.h</itemPath>
       <itemPath>ContextMgr.h</itemPath>
       <itemPath>Dispatch.h</itemPath>
       <itemPath>GameDef.h</itemPath>
       <itemPath>LobbyServer.h</itemPath>
       <itemPath>MQueue.h</itemPath>
-      <itemPath>NetSocket.h</itemPath>
+      <itemPath>SockServer.h</itemPath>
+      <itemPath>SockStream.h</itemPath>
       <itemPath>Socket.h</itemPath>
       <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
-      <itemPath>ClientConnection.cpp</itemPath>
+      <itemPath>ConnectionMgr.cpp</itemPath>
       <itemPath>ContextMgr.cpp</itemPath>
       <itemPath>Dispatch.cpp</itemPath>
       <itemPath>LobbyServer.cpp</itemPath>
       <itemPath>MQueue.cpp</itemPath>
-      <itemPath>NetSocket.cpp</itemPath>
+      <itemPath>SockServer.cpp</itemPath>
+      <itemPath>SockStream.cpp</itemPath>
       <itemPath>Socket.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>utils.cpp</itemPath>
@@ -60,9 +62,9 @@
           <commandLine>-ldl -Wl,-E</commandLine>
         </linkerTool>
       </compileType>
-      <item path="ClientConnection.cpp" ex="false" tool="1" flavor2="0">
+      <item path="ConnectionMgr.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="ClientConnection.h" ex="false" tool="3" flavor2="0">
+      <item path="ConnectionMgr.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ContextMgr.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -82,9 +84,13 @@
       </item>
       <item path="MQueue.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="NetSocket.cpp" ex="false" tool="1" flavor2="0">
+      <item path="SockServer.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="NetSocket.h" ex="false" tool="3" flavor2="0">
+      <item path="SockServer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SockStream.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SockStream.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -117,9 +123,9 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="ClientConnection.cpp" ex="false" tool="1" flavor2="0">
+      <item path="ConnectionMgr.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="ClientConnection.h" ex="false" tool="3" flavor2="0">
+      <item path="ConnectionMgr.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ContextMgr.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -139,9 +145,13 @@
       </item>
       <item path="MQueue.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="NetSocket.cpp" ex="false" tool="1" flavor2="0">
+      <item path="SockServer.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="NetSocket.h" ex="false" tool="3" flavor2="0">
+      <item path="SockServer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SockStream.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="SockStream.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Socket.cpp" ex="false" tool="1" flavor2="0">
       </item>

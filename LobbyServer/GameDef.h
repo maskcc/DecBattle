@@ -21,7 +21,7 @@
 #ifndef GAMEDEF_H
 #define GAMEDEF_H
 #include "lua.hpp"
-#include "stdint.h"
+#include <stdint.h>
 
 
 /*
@@ -35,10 +35,19 @@ const int _ERROR = 4; //red
 /**
  * MQueue的警报长度
  */
-const int MESSAGEQUEUE_WARN_LENGTH = 100;
+
+const int32_t MESSAGEQUEUE_WARN_LENGTH = 100;
 //messagequeue 的前置声明
 
 
+/****
+ * 客户端连接相关
+ **/
+const int32_t MAX_CLIENT_CONNECTION = 1024;
+
+const int32_t CONN_TYPE_NONE = 0;  //还未初始化
+const int32_t CONN_TYPE_CLIENT = 1;  //和客户端相关的ConnectionMgr
+const int32_t CONN_TYPE_SERVER = 2;  //和其他服务器相关的ConnectionMgr
 
 typedef struct BaseMsg_t
 {

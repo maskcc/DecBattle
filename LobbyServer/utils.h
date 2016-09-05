@@ -17,6 +17,7 @@
 #include <iostream>
 #include "GameDef.h"
 #include <errno.h>
+#include <netinet/in.h>
 
 namespace LOG{
     #define NONE                 "\e[0m"
@@ -79,6 +80,9 @@ namespace LOG{
 }
 
 #define _LOG(msg,l) (LOG::log(__FILE__, __FUNCTION__, __LINE__, msg, l)) 
+
+//以网络字节序读出一个整型
+bool readInt(int32_t& ret, char* stream);
 
 
 #endif /* UTILS_H */

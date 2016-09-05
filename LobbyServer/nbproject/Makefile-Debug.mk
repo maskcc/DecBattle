@@ -35,12 +35,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/ClientConnection.o \
+	${OBJECTDIR}/ConnectionMgr.o \
 	${OBJECTDIR}/ContextMgr.o \
 	${OBJECTDIR}/Dispatch.o \
 	${OBJECTDIR}/LobbyServer.o \
 	${OBJECTDIR}/MQueue.o \
-	${OBJECTDIR}/NetSocket.o \
+	${OBJECTDIR}/SockServer.o \
+	${OBJECTDIR}/SockStream.o \
 	${OBJECTDIR}/Socket.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/utils.o
@@ -70,10 +71,10 @@ LDLIBSOPTIONS=-llua
 	${MKDIR} -p ../libs
 	${LINK.cc} -o ../libs/LobbyServer ${OBJECTFILES} ${LDLIBSOPTIONS} -ldl -Wl,-E
 
-${OBJECTDIR}/ClientConnection.o: ClientConnection.cpp 
+${OBJECTDIR}/ConnectionMgr.o: ConnectionMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClientConnection.o ClientConnection.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ConnectionMgr.o ConnectionMgr.cpp
 
 ${OBJECTDIR}/ContextMgr.o: ContextMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -95,10 +96,15 @@ ${OBJECTDIR}/MQueue.o: MQueue.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MQueue.o MQueue.cpp
 
-${OBJECTDIR}/NetSocket.o: NetSocket.cpp 
+${OBJECTDIR}/SockServer.o: SockServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NetSocket.o NetSocket.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SockServer.o SockServer.cpp
+
+${OBJECTDIR}/SockStream.o: SockStream.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SockStream.o SockStream.cpp
 
 ${OBJECTDIR}/Socket.o: Socket.cpp 
 	${MKDIR} -p ${OBJECTDIR}

@@ -6,11 +6,13 @@
 #include "LobbyServer.h"
 #include "utils.h"
 
-void LobbyServer::loadConfig()
+void 
+LobbyServer::loadConfig()
 {
     config = string("bootstrap.lua");
 }
-void LobbyServer::start()
+void 
+LobbyServer::start()
 {
     _LOG("------------- main LobbyServer started!-----", _WARN);
     
@@ -19,7 +21,8 @@ void LobbyServer::start()
     
 }
 
-void LobbyServer::newContext()
+void 
+LobbyServer::newContext()
 {
     ContextMgr *ctx = new ContextMgr(this->config);
     

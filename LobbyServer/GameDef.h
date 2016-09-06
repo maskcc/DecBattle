@@ -49,10 +49,22 @@ const int32_t CONN_TYPE_NONE = 0;  //还未初始化
 const int32_t CONN_TYPE_CLIENT = 1;  //和客户端相关的ConnectionMgr
 const int32_t CONN_TYPE_SERVER = 2;  //和其他服务器相关的ConnectionMgr
 
+const int32_t MAX_BACK_LOG = 5;
+const int32_t MAX_EVENTS = 64;
+
+
+/***
+ *  连接处理相关
+ *  0x01
+ */
+const int32_t MSG_TYPE_DISCONNECT = 0x0100001;
+
+
+
 typedef struct BaseMsg_t
 {
-    void *msg;
     uint32_t sz;
+    void *msg;
     
 }BaseMsg;
 

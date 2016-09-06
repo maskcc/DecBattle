@@ -13,10 +13,12 @@
 
 #ifndef LOBBYSERVER_H
 #define LOBBYSERVER_H
-#include "GameDef.h"
-#include "ContextMgr.h"
 #include <map>
 #include <string>
+#include "GameDef.h"
+#include "ContextMgr.h"
+#include "SockServer.h"
+
 using namespace std;
 
 class LobbyServer
@@ -34,6 +36,7 @@ protected:
     //<handle, Ctx>
     map<int, ContextMgr*> m_CtxMap; 
     string config;
+    
     
     
 };

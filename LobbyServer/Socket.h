@@ -23,11 +23,14 @@ using namespace std;
 class Socket
 {
 public:
-    int32_t init(int connfd);
+    Socket();
+    int32_t init(int fd);
     int32_t readHandle();
     int32_t writeHandle();
     int32_t closeHandle();
-    int32_t getFD();
+    int32_t getFD() const;
+    friend bool operator==(const Socket &lsh, const Socket &rhs);
+    friend bool operator!=(const Socket &lsh, const Socket &rhs);
     
     
 protected:

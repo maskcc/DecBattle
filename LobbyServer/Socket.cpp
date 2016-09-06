@@ -4,12 +4,18 @@
  * and open the template in the editor.
  */
 #include "Socket.h"
-
+Socket::Socket()
+{
+    m_fd = -1;
+    m_addr = "";
+    m_lastRecvTime = 0;
+    
+}
 
 int32_t 
-Socket::init(int32_t connfd)
+Socket::init(int32_t fd)
 {
-    m_fd = connfd;
+    m_fd = fd;    
     return 0;
 }
 
@@ -20,7 +26,7 @@ Socket::closeHandle()
     return 0;
 }
 int32_t 
-Socket::getFD()
+Socket::getFD() const
 {
     return m_fd;
 }
@@ -32,11 +38,11 @@ Socket::readHandle()
     int ret = -1;
     BaseMsg *msg = NULL;
     ret = m_stream.reciveMsg(this->m_fd, msg);
+    m_lastRecvTime = time(NULL);
     
     //接收到了完整的包, 需要将包发送到某个处理队列中去
     if(0 == ret)
-    {
-        
+    {        
         return 0;
     }
     
@@ -52,6 +58,26 @@ Socket::writeHandle()
    
     
     return ret;
+    
+}
+
+//重载等于运算符
+//这里重载等于运算符需要学习一下
+//http://blog.163.com/zhangjie_0303/blog/static/99082706201191311147901
+//http://www.cppblog.com/doing5552/archive/2011/02/15/140098.html
+bool 
+operator==(const Socket &lsh, const Socket& rhs)
+{
+    return lsh.getFD() == rhs.getFD();
+    
+}
+
+
+//重载不等于运算符
+bool 
+operator!=(const Socket &lsh, const Socket& rhs)
+{
+    return !(lsh == rhs);
     
 }
 

@@ -5,6 +5,7 @@
  */
 #include "LobbyServer.h"
 #include "utils.h"
+#include "SockServer.h"
 
 void 
 LobbyServer::loadConfig()
@@ -18,6 +19,18 @@ LobbyServer::start()
     
     this->loadConfig();
     this->newContext();
+    
+    SockServer svr;
+    if(0 != svr.initServer("0.0.0.0", 10077))
+    {
+        _LOG("Init Server failed", _ERROR);
+        return;
+    }
+    if(0 != svr.run())
+    {
+        _LOG("run Server failed", _ERROR);
+        return;
+    }
     
 }
 

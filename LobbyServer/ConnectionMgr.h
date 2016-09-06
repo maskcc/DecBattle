@@ -45,7 +45,7 @@ public:
     int32_t connectPeer(const char* serverip, int32_t port);
     
     //主动断开连接
-    int32_t disconnect(int32_t connfd, int32_t type=CONN_TYPE_CLIENT);
+    void disconnect(int32_t connfd, int32_t type=CONN_TYPE_CLIENT);
     //接收到消息
     int32_t receiveMsg(int32_t connfd, int32_t type=CONN_TYPE_CLIENT);
     //发送消息

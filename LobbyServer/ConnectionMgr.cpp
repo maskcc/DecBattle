@@ -18,7 +18,7 @@ ConnectionMgr::addConnection(int32_t connfd, int32_t type)
     
     if(CONN_TYPE_CLIENT == type && m_cliCount >= MAX_CLIENT_CONNECTION)
     {
-        _LOG("Clients is more than 1000", _ERROR);
+        _LOG("connection is more than 1000", _ERROR);
         return -1;
     }
     
@@ -38,10 +38,12 @@ ConnectionMgr::addConnection(int32_t connfd, int32_t type)
      if(CONN_TYPE_CLIENT == type)
      {
         ++m_cliCount;
+        m_clientMap.insert(make_pair(connfd, client));
      }
      if(CONN_TYPE_SERVER == type)
      {
         ++m_svrCount;
+        m_serverMap.insert(make_pair(connfd, client));
      }
 }
 
@@ -71,27 +73,43 @@ ConnectionMgr::connectPeer(const char* serverip, int32_t port)
 }
 
 
-int32_t
+void
 ConnectionMgr::disconnect(int32_t connfd, int32_t type)
 {
     Socket *client = getPeer(connfd, type );
     if(NULL == client)
     {//客户端或服务没连接
-        _LOG("Client socket is not connected!", _ERROR);
-        return -1;
+        _LOG("socket is not connected!", _ERROR);
+        return;
     }
     client->closeHandle();
+    CONN_MAP_ITER iter;  
     if(CONN_TYPE_CLIENT == type)
-    {
+    {          
+        iter = m_clientMap.find(connfd);
+        if(m_clientMap.end() == iter)
+        {           
+             _LOG("can not find client connection, disconnect failed!", _ERROR);
+             return;
+        }
+        m_clientMap.erase(iter);
        --m_cliCount;
     }
     if(CONN_TYPE_SERVER == type)
     {
+        iter = m_clientMap.find(connfd);
+        if(m_serverMap.end() == iter)
+        {           
+             _LOG("can not find server connection, disconnect failed!", _ERROR);
+             return;
+        }
+        m_serverMap.erase(iter);
         --m_svrCount;
     }
     
-    return 0;
-}
+    
+ }
+
 int32_t
 ConnectionMgr::receiveMsg(int32_t connfd, int32_t type)
 {
@@ -101,7 +119,12 @@ ConnectionMgr::receiveMsg(int32_t connfd, int32_t type)
         _LOG("Client socket is not connected!", _ERROR);
         return -1;
     }
-    client->readHandle();
+    int ret = client->readHandle();
+    if(MSG_TYPE_DISCONNECT == ret)
+    {
+        this->disconnect(connfd, type);  
+        _LOG("connection has been closed by peer!", _DEBUG);
+    }
 }
         
 int32_t       
@@ -124,8 +147,7 @@ ConnectionMgr::getPeer(int32_t fd, int32_t type)
     {
         iter = m_clientMap.find(fd);
         if(m_clientMap.end() == iter)
-        {
-            _LOG("can not find client connection!",_ERROR);
+        {           
             return NULL;
         }
     }
@@ -133,8 +155,7 @@ ConnectionMgr::getPeer(int32_t fd, int32_t type)
     {
         iter = m_serverMap.find(fd);
         if(m_serverMap.end() == iter)
-        {
-            _LOG("can not find client connection!",_ERROR);
+        {            
             return NULL;
         }
     }

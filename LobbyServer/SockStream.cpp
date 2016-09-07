@@ -36,7 +36,7 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
         
         if( n > 0 && m_readSize < MSG_SIZE_LENGTH)
         {            
-            return -1; //size  都没读完整            
+            return MSG_TYPE_MORE; //size  都没读完整            
         }
         
         //读出字符串大小
@@ -45,7 +45,7 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
         {
             _LOG("read int fail!", _ERROR);
             this->reset();
-            return -3;
+            return ERROR_TYPE_READNUM_FAIL;
         }        
         //内存模型::
         //  _______
@@ -66,15 +66,14 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
     //读取body
     int n = read(fd, m_stream + m_readSize, m_bodySize - m_readSize);
     if (n <= 0)
-    {
-        _LOG("connection has beeen closed by client!", _DEBUG);        
+    {           
         return MSG_TYPE_DISCONNECT;        
     }
     
     m_readSize += n;
     if(0 < m_bodySize - m_readSize)
     {        
-        return -1; //m_sizeToRead  都没读完整           
+        return MSG_TYPE_MORE; //m_sizeToRead  都没读完整           
     }
     
     msg = static_cast<BaseMsg*>(malloc(sizeof(BaseMsg_t)));
@@ -91,8 +90,7 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
     
     this->reset(); 
     
-    
-    
+    return 0;
     
 }
 

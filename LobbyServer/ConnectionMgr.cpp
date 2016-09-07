@@ -5,163 +5,151 @@
  */
 #include "ConnectionMgr.h"
 
-ConnectionMgr::ConnectionMgr()
+ConnectionMgr::ConnectionMgr() 
 {
-    m_cliCount = 0;
-    m_svrCount = 0;
-    
+    m_connCount = 0;
 }
 
 int32_t
-ConnectionMgr::addConnection(int32_t connfd, int32_t type)
+ConnectionMgr::addConnection(Socket *s) 
 {
-    
-    if(CONN_TYPE_CLIENT == type && m_cliCount >= MAX_CLIENT_CONNECTION)
+
+    if (m_connCount >= MAX_CLIENT_CONNECTION) 
     {
         _LOG("connection is more than 1000", _ERROR);
         return -1;
     }
-    
-    if(CONN_TYPE_SERVER == type && m_cliCount >= MAX_CLIENT_CONNECTION)
-    {
-        _LOG("Clients is more than 1000", _ERROR);
-        return -1;
-    }
-    Socket *client = getPeer(connfd, type);
-    if(NULL != client)
+
+    Socket *client = getPeer(s->getFD());
+    if (NULL != client) 
     {//客户端已经连接.不可能走到这来.连接没关闭, 应该不会生成到新连接的fd
         _LOG("Client socket has been connected!", _ERROR);
+
+        s->closeHandle();
         return -1;
     }
-    client = new Socket();
-    client->init(connfd);
-     if(CONN_TYPE_CLIENT == type)
-     {
-        ++m_cliCount;
-        m_clientMap.insert(make_pair(connfd, client));
-     }
-     if(CONN_TYPE_SERVER == type)
-     {
-        ++m_svrCount;
-        m_serverMap.insert(make_pair(connfd, client));
-     }
+
+
+    ++m_connCount;
+    m_connMap.insert(make_pair(s->getFD(), s));
+    return 0;
+
+}
+
+/**
+ * 
+ * @param s
+ *  表示服务器监听的端口
+ * @return 
+ */
+Socket*
+ConnectionMgr::acceptPeer(Socket *s) 
+{
+    int connfd = accept(s->getFD(), NULL, NULL);
+    if (connfd <= 0) {
+        _LOG("accept client fail!", _ERROR);
+        return NULL;
+    }
+    Socket *client = new Socket();
+    client->init(connfd, CONN_TYPE_CLIENT);
+    int ret = addConnection(client);
+    if(0 != ret)
+    {
+        return NULL;
+    }
+    return client;
 }
 
 int32_t
-ConnectionMgr::acceptPeer(int32_t connfd)
-{
-    return addConnection(connfd, CONN_TYPE_CLIENT);
-}
-
-int32_t 
-ConnectionMgr::connectPeer(const char* serverip, int32_t port)
+ConnectionMgr::connectPeer(const char* serverip, int32_t port) 
 {
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in addr;
-    addr.sin_addr.s_addr=inet_addr(serverip);
-    addr.sin_family=AF_INET;
-    addr.sin_port=htons(port);
-    int connfd = connect(sockfd,(struct sockaddr *)&addr,sizeof(struct sockaddr_in));
-    if(-1 == connfd)
+    addr.sin_addr.s_addr = inet_addr(serverip);
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    int connfd = connect(sockfd, (struct sockaddr *) &addr, sizeof (struct sockaddr_in));
+    if (-1 == connfd) 
     {
         _LOG("Connect to server failed!", _ERROR);
         return -1;
     }
-    
-    return addConnection(connfd, CONN_TYPE_SERVER);
-    
+    Socket *client = new Socket();
+    client->init(connfd, CONN_TYPE_SERVER);
+    return addConnection(client);
+
 }
 
-
 void
-ConnectionMgr::disconnect(int32_t connfd, int32_t type)
+ConnectionMgr::disconnect(Socket *s) 
 {
-    Socket *client = getPeer(connfd, type );
-    if(NULL == client)
+    Socket *client = getPeer(s->getFD());
+    if (NULL == client) 
     {//客户端或服务没连接
         _LOG("socket is not connected!", _ERROR);
         return;
     }
-    client->closeHandle();
-    CONN_MAP_ITER iter;  
-    if(CONN_TYPE_CLIENT == type)
-    {          
-        iter = m_clientMap.find(connfd);
-        if(m_clientMap.end() == iter)
-        {           
-             _LOG("can not find client connection, disconnect failed!", _ERROR);
-             return;
-        }
-        m_clientMap.erase(iter);
-       --m_cliCount;
-    }
-    if(CONN_TYPE_SERVER == type)
+
+    CONN_MAP_ITER iter;
+    iter = m_connMap.find(client->getFD());
+
+    if (m_connMap.end() == iter) 
     {
-        iter = m_clientMap.find(connfd);
-        if(m_serverMap.end() == iter)
-        {           
-             _LOG("can not find server connection, disconnect failed!", _ERROR);
-             return;
+        _LOG("can not find client connection, disconnect failed!", _ERROR);
+        if (NULL != client) 
+        {
+            client->closeHandle();
         }
-        m_serverMap.erase(iter);
-        --m_svrCount;
+        return;
     }
-    
-    
- }
+
+    m_connMap.erase(iter);
+    client->closeHandle();
+    --m_connCount;
+
+}
 
 int32_t
-ConnectionMgr::receiveMsg(int32_t connfd, int32_t type)
+ConnectionMgr::receiveMsg(Socket *s, BaseMsg *msg) 
 {
-    Socket *client = getPeer(connfd, type);
-    if(NULL == client)
+    Socket *client = getPeer(s->getFD());
+    if (NULL == client) 
     {//客户端没连接
         _LOG("Client socket is not connected!", _ERROR);
-        return -1;
+        return ERROR_TYPE_NULL_SOCKET;
     }
-    int ret = client->readHandle();
-    if(MSG_TYPE_DISCONNECT == ret)
-    {
-        this->disconnect(connfd, type);  
-        _LOG("connection has been closed by peer!", _DEBUG);
-    }
-}
-        
-int32_t       
-ConnectionMgr::sendMsg(int32_t connfd, int32_t type)
-{
-    Socket *client = getPeer(connfd, type);
-    if(NULL == client)
-    {//客户端没连接
-        _LOG("Client socket is not connected!", _ERROR);
-        return -1;
-    }
-    client->writeHandle();
+    return client->readHandle(msg);
+   
+   
 }
 
-Socket* 
-ConnectionMgr::getPeer(int32_t fd, int32_t type)
+int32_t
+ConnectionMgr::sendMsg(Socket *s) 
+{
+    Socket *client = getPeer(s->getFD());
+    if (NULL == client) 
+    {//客户端没连接
+        _LOG("Client socket is not connected!", _ERROR);
+        return -1;
+    }
+    return client->writeHandle();
+    
+}
+
+Socket*
+ConnectionMgr::getPeer(int32_t id) 
 {
     CONN_MAP_ITER iter;
-    if(CONN_TYPE_CLIENT == type)
-    {
-        iter = m_clientMap.find(fd);
-        if(m_clientMap.end() == iter)
-        {           
-            return NULL;
-        }
+
+    iter = m_connMap.find(id);
+    if (m_connMap.end() == iter) {
+        return NULL;
     }
-    if(CONN_TYPE_SERVER == type)
-    {
-        iter = m_serverMap.find(fd);
-        if(m_serverMap.end() == iter)
-        {            
-            return NULL;
-        }
-    }
-    
+
+
+
     return iter->second;
-    
+
 }
 
 

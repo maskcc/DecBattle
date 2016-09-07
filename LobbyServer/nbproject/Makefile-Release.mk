@@ -43,6 +43,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/SockServer.o \
 	${OBJECTDIR}/SockStream.o \
 	${OBJECTDIR}/Socket.o \
+	${OBJECTDIR}/Thread.o \
+	${OBJECTDIR}/ThreadBase.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/utils.o
 
@@ -110,6 +112,16 @@ ${OBJECTDIR}/Socket.o: Socket.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
+
+${OBJECTDIR}/Thread.o: Thread.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Thread.o Thread.cpp
+
+${OBJECTDIR}/ThreadBase.o: ThreadBase.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ThreadBase.o ThreadBase.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

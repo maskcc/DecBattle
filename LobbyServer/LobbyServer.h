@@ -18,6 +18,7 @@
 #include "GameDef.h"
 #include "ContextMgr.h"
 #include "SockServer.h"
+#include "Thread.h"
 
 using namespace std;
 
@@ -27,6 +28,11 @@ public:
     void loadConfig();
     void start();
     void newContext();
+    void runSockServer();
+    static void runLuaEngin(void *);
+    static void sockServer(void *);
+    
+    
     
     
     
@@ -36,6 +42,7 @@ protected:
     //<handle, Ctx>
     map<int, ContextMgr*> m_CtxMap; 
     string config;
+    Thread m_threads;
     
     
     

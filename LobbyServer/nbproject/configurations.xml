@@ -11,6 +11,8 @@
       <itemPath>SockServer.h</itemPath>
       <itemPath>SockStream.h</itemPath>
       <itemPath>Socket.h</itemPath>
+      <itemPath>Thread.h</itemPath>
+      <itemPath>ThreadBase.h</itemPath>
       <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
@@ -22,6 +24,8 @@
       <itemPath>SockServer.cpp</itemPath>
       <itemPath>SockStream.cpp</itemPath>
       <itemPath>Socket.cpp</itemPath>
+      <itemPath>Thread.cpp</itemPath>
+      <itemPath>ThreadBase.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>utils.cpp</itemPath>
     </logicalFolder>
@@ -59,7 +63,7 @@
           <linkerLibItems>
             <linkerLibLibItem>lua</linkerLibLibItem>
           </linkerLibItems>
-          <commandLine>-ldl -Wl,-E</commandLine>
+          <commandLine>-lpthread -ldl -Wl,-E</commandLine>
         </linkerTool>
       </compileType>
       <item path="ConnectionMgr.cpp" ex="false" tool="1" flavor2="0">
@@ -95,6 +99,14 @@
       <item path="Socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ThreadBase.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ThreadBase.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -156,6 +168,14 @@
       <item path="Socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ThreadBase.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ThreadBase.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

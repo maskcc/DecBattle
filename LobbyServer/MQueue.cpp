@@ -5,6 +5,8 @@
  */
 #include "MQueue.h"
 
+MQueue* MQueue::m_instance = NULL;
+
 MQueue::MQueue()
 {
     
@@ -16,9 +18,20 @@ MQueue::Init()
     this->isBusy = false;
     
 }
-
+MQueue* 
+MQueue::getInstance()
+{
+    if(NULL ==m_instance)
+    {
+        m_instance = new MQueue;
+    }
+    return m_instance;
+        
+    
+}
 //推入队列尾端 
-void MQueue::push(BaseMsg_t *msg)
+void 
+MQueue::push(BaseMsg_t *msg)
 {
     m_MQ.push(msg);
     if(m_MQ.size() >= MESSAGEQUEUE_WARN_LENGTH)
@@ -35,3 +48,4 @@ BaseMsg_t* MQueue::pop()
 {
     
 }
+

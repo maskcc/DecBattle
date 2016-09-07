@@ -21,16 +21,16 @@ LOG::lualog( char const*filename,  char const*funcname, char const*msg, int leve
     switch (level)
     {
         case _DEBUG:
-            snprintf(buff, 1024, "%s[%s] [%s:%s] MSG[%s]%s", GREEN, timestamp, filename, funcname, msg, NONE);
+            snprintf(buff, 1024, "%s[%s] [%s:%s] DEBUG[%s]%s", GREEN, timestamp, filename, funcname, msg, NONE);
             break;
         case _WARN:
-            snprintf(buff, 1024, "%s[%s] [%s:%s] MSG[%s]%s", YELLOW, timestamp,filename,funcname, msg, NONE);
+            snprintf(buff, 1024, "%s[%s] [%s:%s] WARN[%s]%s", YELLOW, timestamp,filename,funcname, msg, NONE);
             break;
         case _ERROR:
-            snprintf(buff, 1024, "%s[%s] [%s:%s] MSG[%s]%s", L_RED, timestamp,filename, funcname, msg, NONE);
+            snprintf(buff, 1024, "%s[%s] [%s:%s] ERROR[%s]%s", L_RED, timestamp,filename, funcname, msg, NONE);
             break;
         default:
-            snprintf(buff, 1024, "%s[%s] [%s:%s] MSG[%s]%s", BLINK, timestamp,filename,funcname, msg, NONE);
+            snprintf(buff, 1024, "%s[%s] [%s:%s] DEFAULT[%s]%s", BLINK, timestamp,filename,funcname, msg, NONE);
     }
     
     std::cout << buff << std::endl;   

@@ -45,7 +45,7 @@ const int32_t MESSAGEQUEUE_WARN_LENGTH = 100;
  **/
 const int32_t MAX_CLIENT_CONNECTION = 1024;
 
-const int32_t CONN_TYPE_NONE = 0;  //还未初始化
+const int32_t CONN_TYPE_NONE = 0;  //还未初始化, 或者只是保存信息
 const int32_t CONN_TYPE_CLIENT = 1;  //和客户端相关的ConnectionMgr
 const int32_t CONN_TYPE_SERVER = 2;  //和其他服务器相关的ConnectionMgr
 
@@ -54,12 +54,25 @@ const int32_t MAX_EVENTS = 64;
 
 
 /***
- *  连接处理相关
- *  0x01
+ *  常见错误
+ *  -0x01
  */
-const int32_t MSG_TYPE_DISCONNECT = 0x0100001;
+
+//不可忽视的错误, 要down掉服务
+const int32_t ERROR_TYPE_STOP_SERVER = -0x010001;
+const int32_t ERROR_TYPE_EPOOL_WAIT_FAIL = -0x010002;
+const int32_t ERROR_TYPE_NULL_SOCKET = -0x010003;
+const int32_t ERROR_TYPE_MALLOC_FAIL = -0x010004;
+const int32_t ERROR_TYPE_ADDCTL_FAIL = -0x010005;
+const int32_t ERROR_TYPE_READNUM_FAIL = -0x010006;
+const int32_t ERROR_TYPE_NONE_THREAD = -0x010007;
 
 
+/*******
+ * socket服务器传递消息
+ */
+const int32_t MSG_TYPE_DISCONNECT = 0x010001;  //客户端断开连接
+const int32_t MSG_TYPE_MORE = 0x010002;        //数据没有读取完整
 
 typedef struct BaseMsg_t
 {
@@ -68,7 +81,11 @@ typedef struct BaseMsg_t
     
 }BaseMsg;
 
-
+typedef struct Addr_t
+{
+    char ip[64];
+    int32_t port;
+}Addr;
 
 
 

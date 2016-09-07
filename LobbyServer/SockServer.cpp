@@ -5,6 +5,7 @@
  */
 
 #include "SockServer.h"
+#include "MQueue.h"
 
 SockServer::SockServer()
 {
@@ -55,7 +56,7 @@ SockServer::SockServer()
         return -1;
     }
     
-    m_sock.init(sockfd);
+    m_sock.init(sockfd, CONN_TYPE_NONE);
      
     return 0;
  }
@@ -127,14 +128,14 @@ SockServer::epollWait() {
         if(m_stop)
         {
             _LOG("EPoll server has been closed.", _WARN);
-            break;
+            return ERROR_TYPE_STOP_SERVER;
         }
         
         n = this->epollWait();
         if(0 >= n)
         {
-            _LOG("epoll wait number <= 0", _ERROR);
-            break;
+            _LOG("epoll wait number below 0", _ERROR);
+            return ERROR_TYPE_EPOOL_WAIT_FAIL;
         }
         
         event *e = &m_ev[index++];
@@ -142,7 +143,7 @@ SockServer::epollWait() {
         if(NULL == s)
         {
             _LOG("find the null socket!", _ERROR);
-            return -1;
+            return ERROR_TYPE_NULL_SOCKET;
         }
             
         if(e->read)
@@ -150,29 +151,46 @@ SockServer::epollWait() {
             if(*s == m_sock)
             {
                 //接收连接
-                _LOG("A CONNECTION come", _DEBUG);
-                int connfd = accept(s->getFD(), NULL, NULL);
-                m_connMgr.acceptPeer(connfd);
-                
-                EPOOL_EV *ev = (EPOOL_EV*)malloc(sizeof(EPOOL_EV)) ;    
-                ev->events = EPOLLIN;
-                ev->data.ptr = m_connMgr.getPeer(connfd);
-                if (-1 == epoll_ctl(m_epollFD, EPOLL_CTL_ADD, connfd, ev))
+                _LOG("New connection come", _DEBUG);                
+                Socket *client = m_connMgr.acceptPeer(s); //等价于 m_sock;
+                if(NULL == client)
                 {
-                    _LOG("epoll open fail!", _ERROR);
-                    return -1;
+                    _LOG("accept null peer!", _ERROR);
+                    return ERROR_TYPE_NULL_SOCKET;
+                }
+                
+                EPOOL_EV *ev = (EPOOL_EV*)malloc(sizeof(EPOOL_EV)) ;
+                if(NULL == ev)
+                {
+                    _LOG("malloc ev fail!", _ERROR);
+                    return ERROR_TYPE_MALLOC_FAIL;
+                }
+                ev->events = EPOLLIN;
+                ev->data.ptr = client;
+                if (-1 == epoll_ctl(m_epollFD, EPOLL_CTL_ADD, client->getFD(), ev))
+                {
+                    _LOG("epoll add ctl fail!", _ERROR);
+                    return ERROR_TYPE_ADDCTL_FAIL;
                 }
                 
             }   
             else
             {
-                //有消息到来 
-                //_LOG("a message come", _DEBUG);
-                s->readHandle();
-                
-            }
-            
-            
+                //有消息到来      
+                BaseMsg * msg;
+                int readret = m_connMgr.receiveMsg(s, msg);
+                if(readret == MSG_TYPE_DISCONNECT)
+                {
+                    m_connMgr.disconnect(s);
+                    _LOG("connection has been closed by peer!", _DEBUG);
+                    
+                }    
+                if(NULL != msg)
+                {
+                    MQueue::getInstance()->push(msg);
+                    
+                }
+            }      
         }
         else  if(e->write)
         {

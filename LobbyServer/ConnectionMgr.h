@@ -33,30 +33,27 @@ typedef map<int32_t, Socket*>::iterator  CONN_MAP_ITER;
 class ConnectionMgr
 {
 public:
-    ConnectionMgr();
-    
+    ConnectionMgr();   
     
     //默认连接属性时连接和发送到客户端...
     //添加新连接
-    int32_t addConnection(int32_t connfd, int32_t type=CONN_TYPE_CLIENT);
+    int32_t addConnection(Socket *s);
     //接受连接
-    int32_t acceptPeer(int32_t connfd);
+    Socket* acceptPeer(Socket *s);
     //主动连接服务器
     int32_t connectPeer(const char* serverip, int32_t port);
     
     //主动断开连接
-    void disconnect(int32_t connfd, int32_t type=CONN_TYPE_CLIENT);
+    void disconnect(Socket *s);
     //接收到消息
-    int32_t receiveMsg(int32_t connfd, int32_t type=CONN_TYPE_CLIENT);
+    int32_t receiveMsg(Socket *s, BaseMsg *msg);
     //发送消息
-    int32_t sendMsg(int32_t connfd, int32_t type=CONN_TYPE_CLIENT);
-    Socket* getPeer(int32_t id, int32_t type=CONN_TYPE_CLIENT);
+    int32_t sendMsg(Socket *s);
+    Socket* getPeer(int32_t id);
     
 protected:    
-    CONN_MAP m_clientMap;              //客户端连接上来 
-    CONN_MAP m_serverMap;              //连接连到其他服务器
-    uint32_t m_svrCount;            //当前连接到服务器的数量    
-    uint32_t m_cliCount;            //连接到客户端的数量
+    CONN_MAP m_connMap;              //连接
+    uint32_t m_connCount;            //连接数量
     
 };
 

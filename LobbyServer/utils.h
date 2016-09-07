@@ -59,17 +59,17 @@ namespace LOG{
         switch (level)
         {
             case _DEBUG:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", GREEN, timestamp,filename, line, funcname, msg, NONE);
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] DEBUG[%s]%s", GREEN, timestamp,filename, line, funcname, msg, NONE);
                 break;
             case _WARN:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", YELLOW, timestamp,filename, line, funcname, msg, NONE);
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] WARN[%s]%s", YELLOW, timestamp,filename, line, funcname, msg, NONE);
                 break;
             case _ERROR:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", L_RED, timestamp,filename, line, \
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] ERROR[%s] errno[%d], error[%s]%s", L_RED, timestamp,filename, line, \
                          funcname, msg,errno, strerror(errno), NONE);
                 break;
             default:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", BLINK, timestamp,filename, line, \
+                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] DEFAULT[%s] errno[%d], error[%s]%s", BLINK, timestamp,filename, line, \
                          funcname, msg, errno, strerror(errno),NONE);
         }
 

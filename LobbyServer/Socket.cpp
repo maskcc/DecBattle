@@ -9,20 +9,27 @@ Socket::Socket()
     m_fd = -1;
     m_addr = "";
     m_lastRecvTime = 0;
+    m_connType = CONN_TYPE_NONE;
     
 }
 
 int32_t 
-Socket::init(int32_t fd)
+Socket::init(int32_t fd, int32_t type)
 {
     m_fd = fd;    
+    m_connType = type;
     return 0;
 }
 
 int32_t 
 Socket::closeHandle()
 {//要考虑断开连接时的处理, 断开连接时, buff要清空
-    close(this->m_fd);    
+    if(CONN_TYPE_NONE != this->m_connType )
+    {
+        close(this->m_fd);   
+        delete this;
+    }
+    
     return 0;
 }
 int32_t 
@@ -33,19 +40,13 @@ Socket::getFD() const
 
 
 int32_t 
-Socket::readHandle()
+Socket::readHandle(BaseMsg *msg)
 {
-    int ret = -1;
-    BaseMsg *msg = NULL;
+    int ret = -1;    
     ret = m_stream.reciveMsg(this->m_fd, msg);
     m_lastRecvTime = time(NULL);
     
     //接收到了完整的包, 需要将包发送到某个处理队列中去
-    if(0 == ret)
-    {        
-        return 0;
-    }
-    
     return ret;
     
 }

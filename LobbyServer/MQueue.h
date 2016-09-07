@@ -22,6 +22,7 @@ class MQueue
 {
 public:
     MQueue();
+    static MQueue* getInstance();
     void Init();
     //推入队列尾端 
     void push(BaseMsg_t *msg);
@@ -32,9 +33,10 @@ public:
     //TODO 要添加当push进去后队列内数量的监控, 当数量超标时要通知是否有阻塞存在
     bool isBusy;//是否繁忙
     
-    
+    static MQueue* m_instance;
 protected:
     std::queue<BaseMsg_t *> m_MQ;
+    
     
     
 };

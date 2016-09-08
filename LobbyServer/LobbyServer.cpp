@@ -19,7 +19,7 @@ LobbyServer::start()
     
     this->loadConfig();
     this->newContext();
-    for(int c = 0; c < 100; c++)
+    for(int c = 0; c < 5; c++)
      m_threads.spawn(runLuaEngin, NULL);
      
     //this->runLuaEngin();

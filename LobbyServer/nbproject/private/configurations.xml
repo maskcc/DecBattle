@@ -27,9 +27,11 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+          <runcommandpicklistitem>../libs/</runcommandpicklistitem>
+          <runcommandpicklistitem>../libs/LobbyServer</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
-        <rundir></rundir>
+        <runcommand>../libs/LobbyServer</runcommand>
+        <rundir>../libs/</rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>

@@ -6,6 +6,7 @@
 
 #include "SockServer.h"
 #include "MQueue.h"
+#include "GlobalQueue.h"
 
 SockServer::SockServer()
 {
@@ -187,7 +188,7 @@ SockServer::epollWait() {
                 }    
                 if(NULL != msg)
                 {
-                    MQueue::getInstance()->push(msg);
+                    GlobalQueue::getInstance();
                     
                 }
             }      

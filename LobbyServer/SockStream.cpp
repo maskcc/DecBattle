@@ -46,7 +46,15 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
             _LOG("read int fail!", _ERROR);
             this->reset();
             return ERROR_TYPE_READNUM_FAIL;
-        }        
+        }   
+        
+        if(m_bodySize > BUFF_LENGTH)
+        {
+            _LOG("read body size over flow!", _ERROR);
+            this->reset();
+            return ERROR_TYPE_BODY_OVER_FLOW;  //包体超过缓冲区, 客户端不可能发送这么大的包体, 错误
+                                               //防止发送大包体导致内存超标 
+        }
         //内存模型::
         //  _______
         // |sz|body|

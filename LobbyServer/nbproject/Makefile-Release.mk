@@ -36,10 +36,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/ConnectionMgr.o \
+	${OBJECTDIR}/ContextMap.o \
 	${OBJECTDIR}/ContextMgr.o \
 	${OBJECTDIR}/Dispatch.o \
+	${OBJECTDIR}/GlobalQueue.o \
 	${OBJECTDIR}/LobbyServer.o \
 	${OBJECTDIR}/MQueue.o \
+	${OBJECTDIR}/NameService.o \
 	${OBJECTDIR}/SockServer.o \
 	${OBJECTDIR}/SockStream.o \
 	${OBJECTDIR}/Socket.o \
@@ -78,6 +81,11 @@ ${OBJECTDIR}/ConnectionMgr.o: ConnectionMgr.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ConnectionMgr.o ConnectionMgr.cpp
 
+${OBJECTDIR}/ContextMap.o: ContextMap.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ContextMap.o ContextMap.cpp
+
 ${OBJECTDIR}/ContextMgr.o: ContextMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -88,6 +96,11 @@ ${OBJECTDIR}/Dispatch.o: Dispatch.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Dispatch.o Dispatch.cpp
 
+${OBJECTDIR}/GlobalQueue.o: GlobalQueue.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GlobalQueue.o GlobalQueue.cpp
+
 ${OBJECTDIR}/LobbyServer.o: LobbyServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -97,6 +110,11 @@ ${OBJECTDIR}/MQueue.o: MQueue.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MQueue.o MQueue.cpp
+
+${OBJECTDIR}/NameService.o: NameService.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NameService.o NameService.cpp
 
 ${OBJECTDIR}/SockServer.o: SockServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}

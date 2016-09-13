@@ -17,8 +17,10 @@
 #include <string>
 #include "GameDef.h"
 #include "ContextMgr.h"
+#include "ContextMap.h"
 #include "SockServer.h"
 #include "Thread.h"
+
 
 using namespace std;
 
@@ -27,24 +29,15 @@ class LobbyServer
 public:
     void loadConfig();
     void start();
-    void newContext();
     void runSockServer();
-    static void runLuaEngin(void *);
+    
+    static void dispatchMessage(void *);
     static void sockServer(void *);
-    
-    
-    
-    
-    
-    
+       
 protected:
-    //保存lua虚拟机
-    //<handle, Ctx>
-    map<int, ContextMgr*> m_CtxMap; 
+
     string config;
     Thread m_threads;
-    
-    
     
 };
 

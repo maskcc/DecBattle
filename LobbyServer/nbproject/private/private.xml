@@ -7,13 +7,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/SockStream.h</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ContextMgr.h</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/LobbyServer.cpp</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/MQueue.cpp</file>
             <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/GameDef.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/Socket.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/Socket.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ConnectionMgr.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ConnectionMgr.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/SockStream.cpp</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/LuaService.h</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/GlobalQueue.cpp</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/LuaService.cpp</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/LobbyServer.h</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/SockServer.cpp</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ContextMgr.cpp</file>
+            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/GlobalQueue.h</file>
         </group>
     </open-files>
 </project-private>

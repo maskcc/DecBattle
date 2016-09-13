@@ -21,7 +21,8 @@ _cb(Context *ctx, int type, void* msg, int sz)
     {
         const char *buff;
         buff = lua_tostring(l, -1);
-        _LOG(buff, _ERROR);       
+        _LOG(buff, _ERROR); 
+        _LOG(static_cast<const char*>(msg), _ERROR); 
         return -1;       
     }
 
@@ -56,8 +57,8 @@ lcallback(lua_State *L)
 }
 
 
-extern "C"
-int luaopen_lobbylib_snlua(lua_State *L)
+extern "C" int 
+luaopen_lobbylib_snlua(lua_State *L)
 {
     luaL_Reg l[] = {
         { "callback", lcallback },        

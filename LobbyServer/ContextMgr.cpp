@@ -6,6 +6,7 @@
 
 #include "ContextMgr.h"
 #include "utils.h"
+#include "NameService.h"
 #include <assert.h>
 
 
@@ -24,18 +25,31 @@ traceback (lua_State *L) {
 
 ContextMgr::ContextMgr(string sname)
 {    
-    this->scriptName = sname;    
+   this->scriptName = sname;    
    
+    
+}
+
+ContextMgr::~ContextMgr()
+{    
+    delete m_Ctx->queue;
+    delete this->m_Ctx;
     
 }
 int 
 ContextMgr::Init()
 {
     m_Ctx = new Context;
-    m_Ctx->state = luaL_newstate();
-    m_Ctx->queue = new MQueue();
+    m_Ctx->state = luaL_newstate();    
     m_Ctx->handle = ++HANDLEID;
+    m_Ctx->queue = new MQueue(m_Ctx->handle);
     
+    int ret = NameService::getInstance()->reg(m_Ctx->handle, this->scriptName);
+    if( 0 != ret)
+    {
+        delete this;
+        return ret;  //名字服务器发现重复, 不能使用
+    }
     return this->loadScript();
     
 }
@@ -65,14 +79,15 @@ int ContextMgr::loadScript()
     char buff[1024] = {0};
     snprintf(buff, 1024, "Load file %s success!", this->scriptName.c_str());
     _LOG(buff, _DEBUG);
-    lua_gc(L, LUA_GCRESTART, 0);
+    lua_gc(L, LUA_GCRESTART, 0);   
+    
     return 0;
     
 }
 int
 ContextMgr::getHandle()
 {
-    return this->m_Ctx->handle;
+    return this->m_Ctx->handle;   
     
 }
 lua_State*
@@ -85,10 +100,16 @@ ContextMgr::getLuaState()
 int 
 ContextMgr::call(int type, void *msg, int sz)
 {
+    if(NULL == this->m_Ctx->cb)
+    {
+        _LOG("function not registered!", _ERROR);
+        return -1;
+    }
     this->m_Ctx->cb(this->m_Ctx, type, msg, sz);
     
     char buff[1024] = {};
     snprintf(buff, 1024, "Handle[%d] called!", this->getHandle());
     _LOG(buff, _DEBUG);
+    return 0;
     
 }

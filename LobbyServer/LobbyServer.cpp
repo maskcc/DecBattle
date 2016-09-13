@@ -18,30 +18,19 @@ LobbyServer::start()
     _LOG("------------- main LobbyServer started!-----", _WARN);
     
     this->loadConfig();
-    this->newContext();
-    for(int c = 0; c < 5; c++)
-     m_threads.spawn(runLuaEngin, NULL);
-     
-    //this->runLuaEngin();
-    
+    ContextMap::getInstance()->newContext(this->config);
     this->runSockServer();
     
+    //多线程处理逻辑
+    for(int c = 0; c < 5; c++)
+        m_threads.spawn(dispatchMessage, NULL);
+     
+      
     
    m_threads.join();
     
 }
 
-void 
-LobbyServer::newContext()
-{
-    ContextMgr *ctx = new ContextMgr(this->config);
-    
-    ctx->Init();
-    m_CtxMap.insert(make_pair(ctx->getHandle(), ctx));
-    
-    
-    
-}
 
 
 void 
@@ -56,7 +45,8 @@ LobbyServer::runSockServer()
     
 }
 
-void LobbyServer::sockServer(void *argc)
+void 
+LobbyServer::sockServer(void *argc)
 {
     if(NULL == argc)
     {
@@ -80,12 +70,12 @@ void LobbyServer::sockServer(void *argc)
     
 }
 
-void LobbyServer::runLuaEngin(void *)
+void 
+LobbyServer::dispatchMessage(void *)
 {
- //   sleep(rand()%3);
-    ContextMgr *ctx = new ContextMgr("bootstrap.lua");
+    for(;;)
+    {
+        sleep(2);
+    }
     
-    ctx->Init();
-    _LOG("lua enigin init succeed", _WARN);
-    sleep(30);
 }

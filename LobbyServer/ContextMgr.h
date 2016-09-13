@@ -39,6 +39,7 @@ class ContextMgr
 public:
     //启动 script name
     ContextMgr(string sname);
+    ~ContextMgr();
     int Init();
     int getHandle();
     lua_State* getLuaState();

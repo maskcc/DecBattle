@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/LuaService.o \
 	${OBJECTDIR}/Snlua.o \
 	${OBJECTDIR}/utils.o
 
@@ -62,6 +63,11 @@ LDLIBSOPTIONS=
 ../libs/lobbylib.so: ${OBJECTFILES}
 	${MKDIR} -p ../libs
 	${LINK.cc} -o ../libs/lobbylib.so ${OBJECTFILES} ${LDLIBSOPTIONS} -llua -Wl,-E -shared -fPIC
+
+${OBJECTDIR}/LuaService.o: LuaService.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LuaService.o LuaService.cpp
 
 ${OBJECTDIR}/Snlua.o: Snlua.cpp 
 	${MKDIR} -p ${OBJECTDIR}

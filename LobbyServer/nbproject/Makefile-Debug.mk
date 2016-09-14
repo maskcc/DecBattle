@@ -56,8 +56,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-pg
+CXXFLAGS=-pg
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -70,11 +70,11 @@ LDLIBSOPTIONS=-llua
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ../libs/LobbyServer
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ../libs/Lobby
 
-../libs/LobbyServer: ${OBJECTFILES}
+../libs/Lobby: ${OBJECTFILES}
 	${MKDIR} -p ../libs
-	${LINK.cc} -o ../libs/LobbyServer ${OBJECTFILES} ${LDLIBSOPTIONS} -lpthread -ldl -Wl,-E
+	${LINK.cc} -o ../libs/Lobby ${OBJECTFILES} ${LDLIBSOPTIONS} -lpthread -ldl -Wl,-E
 
 ${OBJECTDIR}/ConnectionMgr.o: ConnectionMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -157,7 +157,7 @@ ${OBJECTDIR}/utils.o: utils.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ../libs/LobbyServer
+	${RM} ../libs/Lobby
 
 # Subprojects
 .clean-subprojects:

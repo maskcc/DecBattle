@@ -43,21 +43,25 @@ SockServer::SockServer()
     servaddr.sin_port =  htons(port);
     if(0 == inet_aton(listenip, &servaddr.sin_addr))
     {
-        _LOG("server ip configer is not right!", _ERROR);
+        //_LOG("server ip configer is not right!", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "server ip configer is not right!");
          return -1;
     }
     if(0 != bind(sockfd, (struct sockaddr* )&servaddr, addrlen))
     {
-        _LOG("bind failed!", _ERROR);
+        //_LOG("bind failed!", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "bind failed!");
          return -1;
     }
     if(0 != listen(sockfd, MAX_BACK_LOG))
     {
-        _LOG("listen failed!", _ERROR);
+        //_LOG("listen failed!", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "listen failed!");
         return -1;
     }
     
-    m_sock.init(sockfd, CONN_TYPE_NONE);
+    //m_sock 的idx设置为-1
+    m_sock.init(sockfd, -1,CONN_TYPE_NONE);
      
     return 0;
  }
@@ -72,7 +76,8 @@ SockServer::SockServer()
     ev.data.ptr = &m_sock;
     if (-1 == epoll_ctl(m_epollFD, EPOLL_CTL_ADD, m_sock.getFD(), &ev))
     {
-        _LOG("epoll open fail!", _ERROR);
+        //_LOG("epoll open fail!", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
         return -1;
     }
     
@@ -128,14 +133,16 @@ SockServer::epollWait() {
      {
         if(m_stop)
         {
-            _LOG("EPoll server has been closed.", _WARN);
+            //_LOG("EPoll server has been closed.", _WARN);
+            __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "EPoll server has been closed.");
             return ERROR_TYPE_STOP_SERVER;
         }
         
         n = this->epollWait();
         if(0 >= n)
         {
-            _LOG("epoll wait number below 0", _ERROR);
+            //_LOG("epoll wait number below 0", _ERROR);
+            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll wait number below 0");
             return ERROR_TYPE_EPOOL_WAIT_FAIL;
         }
         
@@ -143,7 +150,8 @@ SockServer::epollWait() {
         Socket *s = static_cast<Socket* >(e->s);
         if(NULL == s)
         {
-            _LOG("find the null socket!", _ERROR);
+            //_LOG("find the null socket!", _ERROR);
+            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "find the null socket!");
             return ERROR_TYPE_NULL_SOCKET;
         }
             
@@ -152,25 +160,32 @@ SockServer::epollWait() {
             if(*s == m_sock)
             {
                 //接收连接
-                _LOG("New connection come", _DEBUG);                
+                //_LOG("New connection come", _DEBUG);                
+                __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "New connection come");
                 Socket *client = m_connMgr.acceptPeer(s); //等价于 m_sock;
                 if(NULL == client)
                 {
-                    _LOG("accept null peer!", _ERROR);
+                    //_LOG("accept null peer!", _ERROR);
+                    __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept null peer!");
                     return ERROR_TYPE_NULL_SOCKET;
                 }
-                
+                //char buf[128];
+                //snprintf(buf, 128, "Acceept succeed, connfd is[%d] and now connection count is[%d]", client->getFD(), m_connMgr.getConnectionCount());
+               // _LOG(buf, _DEBUG);   
+                __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Acceept succeed, connfd is[%d] and now connection count is[%d]", client->getFD(), m_connMgr.getConnectionCount());
                 EPOOL_EV *ev = (EPOOL_EV*)malloc(sizeof(EPOOL_EV)) ;
                 if(NULL == ev)
                 {
-                    _LOG("malloc ev fail!", _ERROR);
+                    //__log("malloc ev fail!", _ERROR);
+                    __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "malloc ev fail!");
                     return ERROR_TYPE_MALLOC_FAIL;
                 }
                 ev->events = EPOLLIN;
                 ev->data.ptr = client;
                 if (-1 == epoll_ctl(m_epollFD, EPOLL_CTL_ADD, client->getFD(), ev))
                 {
-                    _LOG("epoll add ctl fail!", _ERROR);
+                    //__log("epoll add ctl fail!", _ERROR);
+                    __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll add ctl fail!");
                     return ERROR_TYPE_ADDCTL_FAIL;
                 }
                 
@@ -183,7 +198,8 @@ SockServer::epollWait() {
                 if(readret == MSG_TYPE_DISCONNECT)
                 {
                     m_connMgr.disconnect(s);
-                    _LOG("connection has been closed by peer!", _DEBUG);
+                    //_LOG("connection has been closed by peer!", _DEBUG);
+                    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "connection has been closed by peer!");
                     
                 }    
                 if(NULL != msg)
@@ -195,7 +211,8 @@ SockServer::epollWait() {
         }
         else  if(e->write)
         {
-            _LOG("write something to far!", _ERROR);
+            //_LOG("write something to far!", _ERROR);
+            __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "write something to far!");
             
             
         }

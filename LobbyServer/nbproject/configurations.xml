@@ -63,9 +63,10 @@
           <incDir>
             <pElem>../LobbyLib</pElem>
           </incDir>
+          <commandLine>-pg</commandLine>
         </ccTool>
         <linkerTool>
-          <output>../libs/LobbyServer</output>
+          <output>../libs/Lobby</output>
           <linkerLibItems>
             <linkerLibLibItem>lua</linkerLibLibItem>
           </linkerLibItems>

@@ -13,14 +13,16 @@ llaunch(lua_State *L)
     const char *file = luaL_checkstring(L, -1);
     if(NULL == file)
     {
-        _LOG("get script file name error", _ERROR);
+        //_LOG("get script file name error", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "get script file name error");
         lua_pushinteger(L, -1);
         return 1;
     }
     ContextMgr *mgr = ContextMap::getInstance()->newContext(static_cast<string>(file));
     if(NULL == mgr)
     {
-        _LOG("load script ctx fail", _ERROR);
+        //_LOG("load script ctx fail", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "load script ctx fail");
         lua_pushinteger(L, -1);
         return 1;        
     }
@@ -36,14 +38,16 @@ lcall(lua_State *L)
     const char *file = luaL_checkstring(L, 1);
     if(NULL == file)
     {
-        _LOG("get script file name error", _ERROR);
+        //_LOG("get script file name error", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "get script file name error");
         lua_pushinteger(L, -1);
         return 1;
     }
     ContextMgr *mgr = ContextMap::getInstance()->find(static_cast<string>(file));
     if(NULL == mgr)
     {
-        _LOG("find script ctx fail", _ERROR);
+        //_LOG("find script ctx fail", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "get script file name error");
         lua_pushinteger(L, -1);
         return 1;        
     }

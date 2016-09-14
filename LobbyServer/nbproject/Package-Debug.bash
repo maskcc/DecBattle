@@ -13,8 +13,8 @@ CND_BUILDDIR=build
 CND_DLIB_EXT=so
 NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=../libs/LobbyServer
-OUTPUT_BASENAME=LobbyServer
+OUTPUT_PATH=../libs/Lobby
+OUTPUT_BASENAME=Lobby
 PACKAGE_TOP_DIR=lobbyserver/
 
 # Functions

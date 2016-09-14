@@ -15,15 +15,16 @@ LobbyServer::loadConfig()
 void 
 LobbyServer::start()
 {
-    _LOG("------------- main LobbyServer started!-----", _WARN);
+    //_LOG("------------- main LobbyServer started!-----", _WARN);
+    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "------------- main LobbyServer started!-----");
     
     this->loadConfig();
     ContextMap::getInstance()->newContext(this->config);
     this->runSockServer();
     
     //多线程处理逻辑
-    for(int c = 0; c < 5; c++)
-        m_threads.spawn(dispatchMessage, NULL);
+   // for(int c = 0; c < 5; c++)
+   //     m_threads.spawn(dispatchMessage, NULL);
      
       
     
@@ -50,21 +51,26 @@ LobbyServer::sockServer(void *argc)
 {
     if(NULL == argc)
     {
-        _LOG("the argc is null, can not run sock server", _ERROR);
+        //_LOG("the argc is null, can not run sock server", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "the argc is null, can not run sock server");
         
     }
     Addr *addr = (Addr *)argc;
-    SockServer svr;
-    if(0 != svr.initServer(addr->ip, addr->port))
+    SockServer *svr = new SockServer();
+    if(0 != svr->initServer(addr->ip, addr->port))
     {
         free(addr);
-        _LOG("Init Server failed", _ERROR);
+        //_LOG("Init Server failed", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "Init Sock Server failed");
         return;
     }
     free(addr);
-    if(0 != svr.run())
+    //_LOG("Init sock server success", _DEBUG);
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Init sock server success");
+    if(0 != svr->run())
     {
-        _LOG("run Server failed", _ERROR);
+       // _LOG("run Server failed", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "run Server failed");
         return;
     }
     

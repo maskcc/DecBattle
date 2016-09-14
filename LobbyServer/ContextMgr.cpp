@@ -73,12 +73,12 @@ int ContextMgr::loadScript()
     {        
         const char *buff;
         buff = lua_tostring(L, -1);
-        _LOG(buff, _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, buff);
+        //_LOG(buff, _ERROR);
         return -1;
     }
-    char buff[1024] = {0};
-    snprintf(buff, 1024, "Load file %s success!", this->scriptName.c_str());
-    _LOG(buff, _DEBUG);
+
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Load file %s success!", this->scriptName.c_str());
     lua_gc(L, LUA_GCRESTART, 0);   
     
     return 0;
@@ -102,14 +102,15 @@ ContextMgr::call(int type, void *msg, int sz)
 {
     if(NULL == this->m_Ctx->cb)
     {
-        _LOG("function not registered!", _ERROR);
+        //_LOG("function not registered!", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "function not registered!");
         return -1;
     }
     this->m_Ctx->cb(this->m_Ctx, type, msg, sz);
     
-    char buff[1024] = {};
-    snprintf(buff, 1024, "Handle[%d] called!", this->getHandle());
-    _LOG(buff, _DEBUG);
+   
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Handle[%d] called!", this->getHandle());
+    
     return 0;
     
 }

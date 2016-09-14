@@ -29,7 +29,8 @@ Thread::spawn(worker w, void* argc)
     }    
     if(c >= MAX_THREAD_COUNT)
     {
-        _LOG("all thread is in use.", _WARN);
+        //_LOG("all thread is in use.", _WARN);
+        __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "all thread is in use.");
         return ERROR_TYPE_NONE_THREAD;
     }
     

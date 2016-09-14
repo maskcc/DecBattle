@@ -16,7 +16,8 @@ ContextMgr* ContextMap::newContext(string scriptName)
     int ret = ctx->Init();
     if(0 != ret)
     {
-        _LOG("context init fail", _ERROR);
+        //_LOG("context init fail", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__,__FUNCTION__,  "context init fail!");
         return NULL;
         
     }
@@ -47,7 +48,8 @@ ContextMgr* ContextMap::find(string scriptName)
     int service = NameService::getInstance()->search(scriptName);
     if(service < 0 )
     {
-        _LOG("can not find service", _ERROR);
+        //_LOG("can not find service", _ERROR);
+        __log(_ERROR, __FILE__, __LINE__,__FUNCTION__, "can not find service!");
         return ctx;
     }
     map<int, ContextMgr*>::iterator iter = m_CtxMap.find(service);

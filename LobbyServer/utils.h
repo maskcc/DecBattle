@@ -45,41 +45,57 @@ namespace LOG{
     #define HIDE                 "\e[8m"
     #define CLEAR                "\e[2J"
     #define CLRLINE              "\r\e[K" //or "\e[1K\r"
+   
 
-    
-    static void log( char const*filename,  char const*funcname, int line,   char const*msg, int level  = _DEBUG )
+    static void log(int level, const char *filename,  int32_t line, const char* funcname, const char* format, va_list vlist)
     {
-        char buff[1024] = {0};
-        char timestamp[128] = {0};
-         time_t stamp = time(NULL);
-        const char *timestr = ctime(&stamp);
-        memcpy(timestamp, timestr, strlen(timestr) - 1);        
-        //strftime(s, 1000, "%A, %B %d %Y", p);
+        char buff[1024] = {0};  
+        char last[2048] = {0};
         
+        time_t stamp = time(NULL);
+        const char *timestr = ctime(&stamp);
+        char timestamp[128] = {0};
+        memcpy(timestamp, timestr, strlen(timestr) - 1);
+                
         switch (level)
         {
             case _DEBUG:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] DEBUG[%s]%s", GREEN, timestamp,filename, line, funcname, msg, NONE);
+                snprintf(buff, 2048, "%sDEBUG [%s][%s %d::%s][%s]%s", GREEN, timestamp, filename, line, funcname, format, NONE);                
                 break;
             case _WARN:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] WARN[%s]%s", YELLOW, timestamp,filename, line, funcname, msg, NONE);
+                snprintf(buff, 2048, "%sWARN [%s][%s %d::%s][%s]%s", YELLOW, timestamp, filename, line, funcname, format, NONE);                
                 break;
             case _ERROR:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] ERROR[%s] errno[%d], error[%s]%s", L_RED, timestamp,filename, line, \
-                         funcname, msg,errno, strerror(errno), NONE);
+                snprintf(buff, 2048, "%sERROR [%s][%s %d::%s][%s] errno[%d], error[%s]%s", L_RED, timestamp, filename, line, funcname, format, errno, strerror(errno), NONE);
                 break;
             default:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] DEFAULT[%s] errno[%d], error[%s]%s", BLINK, timestamp,filename, line, \
-                         funcname, msg, errno, strerror(errno),NONE);
+                snprintf(buff, 2048, "%sDEFAULT [%s %s%d]::[%s][%s] errno[%d], error[%s]%s", BLINK, timestamp, filename, line, funcname, format, errno, strerror(errno), NONE);
+      
         }
-
-        std::cout << buff << std::endl;   
-    
+        
+        
+        
+        vsprintf(last, buff, vlist);
+        std::cout << last << std::endl;
+        
+        
+        va_end(vlist);
+       
+        
     }
     
 }
 
-#define _LOG(msg,l) (LOG::log(__FILE__, __FUNCTION__, __LINE__, msg, l)) 
+static void __log(int level, const char *filename,  int32_t line, const char* funcname, const char* format, ...)
+{
+    va_list vlist;
+    va_start(vlist, format);
+    LOG::log(level, filename,  line, funcname, format,vlist);
+    va_end(vlist);
+}
+//#define __log LOG::log
+//#define _LOG(l,msg,last) (LOG::log(l, __FILE__, __FUNCTION__, __LINE__, msg, last)) 
+//#define _LOG(msg,l) (LOG::log(__FILE__, __FUNCTION__, __LINE__, msg, l)) 
 
 //以网络字节序读出一个整型
 bool readInt(int32_t& ret, char* stream);

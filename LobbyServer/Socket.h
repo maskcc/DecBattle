@@ -24,13 +24,15 @@ class Socket
 {
 public:
     Socket();
-    
+    void reset();
     //type连接类型, 是和别的服务器连接还是被动连接
-    int32_t init(int fd, int32_t type);
+    int32_t init(int fd, uint32_t idx,int32_t type);
     int32_t readHandle(BaseMsg *msg);
     int32_t writeHandle();
     int32_t closeHandle();
     int32_t getFD() const;
+    int32_t getIdx() const;
+    void setIdx(int32_t idx);
     friend bool operator==(const Socket &lsh, const Socket &rhs);
     friend bool operator!=(const Socket &lsh, const Socket &rhs);
     
@@ -42,10 +44,9 @@ protected:
     uint16_t m_port;   //端口号
     int32_t  m_fd;     //连接信息
     int32_t m_connType; //连接类型 CONN_TYPE_CLIENT(和客户端的连接), CONN_TYPE_SERVER(和别的服务器连接)
+    int32_t m_idx;      //在列表中的位置
     
     uint64_t m_lastRecvTime; //上次接收或发送消息的时间戳
-    
-    
     
 };
 

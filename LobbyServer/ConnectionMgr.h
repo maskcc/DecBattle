@@ -49,10 +49,15 @@ public:
     int32_t receiveMsg(Socket *s, BaseMsg *msg);
     //发送消息
     int32_t sendMsg(Socket *s);
-    Socket* getPeer(int32_t id);
+    Socket* getPeer(int32_t idx);
+    Socket* newSock(int32_t fd, int32_t type);
+    int32_t getConnectionCount();
+    
+    static uint32_t HANDLER;
     
 protected:    
-    CONN_MAP m_connMap;              //连接
+    //CONN_MAP m_connMap;              //连接
+    Socket m_connMap[MAX_SOCKET_COUNT];
     uint32_t m_connCount;            //连接数量
     
 };

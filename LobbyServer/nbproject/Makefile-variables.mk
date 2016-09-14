@@ -9,8 +9,8 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux
 CND_ARTIFACT_DIR_Debug=../libs
-CND_ARTIFACT_NAME_Debug=LobbyServer
-CND_ARTIFACT_PATH_Debug=../libs/LobbyServer
+CND_ARTIFACT_NAME_Debug=Lobby
+CND_ARTIFACT_PATH_Debug=../libs/Lobby
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
 CND_PACKAGE_NAME_Debug=lobbyserver.tar
 CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/lobbyserver.tar

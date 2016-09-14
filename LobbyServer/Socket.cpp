@@ -7,6 +7,7 @@
 Socket::Socket()
 {
     m_fd = -1;
+    m_idx = -1;
     m_addr = "";
     m_lastRecvTime = 0;
     m_connType = CONN_TYPE_NONE;
@@ -14,30 +15,52 @@ Socket::Socket()
 }
 
 int32_t 
-Socket::init(int32_t fd, int32_t type)
+Socket::init(int32_t fd, uint32_t idx,int32_t type)
 {
     m_fd = fd;    
     m_connType = type;
+    m_idx = idx;
     return 0;
 }
-
+void
+Socket::reset()
+{
+    m_fd = -1;
+    m_idx = -1;
+    m_addr = "";
+    m_lastRecvTime = 0;
+    m_connType = CONN_TYPE_NONE;
+    
+}
 int32_t 
 Socket::closeHandle()
 {//要考虑断开连接时的处理, 断开连接时, buff要清空
     if(CONN_TYPE_NONE != this->m_connType )
     {
-        close(this->m_fd);   
-        delete this;
+        close(this->m_fd);    
+        reset();
+        return 0;
     }
-    
+    //_LOG("TRY to close listen fd??", _WARN);
+    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "TRY to close listen fd??");
     return 0;
 }
-int32_t 
+int32_t
 Socket::getFD() const
 {
     return m_fd;
 }
+int32_t
+Socket::getIdx() const
+{
+    return m_idx;
+}
 
+void
+Socket::setIdx(int32_t idx)
+{
+    m_idx = idx;
+}
 
 int32_t 
 Socket::readHandle(BaseMsg *msg)

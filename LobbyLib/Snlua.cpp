@@ -16,17 +16,20 @@ _cb(Context *ctx, int type, void* msg, int sz)
     lua_pushlstring(l, static_cast<const char*>(msg), sz);
     lua_pushinteger(l, sz);
     
-     int r = lua_pcall(l, 3, 0, 0);
+    int r = lua_pcall(l, 3, 0, 0);
     if(LUA_OK != r)
     {
         const char *buff;
         buff = lua_tostring(l, -1);
-        _LOG(buff, _ERROR); 
-        _LOG(static_cast<const char*>(msg), _ERROR); 
+        //_LOG(buff, _ERROR); 
+        //_LOG(static_cast<const char*>(msg), _ERROR); 
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, buff);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, static_cast<const char*>(msg));
         return -1;       
     }
 
-    _LOG("callback sucess!", _DEBUG);    
+    //_LOG("callback sucess!", _DEBUG);    
+     __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "callback sucess!");
     return 0;
 }
 
@@ -37,7 +40,8 @@ lcallback(lua_State *L)
     Context *ctx = static_cast<Context*>(lua_touserdata(L, -1));
     if(NULL ==ctx)
     {
-        _LOG("ctx is null, please init first!", _ERROR); 
+        //_LOG("ctx is null, please init first!", _ERROR); 
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "ctx is null, please init first!");
         lua_pushinteger(L, -1);
         return 1;
     }
@@ -48,9 +52,10 @@ lcallback(lua_State *L)
     lua_rawsetp(L, LUA_REGISTRYINDEX, (void*)(_cb));
     ctx->cb = _cb;    
     
-    char buff[1024];
-    snprintf(buff, 1024, "callback ctx registed, handler is:%d" , ctx->handle);
-    _LOG(buff, _DEBUG);
+    //char buff[1024];
+    //snprintf(buff, 1024, "callback ctx registed, handler is:%d" , ctx->handle);
+    //_LOG(buff, _DEBUG);
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "callback ctx registed, handler is:%d" , ctx->handle);
     lua_pushinteger(L, 0);
     return 1;
     

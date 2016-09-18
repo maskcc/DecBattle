@@ -57,6 +57,7 @@ public:
     
 protected:    
     //CONN_MAP m_connMap;              //连接
+    //可以添加一个用来表示已经连接和还未连接id的位示图, 寻找时找到空闲连接的时间为O(1)
     Socket m_connMap[MAX_SOCKET_COUNT];
     uint32_t m_connCount;            //连接数量
     

@@ -7,6 +7,7 @@
 #include <cstring>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <sys/epoll.h>
 using namespace std;
 
 //给 服务器发送特定格式的数据
@@ -34,16 +35,18 @@ int test6()
 	BaseMsg msg;
 	msg.sz = sizeof(buff);
 	msg.msg = (void*)buff;
-	
+
 	int nsz = htonl(msg.sz);
 	memcpy(bin, (char*)(&nsz), 4);
 	memcpy(bin+ 4, msg.msg, sizeof(buff));
 	cout <<msg.sz << msg.msg << "sizeof buff" << sizeof(buff) << endl;
 	write(sock, (char*)sendBuff, msg.sz + 4);
-	
+	write(sock, (char*)sendBuff, msg.sz + 4);
+	write(sock, (char*)sendBuff, msg.sz + 4);
+
 	sleep(15);
-	
-	
+
+
 
 
 
@@ -152,9 +155,112 @@ int test()
 	}
 
 }
+
+
+using namespace std;
+class Socket
+{
+	public:
+		Socket()
+		{
+			m_addr = "";
+			m_port = 99;
+			m_fd = -1;
+			m_connType = 1;
+			m_idx = -1;
+			m_lastRecvTime = 0; //上次接收或发送消息的时间戳
+
+		}
+
+
+	protected:
+	protected:
+		string   m_addr;   //地址
+		uint16_t m_port;   //端口号
+		int32_t  m_fd;     //连接信息
+		int32_t m_connType; //连接类型 CONN_TYPE_CLIENT(和客户端的连接), CONN_TYPE_SERVER(和别的服务器连接)
+		int32_t m_idx;      //在列表中的位置
+
+		uint64_t m_lastRecvTime; //上次接收或发送消息的时间戳
+
+};
+void test7()
+{
+	Socket *sock = new Socket[65535];
+	sleep(40);
+
+
+}
+
+
+int	
+initSock(char* listenip, int32_t port)
+{     
+	/*start listen port*/
+	int32_t sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	struct sockaddr_in servaddr = {0};   
+	socklen_t addrlen = sizeof(servaddr);
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_port =  htons(port);
+	if(0 == inet_aton(listenip, &servaddr.sin_addr))
+	{        
+		return -1;
+	}
+	if(0 != bind(sockfd, (struct sockaddr* )&servaddr, addrlen))
+	{
+		return -1;
+	}
+	if(0 != listen(sockfd, 5))
+	{
+		return -1;
+	}
+
+	return sockfd;
+}
+typedef struct epoll_event EPOLL_EV;
+int initEpoll(int fd)
+{
+	EPOLL_EV ev = {0};
+	int efd = epoll_create(1024);
+	ev.events = EPOLLIN;
+	ev.data.fd = efd;
+	epoll_ctl(efd, EPOLL_CTL_ADD, fd, &ev);
+	return efd;
+	
+}
+void test8()
+{
+	int sockfd = initSock("0.0.0.0", 9988);
+	int pfd = initEpoll(sockfd);
+	int fds[1024] = {0};
+	int idx = 0;
+	EPOLL_EV ev[64] = {0};
+	for(;;)
+	{
+		memset(ev, 0, sizeof(EPOLL_EV) * 64);
+    	int n = epoll_wait(pfd, ev, 64, -1);
+		while(n > 0)
+		{
+			if(ev[n - 1].events & EPOLLIN != 0)
+			{
+				int xx = accept(sockfd, NULL, NULL);
+				cout << "新连接到来! fd " <<xx << endl;
+				--n;
+			}
+		}
+
+
+	}
+
+
+
+
+
+}
 int main() {
-	test6();
-	lua_State *L = luaL_newstate();
+	//test7();
+	test8();
+	//	lua_State *L = luaL_newstate();
 	//int r = luaL_dofile(l, "bootstrap.lua");
 	//   int r = luaL_loadfile(l, "bootstrap.lua");
 
@@ -165,9 +271,9 @@ int main() {
 	// perror(strerror(errno));
 
 
-	luaL_openlibs(L);
+	//	luaL_openlibs(L);
 
-	int errorCode = 0;
+	//	int errorCode = 0;
 	//if(errorCode != luaL_dofile(L,"bootstrap.lua"))
 	// {
 	//   puts(lua_tostring(L, -1));
@@ -176,5 +282,5 @@ int main() {
 
 
 	// Clean up the lua context
-	lua_close(L);
+	//	lua_close(L);
 }

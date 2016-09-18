@@ -5,7 +5,7 @@
  */
 #include "SockStream.h"
 SockStream::SockStream()
-{
+{ 
     this->reset();
     
 }

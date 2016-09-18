@@ -28,7 +28,7 @@ typedef struct  event_t {
 	bool write;
 }event;
 
-typedef struct epoll_event EPOOL_EV; 
+typedef struct epoll_event EPOLL_EV; 
 
 class SockServer
 {
@@ -50,6 +50,7 @@ protected:
     int32_t m_epollFD;
     Socket m_sock;           //服务器监听的socket信息
     event  m_ev[MAX_EVENTS];
+    EPOLL_EV m_tmpev[MAX_EVENTS];
     ConnectionMgr m_connMgr;
     bool m_stop;
     

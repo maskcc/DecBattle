@@ -10,10 +10,12 @@ uint32_t ConnectionMgr::HANDLER = 0;
 ConnectionMgr::ConnectionMgr() 
 {
     m_connCount = 0;
-    for(uint32_t c = 0; c < MAX_SOCKET_COUNT; ++c)
-    {
-        m_connMap[c].reset();
-    }
+    
+    // 构造函数中会调用初始化, 不用在这里处理 
+//    for(uint32_t c = 0; c < MAX_SOCKET_COUNT; ++c)
+//    {
+//        m_connMap[c].reset();
+//    }
 }
 
 int32_t
@@ -42,7 +44,7 @@ ConnectionMgr::acceptPeer(Socket* s)
      if (m_connCount >= MAX_CLIENT_CONNECTION) 
     {       
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "connection is more than [%d]", MAX_CLIENT_CONNECTION);
-        //exit(0); //just for test to exit program pg
+        exit(0); //just for test to exit program pg
         return NULL;
     }
     int connfd = accept(s->getFD(), NULL, NULL);
@@ -104,9 +106,9 @@ ConnectionMgr::disconnect(Socket *sock)
 int32_t
 ConnectionMgr::receiveMsg(Socket *s, BaseMsg *msg) 
 {
-    if(NULL == s || NULL == msg)
+    if(NULL == s)
     {        
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "socket or msg is null");
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "socket is null");
         return -1;
     }
     Socket *client = getPeer(s->getIdx());
@@ -138,7 +140,7 @@ ConnectionMgr::newSock(int32_t fd, int32_t type)
 {
     int idx = 0;
     for(;;)
-    {
+    {//这里可能会形成死循环 
         idx = (++HANDLER) % MAX_SOCKET_COUNT;
         if(-1 == m_connMap[idx].getIdx())
         {

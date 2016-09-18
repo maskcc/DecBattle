@@ -63,7 +63,6 @@
           <incDir>
             <pElem>../LobbyLib</pElem>
           </incDir>
-          <commandLine>-pg</commandLine>
         </ccTool>
         <linkerTool>
           <output>../libs/Lobby</output>

@@ -41,7 +41,8 @@ LobbyServer::runSockServer()
     const char *ip = "0.0.0.0";
     strncpy(addr->ip, ip, strlen(ip) + 1);
     addr->port = 10077;
-    m_threads.spawn(sockServer, (void*)addr);
+    //m_threads.spawn(sockServer, (void*)addr);
+    sockServer((void*)addr);
     
 }
 

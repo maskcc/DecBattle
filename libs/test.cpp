@@ -194,6 +194,15 @@ void test7()
 
 }
 
+void EPrint()
+{
+    if(0 != errno)
+    {
+        cout << "[" << errno <<"]" << strerror(errno) << endl;
+        exit(-1);
+    }
+
+}
 
 int	
 initSock(char* listenip, int32_t port)
@@ -206,15 +215,15 @@ initSock(char* listenip, int32_t port)
 	servaddr.sin_port =  htons(port);
 	if(0 == inet_aton(listenip, &servaddr.sin_addr))
 	{        
-		return -1;
+        EPrint();
 	}
 	if(0 != bind(sockfd, (struct sockaddr* )&servaddr, addrlen))
 	{
-		return -1;
+        EPrint();
 	}
 	if(0 != listen(sockfd, 5))
 	{
-		return -1;
+        EPrint();
 	}
 
 	return sockfd;

@@ -1,8 +1,10 @@
 #include <string>
 #include <cassert>
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <lua.hpp>
+#include <fcntl.h>
 #include <errno.h>
 #include <iostream>
 #include <netinet/in.h>
@@ -10,6 +12,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <sys/epoll.h>
+#include <vector>
 using namespace std;
 
 //给 服务器发送特定格式的数据
@@ -194,17 +197,8 @@ void test7()
 
 }
 
-void EPrint()
-{
-    if(0 != errno)
-    {
-        cout << "[" << errno <<"]" << strerror(errno) << endl;
-        exit(-1);
-    }
 
-}
-
-int	
+	int	
 initSock(char* listenip, int32_t port)
 {     
 	/*start listen port*/
@@ -215,15 +209,15 @@ initSock(char* listenip, int32_t port)
 	servaddr.sin_port =  htons(port);
 	if(0 == inet_aton(listenip, &servaddr.sin_addr))
 	{        
-        EPrint();
+		return -1;
 	}
 	if(0 != bind(sockfd, (struct sockaddr* )&servaddr, addrlen))
 	{
-        EPrint();
+		return -1;
 	}
 	if(0 != listen(sockfd, 5))
 	{
-        EPrint();
+		return -1;
 	}
 
 	return sockfd;
@@ -237,7 +231,7 @@ int initEpoll(int fd)
 	ev.data.fd = efd;
 	epoll_ctl(efd, EPOLL_CTL_ADD, fd, &ev);
 	return efd;
-	
+
 }
 void test8()
 {
@@ -249,7 +243,7 @@ void test8()
 	for(;;)
 	{
 		memset(ev, 0, sizeof(EPOLL_EV) * 64);
-    	int n = epoll_wait(pfd, ev, 64, -1);
+		int n = epoll_wait(pfd, ev, 64, -1);
 		while(n > 0)
 		{
 			if(ev[n - 1].events & EPOLLIN != 0)
@@ -268,10 +262,100 @@ void test8()
 
 
 }
+
+static void
+sp_nonblocking(int32_t fd) {
+	int32_t flag = fcntl(fd, F_GETFL, 0);
+	if ( -1 == flag ) {
+		return;
+	}
+
+	fcntl(fd, F_SETFL, flag | O_NONBLOCK);
+}
+void* test9(void*)
+{
+	int port = 0;
+	char *addr;
+	int type = 0;
+	if(0 == type)
+{
+	port = 10077;	
+	addr = "127.0.0.1";
+}
+	else if(1 == type)
+{
+	port = 10077;	
+	addr = "125.25.92.230";
+
+}
+	else if(2 == type)
+{
+	port = 18103; 
+	addr = "127.0.0.1";
+}
+	else if(3 == type)
+{
+	port = 10077;	
+	addr = "127.0.0.1";
+
+}
+	else if(4 == type)
+{
+	port = 10077	;
+	addr = "127.0.0.1";
+
+}
+	vector<int> List;
+	for(int c = 0; c < 10; c++)
+	{
+		int32_t sockfd = socket(AF_INET, SOCK_STREAM, 0);
+		if(sockfd < 0)
+		{
+			perror(strerror(errno));
+			exit(-1);
+		}
+		List.push_back(sockfd);
+	}
+	struct sockaddr_in servaddr = {0};   
+	socklen_t addrlen = sizeof(servaddr);
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_port =  htons(port);
+	if(0 == inet_aton(addr, &servaddr.sin_addr))
+	{        
+		perror(strerror(errno));
+		exit(-1);
+	}
+
+	size_t len = sizeof(servaddr);
+	for(int c = 0; c < List.size(); c++)
+	{
+		int ret = connect(List[c], (struct sockaddr*)& servaddr, len);
+		if(ret < 0)
+		{
+			perror(strerror(errno));
+			exit(-1);
+		}
+	}
+
+}
+
+void test10()
+{
+	int threads = 90;
+	pthread_t th[threads];
+	for(int c = 0; c < threads; c++ )
+		pthread_create(&th[c],NULL, test9, NULL);
+	
+	for(int c = 0; c < threads; c++ )
+		pthread_join(th[c], NULL);
+	sleep(10);
+	cout << "i am alive" <<endl;
+
+}
 int main() {
 	//test7();
 	//test8();
-    test6();
+	test10();
 	//	lua_State *L = luaL_newstate();
 	//int r = luaL_dofile(l, "bootstrap.lua");
 	//   int r = luaL_loadfile(l, "bootstrap.lua");

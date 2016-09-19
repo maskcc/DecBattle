@@ -109,8 +109,7 @@ ConnectionMgr::disconnect(Socket *sock)
         return;
     }
     s->closeHandle();
-    
-    --m_connCount;
+    --m_connCount;    
     
 }
 
@@ -175,4 +174,9 @@ ConnectionMgr::getConnectionCount()
 {
     return this->m_connCount;
     
+}
+uint32_t 
+ConnectionMgr::getOnlineCount()
+{
+    return this->m_connCount;
 }

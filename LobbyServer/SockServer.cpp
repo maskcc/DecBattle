@@ -122,6 +122,7 @@ SockServer::epollWait() {
            // 重新开始就行
             if(EINTR == errno)
             {
+                __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "EINTR");
                 continue;
             }
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll wait number below 0");
@@ -178,7 +179,8 @@ SockServer::epollWait() {
                     if(readret == MSG_TYPE_DISCONNECT)
                     {
                         m_connMgr.disconnect(s);                    
-                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "connection has been closed by peer!");
+                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "connection has been closed by peer! now connection count[%d]",
+                               m_connMgr.getConnectionCount() );
 
                     }    
                     if(NULL != msg)

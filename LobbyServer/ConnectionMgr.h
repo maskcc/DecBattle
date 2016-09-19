@@ -53,6 +53,7 @@ public:
     Socket* getPeer(int32_t idx);
     Socket* newSock(int32_t fd, int32_t type);
     int32_t getConnectionCount();
+    uint32_t getOnlineCount();
     
     static uint32_t HANDLER;
     

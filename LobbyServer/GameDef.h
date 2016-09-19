@@ -51,7 +51,7 @@ const int32_t MESSAGEQUEUE_WARN_LENGTH = 100;
 /****
  * 客户端连接相关
  **/
-const int32_t MAX_CLIENT_CONNECTION = 800; //最大支持65535个连接, 越多新连接效率越低.可能需要紧缩空间---
+const int32_t MAX_CLIENT_CONNECTION = 9999; //最大支持65535个连接, 越多新连接效率越低.可能需要紧缩空间---
 const int32_t MAX_SOCKET_COUNT = 10000;  //先开辟65535个socket等待连接, 这个必须比MAX_CLIENT_CONNECTION大
 
 const int32_t CONN_TYPE_NONE = 0;  //还未初始化, 或者只是保存信息

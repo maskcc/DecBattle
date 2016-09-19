@@ -116,7 +116,14 @@ SockServer::epollWait() {
         
         n = this->epollWait();
         if(0 >= n)
-        {            
+        {
+            //EINTR 在写的时候出现中断错误 
+           // If a signal handler is invoked while a system call or library  function call is blocked, then either:
+           // 重新开始就行
+            if(EINTR == errno)
+            {
+                continue;
+            }
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll wait number below 0");
             return ERROR_TYPE_EPOOL_WAIT_FAIL;
         }

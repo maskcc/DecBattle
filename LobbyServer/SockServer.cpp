@@ -16,6 +16,12 @@ SockServer::SockServer()
     
 }
 
+SockServer::~SockServer()
+{
+    
+    
+}
+
  int32_t 
  SockServer::initServer(char* listenip, int32_t port)
  {     
@@ -36,26 +42,8 @@ SockServer::SockServer()
  SockServer::initSock(char* listenip, int32_t port)
  {     
      /*start listen port*/
-    int32_t sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    struct sockaddr_in servaddr = {0};   
-    socklen_t addrlen = sizeof(servaddr);
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port =  htons(port);
-    if(0 == inet_aton(listenip, &servaddr.sin_addr))
-    {        
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "server ip configer is not right!");
-         return -1;
-    }
-    if(0 != bind(sockfd, (struct sockaddr* )&servaddr, addrlen))
-    {        
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "bind failed!");
-         return -1;
-    }
-    if(0 != listen(sockfd, MAX_BACK_LOG))
-    {        
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "listen failed!");
-        return -1;
-    }
+    int32_t sockfd = sp_socket();
+    sp_bindListen(sockfd, listenip, port);
     
     //m_sock 的idx设置为-1
     m_sock.init(sockfd, -1,CONN_TYPE_NONE);
@@ -67,28 +55,14 @@ SockServer::SockServer()
  SockServer::initEPoll()
  {   
     /*init epoll server*/
-    EPOLL_EV ev = {0};
-    m_epollFD = epoll_create(MAX_CLIENT_CONNECTION);
-    ev.events = EPOLLIN;
-    ev.data.ptr = &m_sock;
-    if (-1 == epoll_ctl(m_epollFD, EPOLL_CTL_ADD, m_sock.getFD(), &ev))
+    
+    m_epollFD = sp_create(MAX_SOCKET_COUNT);   
+    if (0 != sp_add(m_epollFD, m_sock.getFD(), (void *)&m_sock))    
     {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
         return -1;
     }
-    
-    //noblocking
-    int flag = fcntl(m_sock.getFD(), F_GETFL, 0);
-    if ( -1 == flag ) {
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll fcntl fail!");
-        return -1;
-    }
-    
-    flag|= O_NONBLOCK;
-    if( fcntl( m_sock.getFD(), F_SETFL, flag ) == -1 )                                                                                          
-    {              
-        return -1;            
-    }
+    sp_nonblocking(m_sock.getFD());
     
     return 0;
  }
@@ -175,20 +149,14 @@ SockServer::epollWait() {
                     } 
                     __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Acceept succeed, connidx[%d],connfd is[%d] and now connection count is[%d]", 
                             client->getIdx(),client->getFD(), m_connMgr.getConnectionCount());
+                    
                     //EPOOL_EV *ev = (EPOOL_EV*)malloc(sizeof(EPOOL_EV)) ;
                     //貌似这里不需要malloc
-                    EPOLL_EV tev = {0};
-                    EPOLL_EV *ev = &tev;
-                    if(NULL == &ev)
-                    {                    
-                        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "malloc ev fail!");
-                        return ERROR_TYPE_MALLOC_FAIL;
-                    }
-                    ev->events = EPOLLIN;
-                    ev->data.ptr = client;
-                    if (-1 == epoll_ctl(m_epollFD, EPOLL_CTL_ADD, client->getFD(), ev))
+                    ///EPOLL_EV tev = {0};
+                    ///EPOLL_EV *ev = &tev;
+                    
+                    if(0 != sp_add(m_epollFD, client->getFD(), (void*)client))
                     {
-                        //__log("epoll add ctl fail !", _ERROR);
                         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll add ctl fail!");
                         return ERROR_TYPE_ADDCTL_FAIL;
                     }

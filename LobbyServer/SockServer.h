@@ -20,20 +20,14 @@
 #include <stdlib.h>
 #include "ConnectionMgr.h"
 #include "utils.h"
+#include "SocketEPoll.h"
 
-
-typedef struct  event_t {
-	void * s; //每个event附带的信息
-	bool read;
-	bool write;
-}event;
-
-typedef struct epoll_event EPOLL_EV; 
 
 class SockServer
 {
 public:
     SockServer();
+    ~SockServer();
     int32_t initServer(char* listenip, int32_t port);
     int32_t initSock(char* listenip, int32_t port);
     int32_t initEPoll();

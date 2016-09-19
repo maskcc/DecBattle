@@ -18,6 +18,17 @@ ConnectionMgr::ConnectionMgr()
 //    }
 }
 
+
+ConnectionMgr::~ConnectionMgr() 
+{
+    for(int32_t c = 0;  c < MAX_SOCKET_COUNT; c++)
+    {
+        m_connMap[c].closeHandle();
+    }
+    m_connCount = 0;
+    HANDLER = 0;
+}
+
 int32_t
 ConnectionMgr::addConnection(Socket *s) 
 {

@@ -14,6 +14,7 @@
       <itemPath>SockServer.h</itemPath>
       <itemPath>SockStream.h</itemPath>
       <itemPath>Socket.h</itemPath>
+      <itemPath>SocketEPoll.h</itemPath>
       <itemPath>Thread.h</itemPath>
       <itemPath>ThreadBase.h</itemPath>
       <itemPath>utils.h</itemPath>
@@ -63,6 +64,7 @@
           <incDir>
             <pElem>../LobbyLib</pElem>
           </incDir>
+          <commandLine>-pg</commandLine>
         </ccTool>
         <linkerTool>
           <output>../libs/Lobby</output>
@@ -117,6 +119,8 @@
       <item path="Socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SocketEPoll.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -198,6 +202,8 @@
       <item path="Socket.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SocketEPoll.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>

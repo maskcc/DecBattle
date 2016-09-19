@@ -7,23 +7,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/SockStream.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/main.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/NameService.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/MQueue.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/Socket.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/LobbyServer.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ContextMgr.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/LobbyServer.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/GameDef.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/Thread.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/SockServer.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ConnectionMgr.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/SockServer.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ContextMap.h</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ConnectionMgr.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ThreadBase.cpp</file>
-            <file>rfs://jinpan@10.0.160.115:22/home/jinpan/DecBattle/LobbyServer/ContextMap.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/main.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ContextMgr.cpp</file>
         </group>
     </open-files>
 </project-private>

@@ -33,7 +33,8 @@ typedef map<int32_t, Socket*>::iterator  CONN_MAP_ITER;
 class ConnectionMgr
 {
 public:
-    ConnectionMgr();   
+    ConnectionMgr();
+    ~ConnectionMgr();
     
     //默认连接属性时连接和发送到客户端...
     //添加新连接

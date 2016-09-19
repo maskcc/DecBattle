@@ -35,7 +35,7 @@ Socket::reset()
 int32_t 
 Socket::closeHandle()
 {//要考虑断开连接时的处理, 断开连接时, buff要清空
-    if(CONN_TYPE_NONE != this->m_connType )
+    if(CONN_TYPE_NONE != this->m_connType  && -1 != this->m_fd)
     {
         close(this->m_fd);    
         reset();

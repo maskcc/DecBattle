@@ -1,5 +1,7 @@
 #include <string>
 #include <cassert>
+#include <stdlib.h>
+#include <unistd.h>
 #include <lua.hpp>
 #include <errno.h>
 #include <iostream>
@@ -259,7 +261,8 @@ void test8()
 }
 int main() {
 	//test7();
-	test8();
+	//test8();
+    test6();
 	//	lua_State *L = luaL_newstate();
 	//int r = luaL_dofile(l, "bootstrap.lua");
 	//   int r = luaL_loadfile(l, "bootstrap.lua");

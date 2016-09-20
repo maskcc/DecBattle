@@ -285,7 +285,7 @@ void* test9(void*)
 	else if(1 == type)
 {
 	port = 10077;	
-	addr = "125.25.92.230";
+	addr = "120.25.92.230";
 
 }
 	else if(2 == type)
@@ -301,7 +301,7 @@ void* test9(void*)
 }
 	else if(4 == type)
 {
-	port = 10077	;
+	port = 10077;
 	addr = "127.0.0.1";
 
 }
@@ -341,7 +341,7 @@ void* test9(void*)
 
 void test10()
 {
-	int threads = 90;
+	int threads = 80;
 	pthread_t th[threads];
 	for(int c = 0; c < threads; c++ )
 		pthread_create(&th[c],NULL, test9, NULL);

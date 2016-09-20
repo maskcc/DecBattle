@@ -7,7 +7,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ConnectionMgr.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/GameDef.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockServer.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/LobbyServer.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Socket.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ThreadBase.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SocketEPoll.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/main.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ConnectionMgr.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockServer.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ContextMgr.cpp</file>
         </group>
     </open-files>

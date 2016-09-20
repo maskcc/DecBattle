@@ -17,6 +17,7 @@
 #include "LobbyServer.h"
 
 
+
 using namespace std;
 
 /*
@@ -24,6 +25,7 @@ using namespace std;
  */
 void handler(int h)
 {
+    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "signal receive [%d]", h);
     
 }
 

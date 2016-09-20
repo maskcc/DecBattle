@@ -18,7 +18,8 @@ SockServer::SockServer()
 
 SockServer::~SockServer()
 {
-    
+    //释放epoll fd
+    sp_release(m_epollFD);
     
 }
 
@@ -47,6 +48,7 @@ SockServer::~SockServer()
     
     //m_sock 的idx设置为-1
     m_sock.init(sockfd, -1,CONN_TYPE_NONE);
+    sp_nonblocking(m_sock.getFD());
      
     return 0;
  }
@@ -62,7 +64,6 @@ SockServer::~SockServer()
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
         return -1;
     }
-    sp_nonblocking(m_sock.getFD());
     
     return 0;
  }
@@ -117,7 +118,7 @@ SockServer::epollWait() {
         n = this->epollWait();
         if(0 >= n)
         {
-            //EINTR 在写的时候出现中断错误 
+            //EINTR 在写的时候出现中断 (例如 Ctrl + C 捕获到)
            // If a signal handler is invoked while a system call or library  function call is blocked, then either:
            // 重新开始就行
             if(EINTR == errno)
@@ -141,33 +142,46 @@ SockServer::epollWait() {
 
             if(e->read)
             {
-                if(*s == m_sock)
-                //if(true)
+                if(*s == m_sock)                
                 {
-                    //接收连接                            
-                    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "New connection come");   
-                    //int fd = accept(m_sock.getFD(), NULL, NULL);
-                    //__log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "accept [%d]!", fd);
-                     
-                    Socket *client = m_connMgr.acceptPeer(s); //等价于 m_sock;
-                    if(NULL == client)
-                    {                    
-                        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept null peer!");
-                        return ERROR_TYPE_NULL_SOCKET;
-                    } 
-                    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Acceept succeed, connidx[%d],connfd is[%d] and now connection count is[%d]", 
-                            client->getIdx(),client->getFD(), m_connMgr.getConnectionCount());
-                    
-                    //EPOOL_EV *ev = (EPOOL_EV*)malloc(sizeof(EPOOL_EV)) ;
-                    //貌似这里不需要malloc
-                    ///EPOLL_EV tev = {0};
-                    ///EPOLL_EV *ev = &tev;
-                    
-                    if(0 != sp_add(m_epollFD, client->getFD(), (void*)client))
+                    for(;;)
                     {
-                        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll add ctl fail!");
-                        return ERROR_TYPE_ADDCTL_FAIL;
+                        //接收连接                            
+                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "New connection come");   
+                        
+                        Socket *client = NULL;
+                        int accRet = m_connMgr.acceptPeer(s, client); //等价于 m_sock;
+                        
+                        if(accRet <= 0 )
+                        {
+                            if  (EAGAIN == errno || EWOULDBLOCK == errno)
+                            {        
+                                break;
+                            } 
+                            else
+                            {
+                                //错误处理
+                                __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept handle fail!");
+                                break;
+                            }
+                        }
+                        
+                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Acceept succeed, connidx[%d],connfd is[%d] and now connection count is[%d]", 
+                                client->getIdx(),client->getFD(), m_connMgr.getConnectionCount());
+
+                        //EPOOL_EV *ev = (EPOOL_EV*)malloc(sizeof(EPOOL_EV)) ;
+                        //貌似这里不需要malloc
+                        ///EPOLL_EV tev = {0};
+                        ///EPOLL_EV *ev = &tev;
+
+                        if(0 != sp_add(m_epollFD, client->getFD(), (void*)client))
+                        {
+                            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll add ctl fail!");
+                            return ERROR_TYPE_ADDCTL_FAIL;
+                        }
+
                     }
+                    
                     
 
                 }   
@@ -178,7 +192,9 @@ SockServer::epollWait() {
                     int readret = m_connMgr.receiveMsg(s, msg);
                     if(readret == MSG_TYPE_DISCONNECT)
                     {
-                        m_connMgr.disconnect(s);                    
+                        sp_del(m_epollFD, s->getFD());//这个要在disconnect 前, disconnect会将 fd 置为-1
+                        m_connMgr.disconnect(s);     
+                        
                         __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "connection has been closed by peer! now connection count[%d]",
                                m_connMgr.getConnectionCount() );
 

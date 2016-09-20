@@ -41,36 +41,38 @@ ConnectionMgr::addConnection(Socket *s)
 /**
  * 
  * @param s
+ *  //warn client 为指向指针的指针, 将指针带出函数
  *  表示服务器监听的端口
  * @return 
  */
-Socket*
-ConnectionMgr::acceptPeer(Socket* s) 
+int32_t
+ConnectionMgr::acceptPeer(Socket* s, Socket*& client) 
 {
     if(NULL == s )
     {        
         __log(_ERROR , __FILE__, __LINE__, __FUNCTION__, "accept sock is null");
-        return NULL;
+        client = NULL;
+        return -1;
     }
      if (m_connCount >= MAX_CLIENT_CONNECTION) 
     {       
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "connection is more than [%d]", MAX_CLIENT_CONNECTION);
+        client = NULL;
         exit(0); //just for test to exit program pg
-        return NULL;
+        return -1;
     }
     int connfd = accept(s->getFD(), NULL, NULL);
     if (connfd <= 0) {        
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept client fail! return code [%d]", connfd);
-        return NULL;
+        //__log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept client fail! return code [%d]", connfd);
+        client = NULL;
+        return connfd;
     }
-    Socket *client = newSock(connfd, CONN_TYPE_CLIENT);
+    client = newSock(connfd, CONN_TYPE_CLIENT);
     
-    int ret = addConnection(client);
-    if(0 != ret)
-    {
-        return NULL;
-    }
-    return client;
+    addConnection(client);
+  
+    return connfd;
+
 }
 
 int32_t

@@ -58,7 +58,7 @@ const int32_t CONN_TYPE_NONE = 0;  //还未初始化, 或者只是保存信息
 const int32_t CONN_TYPE_CLIENT = 1;  //和客户端相关的ConnectionMgr
 const int32_t CONN_TYPE_SERVER = 2;  //和其他服务器相关的ConnectionMgr
 
-const int32_t MAX_BACK_LOG = 5;
+const int32_t MAX_BACK_LOG = 128; //这个设置成5太小了, 连接消息都阻塞在这里了
 const int32_t MAX_EVENTS = 64;
 
 

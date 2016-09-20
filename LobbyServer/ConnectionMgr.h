@@ -40,7 +40,7 @@ public:
     //添加新连接
     int32_t addConnection(Socket *s);
     //接受连接
-    Socket* acceptPeer(Socket *s);
+    int32_t acceptPeer(Socket* s, Socket*& client);
     //主动连接服务器
     int32_t connectPeer(const char* serverip, int32_t port);
     

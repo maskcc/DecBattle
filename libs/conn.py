@@ -2,7 +2,7 @@ import socket
 import time
 i = 0
 sock = []
-for x in range(1, 370):
+for x in range(1, 3000):
     sock.append(socket.socket())
 for x in sock: 
     x.connect(("127.0.0.1", 10077))

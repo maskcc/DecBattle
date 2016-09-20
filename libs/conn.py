@@ -15,7 +15,7 @@ for x in sock:
         sr = "connect count is" + str(i)
     else:
         sr = "connect error "
-    print(sr)
+    #print(sr)
 
 time.sleep(1200)
 

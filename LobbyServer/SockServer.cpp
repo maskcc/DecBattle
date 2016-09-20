@@ -86,12 +86,13 @@ SockServer::semdMsg()
 
 
 int32_t
-SockServer::epollWait() {
-    //EPOLL_EV ev[MAX_EVENTS] = {0};
+SockServer::epollWait() 
+{    
     memset(m_tmpev, 0, MAX_EVENTS*sizeof(EPOLL_EV));
     int n = epoll_wait(m_epollFD, m_tmpev, MAX_EVENTS, -1);
     int i;
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n; i++) 
+    {
         m_ev[i].s = m_tmpev[i].data.ptr;
         unsigned flag = m_tmpev[i].events;
         m_ev[i].write = (flag & EPOLLOUT) != 0;
@@ -116,11 +117,9 @@ SockServer::epollWait() {
         }
         
         n = this->epollWait();
-        if(0 >= n)
+        if( n <= 0)
         {
-            //EINTR 在写的时候出现中断 (例如 Ctrl + C 捕获到)
-           // If a signal handler is invoked while a system call or library  function call is blocked, then either:
-           // 重新开始就行
+            //EINTR 在写的时候出现中断 (例如 Ctrl + C 捕获到)           
             if(EINTR == errno)
             {
                 __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "EINTR");
@@ -143,62 +142,65 @@ SockServer::epollWait() {
             if(e->read)
             {
                 if(*s == m_sock)                
-                {
-                    for(;;)
+                {        
+                    Socket *client = NULL;
+                    int accRet = m_connMgr.acceptPeer(s, client); //等价于 m_sock;
+                        
+                    if(accRet <= 0 )
                     {
-                        //接收连接                            
-                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "New connection come");   
-                        
-                        Socket *client = NULL;
-                        int accRet = m_connMgr.acceptPeer(s, client); //等价于 m_sock;
-                        
-                        if(accRet <= 0 )
+                        if  (EAGAIN == errno || EWOULDBLOCK == errno)
+                        {   
+                            continue;
+                        } 
+                        else
                         {
-                            if  (EAGAIN == errno || EWOULDBLOCK == errno)
-                            {        
-                                break;
-                            } 
-                            else
-                            {
-                                //错误处理
-                                __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept handle fail!");
-                                break;
-                            }
+                            //错误处理
+                            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept handle fail!");
+                            continue;
                         }
-                        
-                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Acceept succeed, connidx[%d],connfd is[%d] and now connection count is[%d]", 
-                                client->getIdx(),client->getFD(), m_connMgr.getConnectionCount());
-
-                        //EPOOL_EV *ev = (EPOOL_EV*)malloc(sizeof(EPOOL_EV)) ;
-                        //貌似这里不需要malloc
-                        ///EPOLL_EV tev = {0};
-                        ///EPOLL_EV *ev = &tev;
-
-                        if(0 != sp_add(m_epollFD, client->getFD(), (void*)client))
-                        {
-                            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll add ctl fail!");
-                            return ERROR_TYPE_ADDCTL_FAIL;
-                        }
-
                     }
                     
+                    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Acceept succeed, connidx[%d],connfd is[%d] and now connection count is[%d]", 
+                                client->getIdx(),client->getFD(), m_connMgr.getConnectionCount());
                     
-
+                    if(0 != sp_add(m_epollFD, client->getFD(), (void*)client))
+                    {
+                        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll add ctl fail!");
+                        client->reset();
+                        //错误处理??
+                        //return ERROR_TYPE_ADDCTL_FAIL;
+                    }
                 }   
                 else
                 {
                     //有消息到来      
                     BaseMsg * msg = NULL;
                     int readret = m_connMgr.receiveMsg(s, msg);
-                    if(readret == MSG_TYPE_DISCONNECT)
+                    
+                    //读取出现错误
+                    if( readret < 0 )
                     {
-                        sp_del(m_epollFD, s->getFD());//这个要在disconnect 前, disconnect会将 fd 置为-1
-                        m_connMgr.disconnect(s);     
+                         disconnect(s);                           
+                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "read sock error errno[%d], close peer.", readret );
+                        continue;
                         
+                    }
+                    if( readret == MSG_TYPE_DISCONNECT)
+                    {
+                         disconnect(s);   
                         __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "connection has been closed by peer! now connection count[%d]",
                                m_connMgr.getConnectionCount() );
+                        continue;
 
-                    }    
+                    } 
+                    if( readret == ERROR_TYPE_BODY_OVER_FLOW)  
+                    {
+                        disconnect(s); 
+                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "read body size over flow.");
+                        continue;
+                    }
+                    
+                    //处理消息
                     if(NULL != msg)
                     {
                         GlobalQueue::getInstance();
@@ -206,14 +208,17 @@ SockServer::epollWait() {
                     }
                 }      
             }
-            else  if(e->write)
+            if(e->write)
             {            
                 __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "write something to far!");
 
-            }         
-        }
-        
-         
-         
+            }    
+        }        
      }
  }
+ 
+  void SockServer::disconnect(Socket *s)
+{
+    sp_del(m_epollFD, s->getFD());//这个要在disconnect 前, disconnect会将 fd 置为-1
+    m_connMgr.disconnect(s);            
+}

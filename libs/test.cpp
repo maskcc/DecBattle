@@ -15,8 +15,7 @@
 #include <vector>
 using namespace std;
 
-//给 服务器发送特定格式的数据
-int test6()
+int test12()
 {
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
 	struct sockaddr_in connsvr;
@@ -36,7 +35,7 @@ int test6()
 
 	char sendBuff[1024] = {0};
 	char *bin = sendBuff;
-	char buff[50] = {"数据收到, 睡你麻痹起来嗨~~~"};
+	char buff[50] = {"are you ok, nartuo~~~"};
 	BaseMsg msg;
 	msg.sz = sizeof(buff);
 	msg.msg = (void*)buff;
@@ -48,19 +47,44 @@ int test6()
 	write(sock, (char*)sendBuff, msg.sz + 4);
 	write(sock, (char*)sendBuff, msg.sz + 4);
 	write(sock, (char*)sendBuff, msg.sz + 4);
-
-	sleep(15);
-
-
-
-
-
-
-
-
+    sleep(1);
 
 }
-//socket 有监听连接时, 是否可以用这个sockfd连接其他服务器
+int test6(int sock)
+{
+/*	int sock = socket(AF_INET, SOCK_STREAM, 0);
+	struct sockaddr_in connsvr;
+	connsvr.sin_family = AF_INET;
+	connsvr.sin_port = htons(10077);
+	inet_aton("127.0.0.1", &connsvr.sin_addr);
+	socklen_t len = sizeof(sockaddr);
+	int ret = connect(sock, (struct sockaddr*)&connsvr, len);
+	cout << "connect succed, ret is:" << ret <<endl; 
+*/
+	typedef struct BaseMsg_t
+	{
+		uint32_t sz;
+		void *msg;
+
+	}BaseMsg;
+
+	char sendBuff[1024] = {0};
+	char *bin = sendBuff;
+	char buff[50] = {"are you ok, nartuo~~~"};
+	BaseMsg msg;
+	msg.sz = sizeof(buff);
+	msg.msg = (void*)buff;
+
+	int nsz = htonl(msg.sz);
+	memcpy(bin, (char*)(&nsz), 4);
+	memcpy(bin+ 4, msg.msg, sizeof(buff));
+	//cout <<msg.sz << msg.msg << "sizeof buff" << sizeof(buff) << endl;
+    cout << sock << endl;
+	write(sock, (char*)sendBuff, msg.sz + 4);
+	write(sock, (char*)sendBuff, msg.sz + 4);
+	write(sock, (char*)sendBuff, msg.sz + 4);
+
+}
 int test5()
 {
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -84,7 +108,6 @@ int test5()
 		wait();
 	}else
 	{
-		//如果没有这句, 下面的connect会失败. 必须要有新的sockfd才行, 这是研究出来的!!!
 		int sock = socket(AF_INET, SOCK_STREAM, 0);
 		sleep(3);
 		struct sockaddr_in connsvr;
@@ -105,13 +128,8 @@ int test5()
 		cout << "connect2 succed, ret is:" << ret <<endl; 
 
 	}
-
-
-
-
 }
 
-//memset的第二个参数写int时读取为1
 int test4()
 {
 	int arr[1024];
@@ -123,7 +141,6 @@ int test4()
 
 
 }
-//当字符指针移位时, sizeof的返回值会是什么
 int test3()
 {
 	char *cur;
@@ -138,7 +155,6 @@ int test3()
 
 }
 
-//读取网络字节序的内容
 int test2()
 {
 	char buff[1024] = {0};
@@ -173,20 +189,20 @@ class Socket
 			m_fd = -1;
 			m_connType = 1;
 			m_idx = -1;
-			m_lastRecvTime = 0; //上次接收或发送消息的时间戳
+			m_lastRecvTime = 0; 
 
 		}
 
 
 	protected:
 	protected:
-		string   m_addr;   //地址
-		uint16_t m_port;   //端口号
-		int32_t  m_fd;     //连接信息
-		int32_t m_connType; //连接类型 CONN_TYPE_CLIENT(和客户端的连接), CONN_TYPE_SERVER(和别的服务器连接)
-		int32_t m_idx;      //在列表中的位置
+		string   m_addr;   
+		uint16_t m_port;   
+		int32_t  m_fd;     
+		int32_t m_connType; 
+		int32_t m_idx;     
 
-		uint64_t m_lastRecvTime; //上次接收或发送消息的时间戳
+		uint64_t m_lastRecvTime; 
 
 };
 void test7()
@@ -249,7 +265,7 @@ void test8()
 			if(ev[n - 1].events & EPOLLIN != 0)
 			{
 				int xx = accept(sockfd, NULL, NULL);
-				cout << "新连接到来! fd " <<xx << endl;
+				cout << "靠 fd " <<xx << endl;
 				--n;
 			}
 		}
@@ -306,7 +322,7 @@ void* test9(void*)
 
 }
 	vector<int> List;
-	for(int c = 0; c < 10; c++)
+	for(int c = 0; c < 100; c++)
 	{
 		int32_t sockfd = socket(AF_INET, SOCK_STREAM, 0);
 		if(sockfd < 0)
@@ -335,27 +351,26 @@ void* test9(void*)
 			perror(strerror(errno));
 			exit(-1);
 		}
+        test6(List[c]);
 	}
 
 }
 
 void test10()
 {
-	int threads = 80;
+	int threads = 30;
 	pthread_t th[threads];
 	for(int c = 0; c < threads; c++ )
 		pthread_create(&th[c],NULL, test9, NULL);
 	
 	for(int c = 0; c < threads; c++ )
 		pthread_join(th[c], NULL);
-	sleep(10);
+	sleep(20);
 	cout << "i am alive" <<endl;
 
 }
-int main() {
-	//test7();
-	//test8();
-	test10();
+void testlua()
+{
 	//	lua_State *L = luaL_newstate();
 	//int r = luaL_dofile(l, "bootstrap.lua");
 	//   int r = luaL_loadfile(l, "bootstrap.lua");
@@ -379,4 +394,11 @@ int main() {
 
 	// Clean up the lua context
 	//	lua_close(L);
+
+}
+int main() {
+	//test7();
+	//test8();
+	//test12();
+    test10();
 }

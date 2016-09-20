@@ -68,7 +68,7 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
         //将缓冲区清理, 这里只填写了前面4个字节
         memset(m_stream, 0, MSG_SIZE_LENGTH);
         
-        return 0;
+        return MSG_TYPE_MORE;
     }
     
     //读取body

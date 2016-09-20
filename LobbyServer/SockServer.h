@@ -37,6 +37,7 @@ public:
     
     int32_t epollWait();
     int32_t run();
+    void disconnect(Socket *s);
     
 protected:
     //和客户端的连接管理

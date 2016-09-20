@@ -50,25 +50,21 @@ ConnectionMgr::acceptPeer(Socket* s, Socket*& client)
 {
     if(NULL == s )
     {        
-        __log(_ERROR , __FILE__, __LINE__, __FUNCTION__, "accept sock is null");
-        client = NULL;
-        return -1;
+        __log(_ERROR , __FILE__, __LINE__, __FUNCTION__, "accept sock is null");        
+        return ERROR_TYPE_NULL_SOCKET;
     }
      if (m_connCount >= MAX_CLIENT_CONNECTION) 
     {       
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "connection is more than [%d]", MAX_CLIENT_CONNECTION);
-        client = NULL;
-        exit(0); //just for test to exit program pg
-        return -1;
+        //exit(ERROR_TYPE_TOO_MANY_CONNECTOIN); //just for test to exit program pg
+        return ERROR_TYPE_TOO_MANY_CONNECTOIN;
     }
     int connfd = accept(s->getFD(), NULL, NULL);
     if (connfd <= 0) {        
-        //__log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept client fail! return code [%d]", connfd);
-        client = NULL;
+        //__log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept client fail! return code [%d]", connfd);        
         return connfd;
     }
-    client = newSock(connfd, CONN_TYPE_CLIENT);
-    
+    client = newSock(connfd, CONN_TYPE_CLIENT);    
     addConnection(client);
   
     return connfd;
@@ -121,7 +117,7 @@ ConnectionMgr::receiveMsg(Socket *s, BaseMsg *msg)
     if(NULL == s)
     {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "socket is null");
-        return -1;
+        return ERROR_TYPE_NULL_SOCKET;
     }
     Socket *client = getPeer(s->getIdx());
     if (NULL == client) 

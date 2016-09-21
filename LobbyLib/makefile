@@ -1,6 +1,6 @@
 #!/bin/bash
 DIR=.
-INCLUDE=-I../LobbyServer
+INCLUDE=-I../LobbyServer -I./third
 SRC=$(DIR)
 CPP=g++
 DEBUG=-g -Wall

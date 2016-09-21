@@ -56,13 +56,18 @@ lcall(lua_State *L)
     lua_pushinteger(L, ret);
     return 1;  
 }
-
+int lsend(lua_State *L)
+{
+    
+    return 1;
+}
 extern "C" int32_t 
 luaopen_lobbylib_core(lua_State *L)
 {
     luaL_Reg l[] = {
         { "launch", llaunch }, 
         { "call", lcall }, 
+        { "send", lsend }, 
         
         { NULL, NULL },
     };

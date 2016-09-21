@@ -9,6 +9,7 @@
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
       <itemPath>LuaService.cpp</itemPath>
       <itemPath>Snlua.cpp</itemPath>
+      <itemPath>third/jsoncpp.cpp</itemPath>
       <itemPath>utils.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles" displayName="资源文件" projectFiles="true">
@@ -37,6 +38,7 @@
         <ccTool>
           <commandlineTool>g++</commandlineTool>
           <incDir>
+            <pElem>third</pElem>
             <pElem>../LobbyServer</pElem>
           </incDir>
         </ccTool>
@@ -52,6 +54,8 @@
       <item path="Snlua.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Snlua.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="third/jsoncpp.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -85,6 +89,8 @@
       <item path="Snlua.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Snlua.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="third/jsoncpp.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>

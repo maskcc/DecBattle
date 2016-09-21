@@ -10,6 +10,7 @@
       <itemPath>GlobalQueue.h</itemPath>
       <itemPath>LobbyServer.h</itemPath>
       <itemPath>MQueue.h</itemPath>
+      <itemPath>MutexLock.h</itemPath>
       <itemPath>NameService.h</itemPath>
       <itemPath>SockServer.h</itemPath>
       <itemPath>SockStream.h</itemPath>
@@ -17,6 +18,7 @@
       <itemPath>SocketEPoll.h</itemPath>
       <itemPath>Thread.h</itemPath>
       <itemPath>ThreadBase.h</itemPath>
+      <itemPath>third/json/json.h</itemPath>
       <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
@@ -27,6 +29,7 @@
       <itemPath>GlobalQueue.cpp</itemPath>
       <itemPath>LobbyServer.cpp</itemPath>
       <itemPath>MQueue.cpp</itemPath>
+      <itemPath>MutexLock.cpp</itemPath>
       <itemPath>NameService.cpp</itemPath>
       <itemPath>SockServer.cpp</itemPath>
       <itemPath>SockStream.cpp</itemPath>
@@ -104,6 +107,10 @@
       </item>
       <item path="MQueue.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="MutexLock.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MutexLock.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="NameService.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="NameService.h" ex="false" tool="3" flavor2="0">
@@ -131,6 +138,8 @@
       <item path="ThreadBase.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="third/json/json.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -187,6 +196,10 @@
       </item>
       <item path="MQueue.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="MutexLock.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="MutexLock.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="NameService.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="NameService.h" ex="false" tool="3" flavor2="0">
@@ -214,6 +227,8 @@
       <item path="ThreadBase.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="third/json/json.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>

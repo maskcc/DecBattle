@@ -6,6 +6,8 @@
 #include "LobbyServer.h"
 #include "utils.h"
 #include "SockServer.h"
+#include "GlobalQueue.h"
+#include "Dispatch.h"
 
 void 
 LobbyServer::loadConfig()
@@ -22,8 +24,8 @@ LobbyServer::start()
     this->runSockServer();
     
     //多线程处理逻辑
-   // for(int c = 0; c < 5; c++)
-   //     m_threads.spawn(dispatchMessage, NULL);
+    for(int c = 0; c < 5; c++)
+        m_threads.spawn(dispatchMessage, NULL);
      
       
     
@@ -41,8 +43,8 @@ LobbyServer::runSockServer()
     const char *ip = "0.0.0.0";
     strncpy(addr->ip, ip, strlen(ip) + 1);
     addr->port = 10077;
-    //m_threads.spawn(sockServer, (void*)addr);
-    sockServer((void*)addr);
+    m_threads.spawn(sockServer, (void*)addr);
+    
     
 }
 
@@ -76,9 +78,9 @@ LobbyServer::sockServer(void *argc)
 void 
 LobbyServer::dispatchMessage(void *)
 {
-    for(;;)
-    {
-        sleep(2);
-    }
+    Dispatch dis;
+
+    dis.dispatch();
+
     
 }

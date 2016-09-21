@@ -40,13 +40,14 @@ public:
     //启动 script name
     ContextMgr(string sname);
     ~ContextMgr();
-    int Init();
-    int getHandle();
+    int32_t Init();
+    int32_t getHandle();
+    int32_t putMsg(InerMsg *m);
     lua_State* getLuaState();
-    int call(int type, void *msg, int sz);
+    int32_t call(int32_t type, void *msg, int32_t sz);
     
 protected:
-    int loadScript();
+    int32_t loadScript();
     
 protected:
     Context *m_Ctx;
@@ -55,7 +56,7 @@ protected:
     string scriptName;
     
     //ctx 唯一标识符基数
-    static int HANDLEID;
+    static int32_t HANDLEID;
     
     
 };

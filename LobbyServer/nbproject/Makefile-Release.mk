@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/GlobalQueue.o \
 	${OBJECTDIR}/LobbyServer.o \
 	${OBJECTDIR}/MQueue.o \
+	${OBJECTDIR}/MutexLock.o \
 	${OBJECTDIR}/NameService.o \
 	${OBJECTDIR}/SockServer.o \
 	${OBJECTDIR}/SockStream.o \
@@ -110,6 +111,11 @@ ${OBJECTDIR}/MQueue.o: MQueue.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MQueue.o MQueue.cpp
+
+${OBJECTDIR}/MutexLock.o: MutexLock.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MutexLock.o MutexLock.cpp
 
 ${OBJECTDIR}/NameService.o: NameService.cpp 
 	${MKDIR} -p ${OBJECTDIR}

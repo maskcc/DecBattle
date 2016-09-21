@@ -14,22 +14,44 @@
 #ifndef GLOBALQUEUE_H
 #define GLOBALQUEUE_H
 #include <queue>
+#include <pthread.h>
 
 #include "GameDef.h"
+#include "utils.h"
 #include "MQueue.h"
+#include "MutexLock.h"
+
 using namespace std;
 /**
  * 全局队列
  */
+
+class MQueue;
 class GlobalQueue
 {
 public:
-     static GlobalQueue* getInstance();
+    static GlobalQueue* getInstance();
+    void push(MQueue* msg);
+    MQueue* pop();
+    void lockQ();
+    void unlockQ();
+    void waitQ();
+    
      
  
 protected:
     ~GlobalQueue();
      static GlobalQueue* m_instance;
+     queue<MQueue*> m_msgQueue; 
+     
+    MutexLock m_lock;
+     
+    pthread_cond_t m_conditoin;
+    
+     
+     
+    
+   
 private:
     GlobalQueue();
     

@@ -10,9 +10,9 @@
 #include <assert.h>
 
 
-int ContextMgr::HANDLEID = 0; 
+int32_t ContextMgr::HANDLEID = 0; 
 
-static int 
+static int32_t 
 traceback (lua_State *L) {
 	const char *msg = lua_tostring(L, 1);
 	if (msg)
@@ -32,11 +32,11 @@ ContextMgr::ContextMgr(string sname)
 
 ContextMgr::~ContextMgr()
 {    
-    delete m_Ctx->queue;
-    delete this->m_Ctx;
+    SAFEDEL( m_Ctx->queue);
+    SAFEDEL( this->m_Ctx);
     
 }
-int 
+int32_t 
 ContextMgr::Init()
 {
     m_Ctx = new Context;
@@ -44,17 +44,18 @@ ContextMgr::Init()
     m_Ctx->handle = ++HANDLEID;
     m_Ctx->queue = new MQueue(m_Ctx->handle);
     
-    int ret = NameService::getInstance()->reg(m_Ctx->handle, this->scriptName);
+    int32_t ret = NameService::getInstance()->reg(m_Ctx->handle, this->scriptName);
     if( 0 != ret)
     {
-        delete this;
+        SAFEDEL( this );
         return ret;  //名字服务器发现重复, 不能使用
     }
     return this->loadScript();
     
 }
 
-int ContextMgr::loadScript()
+int32_t 
+ContextMgr::loadScript()
 {
     lua_State *L = this->getLuaState();
     lua_gc(L, LUA_GCSTOP, 0);
@@ -66,7 +67,7 @@ int ContextMgr::loadScript()
     assert(lua_gettop(L) == 0);
     
     //可以在这加个loader, 用lua来控制读取的文件以及其他信息
-    int r = luaL_dofile(L, this->scriptName.c_str());    
+    int32_t r = luaL_dofile(L, this->scriptName.c_str());    
   
     
     if (r != LUA_OK) 
@@ -83,7 +84,7 @@ int ContextMgr::loadScript()
     return 0;
     
 }
-int
+int32_t
 ContextMgr::getHandle()
 {
     return this->m_Ctx->handle;   
@@ -96,8 +97,8 @@ ContextMgr::getLuaState()
     
 }
 
-int 
-ContextMgr::call(int type, void *msg, int sz)
+int32_t 
+ContextMgr::call(int32_t type, void *msg, int32_t sz)
 {
     if(NULL == this->m_Ctx->cb)
     {        
@@ -111,4 +112,10 @@ ContextMgr::call(int type, void *msg, int sz)
     
     return 0;
     
+}
+
+int32_t 
+ContextMgr::putMsg(InerMsg *m)
+{
+    m_Ctx->queue->push(m);
 }

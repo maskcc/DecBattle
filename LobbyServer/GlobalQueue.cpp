@@ -19,11 +19,68 @@ GlobalQueue::getInstance()
     
 }
 
- GlobalQueue::GlobalQueue()
+ void 
+GlobalQueue::push(MQueue* q)
+ {    
+    lockQ();
+    m_msgQueue.push(q);
+    pthread_cond_signal(&m_conditoin);
+    unlockQ();
+ }
+
+
+ 
+ MQueue* 
+ GlobalQueue::pop()
  {
+    lockQ();
+    MQueue *q = NULL;
+    if(!m_msgQueue.empty())
+    {
+        q = m_msgQueue.front();
+        m_msgQueue.pop();
+        
+    }
+    unlockQ(); 
+    return q;
+ }
+ 
+ void
+ GlobalQueue::lockQ()
+ {
+     
+    m_lock.lock();
      
  }
+ 
+ void
+ GlobalQueue::unlockQ()
+ {     
+    m_lock.unlock(); 
+     
+ }
+ 
+ void 
+ GlobalQueue::waitQ()
+ {       
+    pthread_cond_wait(&m_conditoin, m_lock.get());
+    //当没有消息时, 会阻塞在这
+     
+ }
+ 
+ GlobalQueue::GlobalQueue()
+ {
+    
+    if(0 != pthread_cond_init(&m_conditoin, NULL))
+     {        
+         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "init global queue cond fail");
+     }
+ }
+ 
 GlobalQueue:: ~GlobalQueue()
  {
-     
+     if(0 != pthread_cond_destroy(&m_conditoin))
+     {         
+         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "init global queue cond fail");
+     }
  }

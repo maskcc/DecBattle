@@ -53,35 +53,35 @@ const int _ERROR = 4; //red
     
     
     static void lualog( char const*filename,  char const*funcname, char const*msg, int level );
-    static void log( char const*filename,  char const*funcname, int line,   char const*msg, int level  = _DEBUG )
-    {
-        char buff[1024] = {0};
-        char timestamp[128] = {0};
-         time_t stamp = time(NULL);
-        const char *timestr = ctime(&stamp);
-        memcpy(timestamp, timestr, strlen(timestr) - 1);        
-        //strftime(s, 1000, "%A, %B %d %Y", p);
-        
-        switch (level)
-        {
-            case _DEBUG:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", GREEN, timestamp,filename, line, funcname, msg, NONE);
-                break;
-            case _WARN:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", YELLOW, timestamp,filename, line, funcname, msg, NONE);
-                break;
-            case _ERROR:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", L_RED, timestamp,filename, line, \
-                         funcname, msg,errno, strerror(errno), NONE);
-                break;
-            default:
-                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", BLINK, timestamp,filename, line, \
-                         funcname, msg, errno, strerror(errno),NONE);
-        }
-
-        std::cout << buff << std::endl;   
-    
-    }
+//    static void log( char const*filename,  char const*funcname, int line,   char const*msg, int level  = _DEBUG )
+//    {
+//        char buff[1024] = {0};
+//        char timestamp[128] = {0};
+//         time_t stamp = time(NULL);
+//        const char *timestr = ctime(&stamp);
+//        memcpy(timestamp, timestr, strlen(timestr) - 1);        
+//        //strftime(s, 1000, "%A, %B %d %Y", p);
+//        
+//        switch (level)
+//        {
+//            case _DEBUG:
+//                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", GREEN, timestamp,filename, line, funcname, msg, NONE);
+//                break;
+//            case _WARN:
+//                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s]%s", YELLOW, timestamp,filename, line, funcname, msg, NONE);
+//                break;
+//            case _ERROR:
+//                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", L_RED, timestamp,filename, line, 
+//                         funcname, msg,errno, strerror(errno), NONE);
+//                break;
+//            default:
+//                snprintf(buff, 1024, "%s[%s] [%s]:[%d] [%s] MSG[%s] errno[%d], error[%s]%s", BLINK, timestamp,filename, line, 
+//                         funcname, msg, errno, strerror(errno),NONE);
+//        }
+//
+//        std::cout << buff << std::endl;   
+//    
+//    }
 }
 #define _LOG(msg,l) (LOG::log(__FILE__, __FUNCTION__, __LINE__, msg, l)) 
 
@@ -94,7 +94,8 @@ llog(lua_State *L)
     const char *func = lua_tostring(L, 2);
     const char *msg = lua_tostring(L, 3);
     int   level = lua_tointeger(L, 4);
-    LOG::lualog(file ,func, msg, level);    
+    LOG::lualog(file ,func, msg, level);  
+    return 0;
     
 }
 extern "C"

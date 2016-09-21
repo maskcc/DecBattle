@@ -16,6 +16,8 @@
 #include <queue>
 #include "GameDef.h"
 #include "utils.h"
+#include "GlobalQueue.h"
+#include "MutexLock.h"
 using namespace std;
 struct InerMsg_t;
 class MQueue
@@ -31,14 +33,17 @@ public:
     
     //从队头弹出
     InerMsg_t* pop();
+    void setOutGlobal();
     
     //TODO 要添加当push进去后队列内数量的监控, 当数量超标时要通知是否有阻塞存在
-    bool isBusy;//是否繁忙
+    bool m_isBusy;//是否繁忙
     
    
 protected:
-    int32_t service;        //服务id
+    int32_t m_service;        //服务id
     std::queue<InerMsg_t *> m_MQ;
+    bool m_inGlobal; //是否在全局队列中
+    MutexLock m_lock;
     
     
     

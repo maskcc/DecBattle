@@ -7,6 +7,7 @@
 #include "SockServer.h"
 #include "MQueue.h"
 #include "GlobalQueue.h"
+#include "ContextMap.h"
 
 SockServer::SockServer()
 {
@@ -202,8 +203,8 @@ SockServer::epollWait()
                     
                     //处理消息
                     if(NULL != msg)
-                    {
-                        GlobalQueue::getInstance();
+                    {//这个应该在别的地方将其转换成内部队列
+                        
 
                     }
                 }      

@@ -14,10 +14,24 @@
 #ifndef DISPATCH_H
 #define DISPATCH_H
 
+#include <pthread.h>
+
+#include "ContextMap.h"
+#include "MQueue.h"
+#include "ContextMap.h"
+#include "GlobalQueue.h"
+#include "utils.h"
+
 class Dispatch
 {
+public:
+    Dispatch();
+    ~Dispatch();
+    int32_t dispatch();
+    MQueue* dealMsg();
     
-    
+protected:
+
 };
 
 

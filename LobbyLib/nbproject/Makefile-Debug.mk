@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/LuaService.o \
 	${OBJECTDIR}/Snlua.o \
+	${OBJECTDIR}/third/jsoncpp.o \
 	${OBJECTDIR}/utils.o
 
 
@@ -67,17 +68,22 @@ LDLIBSOPTIONS=
 ${OBJECTDIR}/LuaService.o: LuaService.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LuaService.o LuaService.cpp
+	$(COMPILE.cc) -g -Ithird -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LuaService.o LuaService.cpp
 
 ${OBJECTDIR}/Snlua.o: Snlua.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Snlua.o Snlua.cpp
+	$(COMPILE.cc) -g -Ithird -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Snlua.o Snlua.cpp
+
+${OBJECTDIR}/third/jsoncpp.o: third/jsoncpp.cpp 
+	${MKDIR} -p ${OBJECTDIR}/third
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Ithird -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/third/jsoncpp.o third/jsoncpp.cpp
 
 ${OBJECTDIR}/utils.o: utils.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.cpp
+	$(COMPILE.cc) -g -Ithird -I../LobbyServer -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.cpp
 
 # Subprojects
 .build-subprojects:

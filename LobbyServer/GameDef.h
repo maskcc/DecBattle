@@ -23,6 +23,11 @@
 #include "lua.hpp"
 #include <stdint.h>
 
+#define SAFEDEL(p) do{\
+    if(NULL != p) {   \
+        delete(p);    \
+    }                 \
+} while(0)
 
 typedef struct  event_t {
 	void * s; //每个event附带的信息

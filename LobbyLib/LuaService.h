@@ -13,16 +13,19 @@
 
 #ifndef LUASERVICE_H
 #define LUASERVICE_H
+#include <json/json.h>
 #include <lua.hpp>
 #include "ContextMgr.h"
 #include "NameService.h"
 #include "ContextMap.h"
 #include "ContextMgr.h"
 
+
 extern "C" int luaopen_lobbylib_core(lua_State *L);
 
 int llaunch(lua_State *L);
 int lcall(lua_State *L);
+int lsend(lua_State *L);
 
 
 

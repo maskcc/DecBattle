@@ -58,6 +58,31 @@ lcall(lua_State *L)
 }
 int lsend(lua_State *L)
 {
+    Json::Value root;
+    Json::Reader reader;
+    const char *service = luaL_checkstring(L, 1);
+    const char *source = luaL_checkstring(L, 2);
+    int32_t type = luaL_checkinteger(L, 3);
+    int32_t sz = luaL_checkinteger(L, 4);
+    const char *msg = luaL_checkstring(L, 5);
+    //reader.parse(str, root);
+    
+    InerMsg *m = new InerMsg;
+    memset(m, 0, sizeof(InerMsg));
+    m->sz = sz;
+    m->type = type;
+    memcpy(m->service, service, SERVICE_NAME_LENGTH);
+    memcpy(m->source, source, SERVICE_NAME_LENGTH);
+    m->msg = (char*)malloc(m->sz);
+    memcpy(m->msg, msg, m->sz);
+    
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "receive msg sz[%d] type[%d] service[%s] source[%s] msg[%s]!",
+                    sz, type, m->service, m->source, m->msg);
+    //GlobalQueue::getInstance()->push(m);
+    int32_t id = NameService::getInstance()->search(m->service);
+    //ContextMap::getInstance()->
+    
+    
     
     return 1;
 }

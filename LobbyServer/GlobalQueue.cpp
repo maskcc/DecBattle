@@ -5,15 +5,12 @@
  */
 #include "GlobalQueue.h"
 
-GlobalQueue* GlobalQueue::m_instance = NULL;
+GlobalQueue* GlobalQueue::m_instance = new GlobalQueue;
 
 GlobalQueue* 
 GlobalQueue::getInstance()
 {
-    if(NULL ==m_instance)
-    {
-        m_instance = new GlobalQueue;
-    }
+
     return m_instance;
         
     
@@ -63,7 +60,9 @@ GlobalQueue::push(MQueue* q)
  void 
  GlobalQueue::waitQ()
  {       
+    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "I am waiting here");
     pthread_cond_wait(&m_conditoin, m_lock.get());
+    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "stop wait");
     //当没有消息时, 会阻塞在这
      
  }

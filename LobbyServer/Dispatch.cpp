@@ -21,7 +21,7 @@ Dispatch::dispatch()
     MQueue *q = NULL;
     for(;;)
     {
-        q = dealMsg();
+        q = dealMsg(q);
         if(NULL == q)
         {
             GlobalQueue::getInstance()->lockQ();
@@ -34,10 +34,12 @@ Dispatch::dispatch()
     return 0;
 }
 MQueue* 
-Dispatch::dealMsg()
+Dispatch::dealMsg(MQueue* q)
 {
-    
-    MQueue* q = GlobalQueue::getInstance()->pop();
+    if(NULL == q)
+    {
+         q = GlobalQueue::getInstance()->pop();
+    }
     if(NULL == q)
     {
         return q;
@@ -45,8 +47,9 @@ Dispatch::dealMsg()
     
     InerMsg* msg = q->pop();
     ContextMgr *ctxMgr = ContextMap::getInstance()->find("test.lua");
+    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "I am get msg");
     
     ctxMgr->call(msg->type, msg->msg, msg->sz);    
     SAFEDEL(msg);
-    return 0;
+    return GlobalQueue::getInstance()->pop();
 }

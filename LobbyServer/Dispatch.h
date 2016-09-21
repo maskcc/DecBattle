@@ -28,7 +28,7 @@ public:
     Dispatch();
     ~Dispatch();
     int32_t dispatch();
-    MQueue* dealMsg();
+    MQueue* dealMsg(MQueue* q);
     
 protected:
 

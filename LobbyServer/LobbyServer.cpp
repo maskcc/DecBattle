@@ -18,16 +18,16 @@ void
 LobbyServer::start()
 {    
     __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "------------- main LobbyServer started!-----");
-    
+     for(int c = 0; c < 1; c++)
+        m_threads.spawn(dispatchMessage, NULL);
+     
+    sleep(3);
     this->loadConfig();
     ContextMap::getInstance()->newContext(this->config);
     this->runSockServer();
     
     //多线程处理逻辑
-    for(int c = 0; c < 5; c++)
-        m_threads.spawn(dispatchMessage, NULL);
-     
-      
+   
     
    m_threads.join();
     

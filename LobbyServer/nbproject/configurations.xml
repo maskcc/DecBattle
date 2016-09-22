@@ -18,7 +18,6 @@
       <itemPath>SocketEPoll.h</itemPath>
       <itemPath>Thread.h</itemPath>
       <itemPath>ThreadBase.h</itemPath>
-      <itemPath>third/json/json.h</itemPath>
       <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">

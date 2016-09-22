@@ -13,7 +13,7 @@
 
 #ifndef LUASERVICE_H
 #define LUASERVICE_H
-#include <json/json.h>
+
 #include <lua.hpp>
 #include "ContextMgr.h"
 #include "NameService.h"

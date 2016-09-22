@@ -63,10 +63,10 @@ lcall(lua_State *L)
     lua_pushinteger(L, ret);
     return 1;  
 }
+
 int lsend(lua_State *L)
 {
-    Json::Value root;
-    Json::Reader reader;
+ 
     const char *service = luaL_checkstring(L, 1);
     const char *source = luaL_checkstring(L, 2);
     int32_t type = luaL_checkinteger(L, 3);

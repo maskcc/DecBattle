@@ -14,7 +14,7 @@ gate._F = "gate"
 -- argc.fd, 用户fd
 -- argc.userid, 用户 userid
 function handler.accept(argc)
-	p = player.new(argc.fd, argc.userid)
+	local p = player.new(argc.fd, argc.userid)
 	users[p.userid] = p
 end
 
@@ -22,7 +22,7 @@ end
 -- argc.userid 用户userid
 -- argc 注册用户其他信息
 function handler.add(argc)
-	p = users[argc.userid]	
+	local p = users[argc.userid]	
 	p:init(argc)
 end
 

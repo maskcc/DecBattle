@@ -139,8 +139,6 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="third/json/json.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="utils.h" ex="false" tool="3" flavor2="0">
@@ -227,8 +225,6 @@
       <item path="ThreadBase.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="third/json/json.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="utils.cpp" ex="false" tool="1" flavor2="0">
       </item>

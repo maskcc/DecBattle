@@ -7,11 +7,11 @@
 #include "ContextMap.h"
 #include "NameService.h"
 
-ContextMap *ContextMap::m_ins = NULL;
+ContextMap *ContextMap::m_ins = new ContextMap();
 
-ContextMgr* ContextMap::newContext(string scriptName)
+ContextMgr* ContextMap::newContext(string scriptName, string name)
 {
-    ContextMgr *ctx = new ContextMgr(scriptName);
+    ContextMgr *ctx = new ContextMgr(scriptName, name);
     
     int ret = ctx->Init();
     if(0 != ret)
@@ -28,10 +28,10 @@ ContextMgr* ContextMap::newContext(string scriptName)
 
 ContextMap* ContextMap::getInstance()
 {
-    if(NULL == m_ins)
-    {
-        m_ins = new ContextMap();
-    }
+//    if(NULL == m_ins)
+//    {
+//        m_ins = new ContextMap();
+ //   }
     return m_ins;
     
 }
@@ -41,13 +41,13 @@ ContextMap::ContextMap()
     
 }
 
-ContextMgr* ContextMap::find(string scriptName)
+ContextMgr* ContextMap::find(string svcName)
 {
     ContextMgr *ctx = NULL;
-    int service = NameService::getInstance()->search(scriptName);
+    int service = NameService::getInstance()->search(svcName);
     if(service < 0 )
     {        
-        __log(_ERROR, __FILE__, __LINE__,__FUNCTION__, "can not find service!");
+        __log(_ERROR, __FILE__, __LINE__,__FUNCTION__, "can not find service [%s]", svcName.c_str());
         return ctx;
     }
     map<int, ContextMgr*>::iterator iter = m_CtxMap.find(service);

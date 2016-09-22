@@ -7,7 +7,7 @@
 
 Dispatch::Dispatch()
 {
-    
+    count = 0;
 }
 Dispatch::~Dispatch()
 {
@@ -33,6 +33,7 @@ Dispatch::dispatch()
     }
     return 0;
 }
+
 MQueue* 
 Dispatch::dealMsg(MQueue* q)
 {
@@ -46,10 +47,20 @@ Dispatch::dealMsg(MQueue* q)
     }
     
     InerMsg* msg = q->pop();
-    ContextMgr *ctxMgr = ContextMap::getInstance()->find("test.lua");
-    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "I am get msg");
+    while(NULL != msg)
+    {
+        ContextMgr *ctxMgr = ContextMap::getInstance()->find(msg->service);
+        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "get msg type[%d] sz[%d]", msg->type, msg->sz);
+        ctxMgr->call(msg->type, msg->msg, msg->sz);
+  
+        SAFEDEL(msg->msg);
+        SAFEDEL(msg);
+        ++count;        
+        msg = q->pop();
+    }
     
-    ctxMgr->call(msg->type, msg->msg, msg->sz);    
-    SAFEDEL(msg);
+   
+    
+    
     return GlobalQueue::getInstance()->pop();
 }

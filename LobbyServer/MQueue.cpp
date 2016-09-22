@@ -57,7 +57,10 @@ InerMsg_t* MQueue::pop()
         m = m_MQ.front();
         m_MQ.pop();
     }
-    
+    else
+    {
+        m_inGlobal = false;
+    }
     m_lock.unlock();
     return m;
 }

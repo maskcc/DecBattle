@@ -23,9 +23,10 @@ traceback (lua_State *L) {
 	return 1;
 }
 
-ContextMgr::ContextMgr(string sname)
+ContextMgr::ContextMgr(string scrname, string svcname)
 {    
-   this->scriptName = sname;    
+   this->scriptName = scrname;    
+   this->serviceName = svcname;
    
     
 }
@@ -44,7 +45,8 @@ ContextMgr::Init()
     m_Ctx->handle = ++HANDLEID;
     m_Ctx->queue = new MQueue(m_Ctx->handle);
     
-    int32_t ret = NameService::getInstance()->reg(m_Ctx->handle, this->scriptName);
+    
+    int32_t ret = NameService::getInstance()->reg(m_Ctx->handle, this->serviceName);
     if( 0 != ret)
     {
         SAFEDEL( this );
@@ -100,9 +102,9 @@ ContextMgr::getLuaState()
 int32_t 
 ContextMgr::call(int32_t type, void *msg, int32_t sz)
 {
-    if(NULL == this->m_Ctx->cb)
+    if(NULL == this->m_Ctx || NULL == this->m_Ctx->cb)
     {        
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "function not registered!");
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "function or ctx not registered!");
         return -1;
     }
     this->m_Ctx->cb(this->m_Ctx, type, msg, sz);

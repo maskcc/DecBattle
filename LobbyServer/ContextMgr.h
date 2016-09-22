@@ -38,11 +38,12 @@ class ContextMgr
 {
 public:
     //启动 script name
-    ContextMgr(string sname);
+    ContextMgr(string scrname, string svcname);
     ~ContextMgr();
     int32_t Init();
     int32_t getHandle();
     int32_t putMsg(InerMsg *m);
+    
     lua_State* getLuaState();
     int32_t call(int32_t type, void *msg, int32_t sz);
     
@@ -54,6 +55,7 @@ protected:
     
     //脚本名称
     string scriptName;
+    string serviceName;
     
     //ctx 唯一标识符基数
     static int32_t HANDLEID;

@@ -22,8 +22,9 @@ class  ContextMap
 public:
     ~ContextMap();
     static ContextMap* getInstance();
-    ContextMgr* newContext(string scriptName);
-    ContextMgr* find(string scriptName);
+    //新脚本, scriptName, 脚本名字, name, 服务名字
+    ContextMgr* newContext(string scriptName, string name);
+    ContextMgr* find(string svcName);
     
 public:
     static ContextMap *m_ins;

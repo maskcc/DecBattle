@@ -84,6 +84,10 @@ namespace LOG{
 
 static void __log(int level, const char *filename,  int32_t line, const char* funcname, const char* format, ...)
 {
+    if(NOLOG) // 不打印日志
+    {
+        return;
+    }
     va_list vlist;
     va_start(vlist, format);
     LOG::log(level, filename,  line, funcname, format,vlist);

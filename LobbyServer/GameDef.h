@@ -29,6 +29,7 @@
     }                 \
 } while(0)
 
+const int32_t NOLOG = 0;
 typedef struct  event_t {
 	void * s; //每个event附带的信息
 	bool read;

@@ -13,11 +13,11 @@ require "class"
 p = class()
 
 function p:ctor(x)
-	self.x = x
+    self.x = x
 end
 
 function p:show()
-	print(self.x)
+    print(self.x)
 end
 
 a = p.new(1)
@@ -29,11 +29,31 @@ c = p.new(3)
 
 local core = require("lobbylib.core")
 data = cjson.encode({cmd="accept", fd=9, userid=12})
-ret = core.call("gate.lua", 3, data, #data)
+ret = core.call("gate", 3, data, #data)
 
 data = cjson.encode({cmd="add", userid=12, passwd="ss123", name="GQGQ", sex=1, items={["1400001"]=5, ["140002"] = 7}})
-ret = core.call("gate.lua", 3, data, #data)
+ret = core.call("gate", 3, data, #data)
 
 
 data = cjson.encode({cmd="show", userid=12})
-ret = core.call("gate.lua", 3, data, #data)
+ret = core.call("gate", 3, data, #data)
+
+
+
+t = {}
+n = 10000
+for i = 1, n do
+    data = cjson.encode({cmd="accept", fd=i, userid=i})
+    ret = core.call("gate", 3, data, #data)
+
+    data = cjson.encode({cmd="add", userid=i, passwd="ss123", name="GQGQ"..tostring(i), sex=1, items={["1400001"]=5, ["140002"] = 7}})
+
+    core.send("gate", "dbserver", 3, #data, data)
+end
+for i = 1, n do
+    data = cjson.encode({cmd="show", userid=i})
+    ret = core.call("gate", 3, data, #data)
+end
+
+--require "luatest"
+--

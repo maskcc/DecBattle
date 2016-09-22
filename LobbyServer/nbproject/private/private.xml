@@ -10,15 +10,17 @@
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ContextMgr.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/GlobalQueue.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/GameDef.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Dispatch.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/LobbyServer.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockServer.cpp</file>
-            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Dispatch.cpp</file>
-            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/GlobalQueue.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ContextMap.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/GlobalQueue.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/main.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/MQueue.cpp</file>
-            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/MQueue.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/NameService.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ContextMgr.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/LobbyServer.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ThreadBase.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Dispatch.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockServer.h</file>
         </group>

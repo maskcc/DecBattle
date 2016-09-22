@@ -23,7 +23,7 @@ function utils.log(file, func, msg, level)
         error(err)
     end
     if("number" ~= type(level)) then
-        level = 1 --默认是debug绿色字体输出    
+        level = 1 --榛樿鏄痙ebug缁胯壊瀛椾綋杈撳嚭    
     end
     log(file, func, msg, level)
 end

@@ -11,17 +11,17 @@ local utils = {}
 local service = {}
 service._F = "service.lua"
 
--- ×¢²á»Øµ÷º¯Êı
--- fun »Øµ÷º¯Êı
--- º¯Êı²ÎÊıÀàĞÍÒª·ûºÏ integer type, string msg, integer size
+-- æ³¨å†Œå›è°ƒå‡½æ•°
+-- fun å›è°ƒå‡½æ•°
+-- å‡½æ•°å‚æ•°ç±»å‹è¦ç¬¦åˆ integer type, string msg, integer size
 function service.register(fun)
 	snlua.callback(fun)
 end 
 
--- µ÷ÓÃ»Øµ÷
+-- è°ƒç”¨å›è°ƒ
 -- sname service name
--- type ÀàĞÍ
--- msg ²ÎÊıtable, ÔÚÕâÀï´ò°ü³Éjson
+-- type ç±»å‹
+-- msg å‚æ•°table, åœ¨è¿™é‡Œæ‰“åŒ…æˆjson
 function service.call(sname, typeid, msg)
 	encodeMsg = cjson.encode(msg)
 	ret = core.call(sname, typeid, encodeMsg, #encodeMsg)

@@ -25,7 +25,7 @@ function player:init(info)
 	self.name = info.name
 	self.sex = info.sex
 	for k, v in pairs(info.items) do
-		self.items[k] = v --Ç³¿½±´, »¹ÒªĞŞ¸Ä
+		self.items[k] = v --æµ…æ‹·è´, è¿˜è¦ä¿®æ”¹
 	end
 end
 

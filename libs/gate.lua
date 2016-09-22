@@ -9,31 +9,31 @@ local users = {}
 
 gate._F = "gate"
 
--- ½ÓÊÕĞÂÓÃ»§, 
--- ²ÎÊı
--- argc.fd, ÓÃ»§fd
--- argc.userid, ÓÃ»§ userid
+-- æ¥æ”¶æ–°ç”¨æˆ·, 
+-- å‚æ•°
+-- argc.fd, ç”¨æˆ·fd
+-- argc.userid, ç”¨æˆ· userid
 function handler.accept(argc)
 	local p = player.new(argc.fd, argc.userid)
 	users[p.userid] = p
 end
 
--- Ìí¼ÓÓÃ»§ĞÅÏ¢
--- argc.userid ÓÃ»§userid
--- argc ×¢²áÓÃ»§ÆäËûĞÅÏ¢
+-- æ·»åŠ ç”¨æˆ·ä¿¡æ¯
+-- argc.userid ç”¨æˆ·userid
+-- argc æ³¨å†Œç”¨æˆ·å…¶ä»–ä¿¡æ¯
 function handler.add(argc)
 	local p = users[argc.userid]	
 	p:init(argc)
 end
 
--- ÏÔÊ¾ÓÃ»§ĞÅÏ¢
--- argc.userid ĞèÒªÏÔÊ¾µÄÓÃ»§id
+-- æ˜¾ç¤ºç”¨æˆ·ä¿¡æ¯
+-- argc.userid éœ€è¦æ˜¾ç¤ºçš„ç”¨æˆ·id
 function handler.show(argc)
 	p = users[argc.userid]	
 	p:show()
 end
 
--- ÕâÊÇÕâ¸ö·şÎñµÄ»Øµ÷º¯Êı
+-- è¿™æ˜¯è¿™ä¸ªæœåŠ¡çš„å›è°ƒå‡½æ•°
 svc.register(function(typeid, msg, size)
 	tmsg = cjson.decode(msg)
 	f = handler[tmsg.cmd]

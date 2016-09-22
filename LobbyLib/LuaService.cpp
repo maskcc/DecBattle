@@ -84,8 +84,8 @@ int lsend(lua_State *L)
     memset(m->msg, 0, m->sz);
     memcpy(m->msg, msg, m->sz);
     
-    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "receive msg sz[%d] type[%d] service[%s] source[%s] msg[%s]!",
-                    sz, type, m->service, m->source, m->msg);
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "send msg sz[%d] type[%d] service[%s] source[%s]",
+                    sz, type, m->service, m->source);
     //GlobalQueue::getInstance()->push(m);
     
     ContextMgr* ctx = ContextMap::getInstance()->find(m->service);

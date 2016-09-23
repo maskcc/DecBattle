@@ -15,11 +15,12 @@ Socket::Socket()
 }
 
 int32_t 
-Socket::init(int32_t fd, uint32_t idx,int32_t type)
+Socket::init(int32_t fd, uint32_t idx,int32_t type, string addr)
 {
     m_fd = fd;    
     m_connType = type;
     m_idx = idx;
+    m_addr = addr;
     return 0;
 }
 void
@@ -78,7 +79,7 @@ int32_t
 Socket::writeHandle()
 {
     int ret = -1;
-   
+ //   ret = m_stream.sendMsg(this->m_fd);
     
     return ret;
     

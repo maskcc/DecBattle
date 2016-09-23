@@ -10,6 +10,11 @@ static int
 _cb(Context *ctx, int type, void* msg, int sz)
 {
     lua_State *l = ctx->state;
+    if(NULL == l)
+    {
+        _LOG(_ERROR, "ctx's statement is NULL");
+        return -1;
+    }
     lua_rawgetp(l, LUA_REGISTRYINDEX, (void*)_cb);
  
     lua_pushinteger(l, type);
@@ -21,8 +26,19 @@ _cb(Context *ctx, int type, void* msg, int sz)
     {
         const char *buff;
         buff = lua_tostring(l, -1);
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, buff);
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, static_cast<const char*>(msg));
+        if(NULL != buff)
+        {
+            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, buff);
+           
+        }
+        else
+        {
+            _LOG(_ERROR, "run fail but no error msg show");
+        }
+        if(NULL != msg)
+            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, static_cast<const char*>(msg));
+        else
+            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "msg is null");
         return -1;       
     }
 

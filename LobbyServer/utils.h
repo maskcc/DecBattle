@@ -18,6 +18,7 @@
 #include "GameDef.h"
 #include <errno.h>
 #include <netinet/in.h>
+#include <stdio.h>
 
 namespace LOG{
     #define NONE                 "\e[0m"
@@ -88,18 +89,24 @@ static void __log(int level, const char *filename,  int32_t line, const char* fu
     {
         return;
     }
+    if(level < LOG_LEVEL)
+    {
+        return;
+    }
     va_list vlist;
     va_start(vlist, format);
     LOG::log(level, filename,  line, funcname, format,vlist);
     va_end(vlist);
 }
-//#define __log LOG::log
-//#define _LOG(l,msg,last) (LOG::log(l, __FILE__, __FUNCTION__, __LINE__, msg, last)) 
-//#define _LOG(msg,l) (LOG::log(__FILE__, __FUNCTION__, __LINE__, msg, l)) 
+//有参数的LOG
+#define _LOGX(level,fmt, ...) (__log(level, __FILE__,  __LINE__, __FUNCTION__, fmt, __VA_ARGS__))
+
+//没有参数的log LOGX
+#define _LOG(level,msg) (__log(level, __FILE__,  __LINE__, __FUNCTION__, msg))
 
 //以网络字节序读出一个整型
 bool readInt(int32_t& ret, char* stream);
-
+    
 
 #endif /* UTILS_H */
 

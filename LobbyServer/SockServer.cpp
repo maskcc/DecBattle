@@ -25,7 +25,7 @@ SockServer::~SockServer()
 }
 
  int32_t 
- SockServer::initServer(char* listenip, int32_t port)
+ SockServer::initServer(const char* listenip, int32_t port)
  {     
      if(0 != this->initSock(listenip, port))
      {
@@ -41,14 +41,14 @@ SockServer::~SockServer()
  
  
  int32_t 
- SockServer::initSock(char* listenip, int32_t port)
+ SockServer::initSock(const char* listenip, int32_t port)
  {     
      /*start listen port*/
     int32_t sockfd = sp_socket();
     sp_bindListen(sockfd, listenip, port);
     
     //m_sock 的idx设置为-1
-    m_sock.init(sockfd, -1,CONN_TYPE_NONE);
+    m_sock.init(sockfd, -1,CONN_TYPE_NONE, listenip);
     sp_nonblocking(m_sock.getFD());
      
     return 0;
@@ -171,6 +171,7 @@ SockServer::epollWait()
                         //错误处理??
                         //return ERROR_TYPE_ADDCTL_FAIL;
                     }
+                    
                 }   
                 else
                 {
@@ -211,6 +212,9 @@ SockServer::epollWait()
             }
             if(e->write)
             {            
+                m_connMgr.sendMsg(s);
+                //sp_write(m_epollFD, client->getFD(), client, true);
+               //     write(client->getFD(), "goodjob", 8);
                 __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "write something to far!");
 
             }    

@@ -19,6 +19,7 @@
 #include <sys/socket.h>
 #include "GameDef.h"
 #include "Socket.h"
+#include "SocketEPoll.h"
 
 using namespace std;
 /**
@@ -51,7 +52,7 @@ public:
     //发送消息
     int32_t sendMsg(Socket *s);
     Socket* getPeer(int32_t idx);
-    Socket* newSock(int32_t fd, int32_t type);
+    Socket* newSock(int32_t fd, int32_t type, const char* addr);
     int32_t getConnectionCount();
     uint32_t getOnlineCount();
     

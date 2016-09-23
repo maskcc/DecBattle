@@ -23,7 +23,7 @@ struct InerMsg_t;
 class MQueue
 {
 public:
-    MQueue(int s);
+    MQueue(int s, string sname);
    
     
     //推入队列尾端 
@@ -41,6 +41,7 @@ public:
    
 protected:
     int32_t m_service;        //服务id
+    string m_svcName;
     std::queue<InerMsg_t *> m_MQ;
     bool m_inGlobal; //是否在全局队列中
     MutexLock m_lock;

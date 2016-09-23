@@ -18,4 +18,4 @@ for x in sock:
     #print(sr)
 
 time.sleep(1200)
-
+#不对啊

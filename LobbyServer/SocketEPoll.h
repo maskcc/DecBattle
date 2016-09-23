@@ -42,7 +42,7 @@ sp_socket() {
 
 //失败退出进程
 static void
-sp_bindListen(int32_t sockfd, char* listenip, int32_t port) {    
+sp_bindListen(int32_t sockfd, const char* listenip, int32_t port) {    
     struct sockaddr_in servaddr = {0};   
     socklen_t addrlen = sizeof(servaddr);
     servaddr.sin_family = AF_INET;

@@ -28,8 +28,8 @@ class SockServer
 public:
     SockServer();
     ~SockServer();
-    int32_t initServer(char* listenip, int32_t port);
-    int32_t initSock(char* listenip, int32_t port);
+    int32_t initServer(const char* listenip, int32_t port);
+    int32_t initSock(const char* listenip, int32_t port);
     int32_t initEPoll();
     int32_t connectServer();
     

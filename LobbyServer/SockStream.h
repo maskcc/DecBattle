@@ -14,11 +14,13 @@
 #ifndef SOCKSTREAM_H
 #define SOCKSTREAM_H
 
+#include <vector>
 #include <unistd.h>
 #include <stdlib.h>
 #include "GameDef.h"
 #include "utils.h"
 
+using namespace std;
 const uint32_t MSG_SIZE_LENGTH = 4;
 const uint32_t STEP_READ_SIZE = 1;
 const uint32_t STEP_READ_BODY = 2;
@@ -29,6 +31,7 @@ class SockStream
 public:
     SockStream();
     int32_t reciveMsg(int32_t fd, BaseMsg *msg);
+    int32_t sendMsg(int32_t fd, BaseMsg *msg);
     int32_t reset();
     virtual ~SockStream();
 protected:
@@ -38,6 +41,7 @@ protected:
     
     //这个buffer 要有65535 份, 太占内存, 可否改成接收到消息后再申请内存...性能损失多少
     char m_stream[BUFF_LENGTH];  //最大缓冲区, 8KB, 改成4KB
+    vector <char> m_sendStreadm;  //发送缓冲区
 };
 
 

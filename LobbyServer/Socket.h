@@ -26,7 +26,7 @@ public:
     Socket();
     void reset();
     //type连接类型, 是和别的服务器连接还是被动连接
-    int32_t init(int fd, uint32_t idx,int32_t type);
+    int32_t init(int fd, uint32_t idx,int32_t type, string addr);
     int32_t readHandle(BaseMsg *msg);
     int32_t writeHandle();
     int32_t closeHandle();

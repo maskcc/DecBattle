@@ -59,13 +59,21 @@ ConnectionMgr::acceptPeer(Socket* s, Socket*& client)
         //exit(ERROR_TYPE_TOO_MANY_CONNECTOIN); //just for test to exit program pg
         return ERROR_TYPE_TOO_MANY_CONNECTOIN;
     }
-    int connfd = accept(s->getFD(), NULL, NULL);
+    struct sockaddr_in raddr;
+    socklen_t rsz = sizeof(raddr);
+    int connfd = accept(s->getFD(), (struct sockaddr *)&raddr,&rsz);
     if (connfd <= 0) {        
         //__log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "accept client fail! return code [%d]", connfd);        
         return connfd;
     }
-    client = newSock(connfd, CONN_TYPE_CLIENT);    
+    
+    
+    
+    
+    
+    client = newSock(connfd, CONN_TYPE_CLIENT, inet_ntoa(raddr.sin_addr));    
     addConnection(client);
+    sp_nonblocking(connfd);
   
     return connfd;
 
@@ -85,7 +93,7 @@ ConnectionMgr::connectPeer(const char* serverip, int32_t port)
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "connect to server fail! return code [%d]", connfd);
         return -1;
     }
-    Socket *client = newSock(connfd, CONN_TYPE_SERVER);;
+    Socket *client = newSock(connfd, CONN_TYPE_SERVER, serverip  );
     
     return addConnection(client);
 
@@ -144,7 +152,7 @@ ConnectionMgr::sendMsg(Socket *s)
     
 }
 Socket* 
-ConnectionMgr::newSock(int32_t fd, int32_t type)
+ConnectionMgr::newSock(int32_t fd, int32_t type, const char *addr)
 {
     int idx = 0;
     for(;;)
@@ -152,7 +160,7 @@ ConnectionMgr::newSock(int32_t fd, int32_t type)
         idx = (++HANDLER) % MAX_SOCKET_COUNT;
         if(-1 == m_connMap[idx].getIdx())
         {
-            m_connMap[idx].init(fd, HANDLER, type);
+            m_connMap[idx].init(fd, HANDLER, type, addr);
             return &m_connMap[idx];
         }
     }

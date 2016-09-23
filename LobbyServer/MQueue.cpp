@@ -8,11 +8,12 @@
 #include "NameService.h"
 
 
-MQueue::MQueue(int s)
+MQueue::MQueue(int s, string sname)
 {
     this->m_isBusy = false;
     this->m_service = s;
     this->m_inGlobal = false;
+    this->m_svcName = sname;
 }
 
 //推入队列尾端 
@@ -20,9 +21,7 @@ void
 MQueue::push(InerMsg_t *msg)
 {
     m_lock.lock();
-    //if(NameService::getInstance()->search(msg->service) != this->m_service)
-    //域名查找暂时屏蔽
-    if(false)
+    if(0 != strcmp(msg->service,this->m_svcName.c_str()))   
     {     
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "Push the wrong msg into msg queue[%d] wrongqueue[%d] source[%d] ", 
                                                         this->m_service, msg->service, msg->source);

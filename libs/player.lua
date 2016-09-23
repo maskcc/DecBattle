@@ -1,4 +1,5 @@
 local math = require("math")
+local pairs = pairs
 require("class")
 local player = class()
 
@@ -10,6 +11,10 @@ function player:ctor(fd, userid)
 	self.name = ""
 	self.sex = 0
 	self.items = {}
+
+end
+function player:dtor(fd, userid)
+	self.items = nil 
 
 end
 
@@ -30,7 +35,7 @@ function player:init(info)
 end
 
 function player:show()
-	print("player fd:",self.fd)
+	--[[print("player fd:",self.fd)
 	print("player userid:",self.userid)
 	print("player has login:",self.login)
 	print("player passwd:",self.passwd)
@@ -38,6 +43,6 @@ function player:show()
 	print("player sex:",self.sex)
 	for k, v in pairs(self.items) do
 		print("item:"..k, "count:",v)
-	end
+	end--]]
 end
 return player

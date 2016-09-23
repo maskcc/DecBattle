@@ -29,7 +29,15 @@
     }                 \
 } while(0)
 
+/*
+ Log Color define
+ */
+const int _DEBUG = 1;   // green
+const int _WARN = 2;  //yellow
+const int _ERROR = 4; //red
+
 const int32_t NOLOG = 0;
+const int32_t LOG_LEVEL = _DEBUG;
 typedef struct  event_t {
 	void * s; //每个event附带的信息
 	bool read;
@@ -37,13 +45,6 @@ typedef struct  event_t {
 }event;
 
 typedef struct epoll_event EPOLL_EV; 
-
-/*
- Log Color define
- */
-const int _DEBUG = 1;   // green
-const int _WARN = 2;  //yellow
-const int _ERROR = 4; //red
 
 
 /**

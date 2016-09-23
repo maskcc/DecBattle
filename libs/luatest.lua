@@ -41,19 +41,23 @@ ret = core.call("gate", 3, data, #data)
 
 
 t = {}
-n = 100 
+n = 72000 
 for i = 1, n do
-    data = cjson.encode({cmd="accept", fd=i, userid=i})
-    ret = core.call("gate", 3, data, #data)
-
-    data = cjson.encode({cmd="add", userid=i, passwd="ss123", name="GQGQ"..tostring(i), sex=1, items={["1400001"]=5, ["140002"] = 7}})
-
-    core.send("gate", "dbserver", 3, #data, data)
-end
-for i = 1, n do
-    data = cjson.encode({cmd="show", userid=i})
-    ret = core.call("gate", 3, data, #data)
+    local data1 = cjson.encode({cmd="accept", fd=i, userid=i})
+    ret = core.call("gate", 1000000 + i, data1, #data1)
 end
 
+for i = 1, n do
+    local data2 = cjson.encode({cmd="add", userid=i, passwd="ss123", name="GQGQ"..tostring(i), sex=1, items={["1400001"]=5, ["140002"] = 7}})
+    core.send("gate", "dbserver", 2000000 + i, #data2, data2)
+end
+for i = 1, n do
+    local data3 = cjson.encode({cmd="show", userid=i})
+    ret = core.call("gate", 3000000 + i, data3, #data3)
+end
+print("send an show ok")
+    local data4 = cjson.encode({cmd="release"})
+    ret = core.call("gate", 4000000 + 18, data4, #data4)
+print("end")
 --require "luatest"
 --

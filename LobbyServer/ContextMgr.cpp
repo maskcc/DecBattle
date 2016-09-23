@@ -43,7 +43,7 @@ ContextMgr::Init()
     m_Ctx = new Context;
     m_Ctx->state = luaL_newstate();    
     m_Ctx->handle = ++HANDLEID;
-    m_Ctx->queue = new MQueue(m_Ctx->handle);
+    m_Ctx->queue = new MQueue(m_Ctx->handle, this->serviceName);
     
     
     int32_t ret = NameService::getInstance()->reg(m_Ctx->handle, this->serviceName);

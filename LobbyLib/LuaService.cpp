@@ -75,6 +75,13 @@ int lsend(lua_State *L)
     //reader.parse(str, root);
     
     InerMsg *m = new InerMsg;
+    if(NULL == m)
+    {
+        _LOG(_ERROR, "malloc InerMsg fail");
+        lua_pushinteger(L, -1);
+        return 1;
+        
+    }
     memset(m, 0, sizeof(InerMsg));
     m->sz = sz;
     m->type = type;

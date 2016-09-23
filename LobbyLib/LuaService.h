@@ -15,6 +15,7 @@
 #define LUASERVICE_H
 
 #include <lua.hpp>
+#include <stdlib.h>
 #include "ContextMgr.h"
 #include "NameService.h"
 #include "ContextMap.h"

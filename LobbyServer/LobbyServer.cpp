@@ -21,7 +21,7 @@ LobbyServer::start()
      for(int c = 0; c < 5; c++)
         m_threads.spawn(dispatchMessage, NULL);
      
-    sleep(1);
+    //sleep(1);
     this->loadConfig();
     ContextMap::getInstance()->newContext(this->config, "bootstrap");
     this->runSockServer();

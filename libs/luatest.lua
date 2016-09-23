@@ -41,7 +41,7 @@ ret = core.call("gate", 3, data, #data)
 
 
 t = {}
-n = 10000
+n = 100 
 for i = 1, n do
     data = cjson.encode({cmd="accept", fd=i, userid=i})
     ret = core.call("gate", 3, data, #data)

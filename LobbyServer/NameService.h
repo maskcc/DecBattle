@@ -32,7 +32,7 @@ public:
     
     static NameService* getInstance();
     int32_t reg(int32_t s, string name);
-    int32_t search(string name);
+    int32_t search(string& name);
     static NameService* m_ins;
     
 protected:

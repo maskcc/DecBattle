@@ -16,13 +16,14 @@
 #include <string>
 #include "lua.hpp"
 #include "MQueue.h"
+#include "InerMsg.h"
 using namespace std;
 
 /**
  c struct 里面只保存指向类的指针
  */
 struct Context_t;
-typedef int(*callback)(Context_t* ctx, int type, char* msg, int sz);
+typedef int(*callback)(Context_t* ctx, int type, const char* msg, int sz);
 
 typedef struct Context_t
 {
@@ -45,7 +46,7 @@ public:
     int32_t putMsg(InerMsg *m);
     
     lua_State* getLuaState();
-    int32_t call(int32_t type, char *msg, int32_t sz);
+    int32_t call(int32_t type, string msg, int32_t sz);
     
 protected:
     int32_t loadScript();

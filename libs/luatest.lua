@@ -43,24 +43,27 @@ ret = core.call("gate", 3, data, #data)
 
 local core = require("lobbylib.core")
 
-t = {}
-n = 200 
-for i = 1, n do
-    local data1 = cjson.encode({cmd="accept", fd=i, userid=i})
-    ret = core.send("gate", "ss",1000000 + i, #data1, data1)
-end
-
-for i = 1, n do
-    local data2 = cjson.encode({cmd="add", userid=i, passwd="ss123", name="GQGQ"..tostring(i), sex=1, items={["1400001"]=5, ["140002"] = 7}})
-    core.send("gate", "dbserver", 2000000 + i, #data2, data2)
-end
-for i = 1, n do
-    local data3 = cjson.encode({cmd="show", userid=i})
-    ret = core.send("gate", "abc", 3000000 + i, #data3, data3)
-end
-print("send an show ok")
+function test() 
+    print(collectgarbage("count"))
+    local n = 100000 
+    for i = 1, n do
+        local data1 = cjson.encode({cmd="accept", fd=i, userid=i})
+        local ret = core.send("gate", "ss",1000000 + i, #data1, data1)
+        local data2 = cjson.encode({cmd="add", userid=i, passwd="ss123", name="GQGQ"..tostring(i), sex=1, items={["1400001"]=5, ["140002"] = 7}})
+        core.send("gate", "dbserver", 2000000 + i, #data2, data2)
+        local data3 = cjson.encode({cmd="show", userid=i})
+        ret = core.send("gate", "abc", 3000000 + i, #data3, data3)
+    end
+    print("send an show ok")
     local data4 = cjson.encode({cmd="release"})
     ret = core.send("gate", "abc", 4000000 , #data4, data4)
-print("end")
---require "luatest"
---
+    print("end")
+    print("before "..collectgarbage("count"))
+    collectgarbage("collect")
+    print("lua mem "..collectgarbage("count"))
+end
+
+test()
+test()
+test()
+test()

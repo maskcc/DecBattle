@@ -18,13 +18,13 @@ MQueue::MQueue(int s, string sname)
 
 //推入队列尾端 
 void 
-MQueue::push(InerMsg_t *msg)
+MQueue::push(InerMsg *msg)
 {
     m_lock.lock();
-    if(0 != strcmp(msg->service,this->m_svcName.c_str()))   
+    if(msg->service != this->m_svcName)   
     {     
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "Push the wrong msg into msg queue[%d] wrongqueue[%d] source[%d] ", 
-                                                        this->m_service, msg->service, msg->source);
+                                                        this->m_service, msg->service.c_str(), msg->source.c_str());
         m_lock.unlock();
         return;
         
@@ -47,10 +47,10 @@ MQueue::push(InerMsg_t *msg)
 }
     
     //从队头弹出
-InerMsg_t* MQueue::pop()
+InerMsg* MQueue::pop()
 {
     m_lock.lock();
-    InerMsg_t *m = NULL;
+    InerMsg *m = NULL;
     if(!m_MQ.empty())
     {
         m = m_MQ.front();

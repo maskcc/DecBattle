@@ -92,19 +92,16 @@ int lsend(lua_State *L)
         return 1;
         
     }
-    memset(m, 0, sizeof(InerMsg));
+    
     m->sz = sz;
     m->type = type;
-    memcpy(m->service, service, SERVICE_NAME_LENGTH);
-    memcpy(m->source, source, SERVICE_NAME_LENGTH);
-    m->msg = (char*)malloc(m->sz + 1);
-    memset(m->msg, 0, m->sz + 1);
-    memcpy(m->msg, msg, m->sz + 1);
-    
+    m->service = service;
+    m->source = source;
+    m->msg = msg;
+     
     __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "send msg sz[%d] type[%d] service[%s] source[%s]",
-                    sz, type, m->service, m->source);
-    //GlobalQueue::getInstance()->push(m);
-    
+                    sz, type, m->service.c_str(), m->source.c_str());
+     
     ContextMgr* ctx = ContextMap::getInstance()->find(m->service);
     if(NULL != ctx)
     {
@@ -112,7 +109,7 @@ int lsend(lua_State *L)
     }
     else
     {
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "can not find service name[%s]!", m->service);
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "can not find service name[%s]!", m->service.c_str());
     }
     
     

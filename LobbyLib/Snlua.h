@@ -25,7 +25,7 @@
  * @return 
  */
 static int 
-_cb(Context *ctx, int type, char* msg, int sz);
+_cb(Context *ctx, int type, const char* msg, int sz);
 
 
 
@@ -48,7 +48,6 @@ public:
 protected:
     
 };
-
 
 
 

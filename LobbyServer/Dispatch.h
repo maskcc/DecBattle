@@ -29,6 +29,7 @@ public:
     ~Dispatch();
     int32_t dispatch();
     MQueue* dealMsg(MQueue* q);
+    MQueue *m_queue;
     int32_t count;
     
 protected:

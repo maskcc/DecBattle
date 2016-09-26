@@ -2,7 +2,7 @@ import socket
 import time
 i = 0
 sock = []
-for x in range(1, 3000):
+for x in range(1, 30000):
     sock.append(socket.socket())
 for x in sock: 
     x.connect(("127.0.0.1", 10077))
@@ -17,5 +17,5 @@ for x in sock:
         sr = "connect error "
     #print(sr)
 
+print("run over")
 time.sleep(1200)
-#不对啊

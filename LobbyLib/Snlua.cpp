@@ -7,7 +7,7 @@
 #include "Snlua.h"
 
 static int 
-_cb(Context *ctx, int type, char* msg, int sz)
+_cb(Context *ctx, int type, const char* msg, int sz)
 {
     lua_State *l = ctx->state;
     if(NULL == l)

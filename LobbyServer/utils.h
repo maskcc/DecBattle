@@ -19,6 +19,11 @@
 #include <errno.h>
 #include <netinet/in.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <unistd.h>
+#include <sys/syscall.h> 
+#include <sys/time.h>
+#include <time.h>
 
 namespace LOG{
     #define NONE                 "\e[0m"
@@ -54,9 +59,24 @@ namespace LOG{
         char last[2048] = {0};
         
         time_t stamp = time(NULL);
-        const char *timestr = ctime(&stamp);
+        //ctime 函数在多线程下可能会有问题
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        struct tm *ptm = localtime(&tv.tv_sec);
+        struct tm stm = {0}; //定义, 以防ptm = NULL
+        if (NULL != ptm)
+        {
+            ptm->tm_year += 1900;
+            ptm->tm_mon += 1;
+            stm = *ptm;
+        }
         char timestamp[128] = {0};
-        memcpy(timestamp, timestr, strlen(timestr) - 1);
+        sprintf(timestamp, "%04d-%02d-%02d %02d:%02d:%02d.%03ld[%ld] ",
+                     stm.tm_year, stm.tm_mon, stm.tm_mday, stm.tm_hour, stm.tm_min, stm.tm_sec, (long)tv.tv_usec >> 10, (long)syscall(SYS_gettid));
+
+        //const char *timestr = ctime(&stamp);
+        
+        //memcpy(timestamp, timestr, strlen(timestr) - 1);
                 
         switch (level)
         {
@@ -75,7 +95,12 @@ namespace LOG{
         }
         
         vsnprintf(last, 2048, buff, vlist);
+        if(level >= LOG_LEVEL)
+    {
+       // return;
+    
         std::cout << last << std::endl;
+    }
         va_end(vlist);
        
         
@@ -91,7 +116,7 @@ static void __log(int level, const char *filename,  int32_t line, const char* fu
     }
     if(level < LOG_LEVEL)
     {
-        return;
+       // return;
     }
     va_list vlist;
     va_start(vlist, format);

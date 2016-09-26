@@ -8,6 +8,7 @@
       <itemPath>Dispatch.h</itemPath>
       <itemPath>GameDef.h</itemPath>
       <itemPath>GlobalQueue.h</itemPath>
+      <itemPath>InerMsg.h</itemPath>
       <itemPath>LobbyServer.h</itemPath>
       <itemPath>MQueue.h</itemPath>
       <itemPath>MutexLock.h</itemPath>
@@ -98,6 +99,8 @@
       </item>
       <item path="GlobalQueue.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="InerMsg.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="LobbyServer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="LobbyServer.h" ex="false" tool="3" flavor2="0">
@@ -184,6 +187,8 @@
       <item path="GlobalQueue.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GlobalQueue.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="InerMsg.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="LobbyServer.cpp" ex="false" tool="1" flavor2="0">
       </item>

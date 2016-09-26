@@ -21,6 +21,7 @@
 #include "ContextMap.h"
 #include "ContextMgr.h"
 #include "GameDef.h"
+#include "InerMsg.h"
 
 
 extern "C" int luaopen_lobbylib_core(lua_State *L);

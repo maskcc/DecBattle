@@ -42,7 +42,7 @@ NameService::reg(int32_t s, string name)
 
 
 int32_t
-NameService::search(string name)
+NameService::search(string& name)
 {
     int ret = -1;
     for(int32_t c = 0; c < m_nameList.size(); c++)

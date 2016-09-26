@@ -100,14 +100,14 @@ ContextMgr::getLuaState()
 }
 
 int32_t 
-ContextMgr::call(int32_t type, char *msg, int32_t sz)
+ContextMgr::call(int32_t type, string msg, int32_t sz)
 {
     if(NULL == this->m_Ctx || NULL == this->m_Ctx->cb)
     {        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "function or ctx not registered!");
         return -1;
     }
-    this->m_Ctx->cb(this->m_Ctx, type, msg, sz);
+    this->m_Ctx->cb(this->m_Ctx, type, msg.c_str(), sz);
     
    
     __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Handle[%d] called!", this->getHandle());

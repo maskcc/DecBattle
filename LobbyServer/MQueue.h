@@ -18,8 +18,9 @@
 #include "utils.h"
 #include "GlobalQueue.h"
 #include "MutexLock.h"
+#include "InerMsg.h"
 using namespace std;
-struct InerMsg_t;
+
 class MQueue
 {
 public:
@@ -27,12 +28,12 @@ public:
    
     
     //推入队列尾端 
-    void push(InerMsg_t *msg);
+    void push(InerMsg *msg);
     
     int32_t getService() const;
     
     //从队头弹出
-    InerMsg_t* pop();
+    InerMsg* pop();
     void setOutGlobal();
     
     //TODO 要添加当push进去后队列内数量的监控, 当数量超标时要通知是否有阻塞存在
@@ -42,7 +43,7 @@ public:
 protected:
     int32_t m_service;        //服务id
     string m_svcName;
-    std::queue<InerMsg_t *> m_MQ;
+    std::queue<InerMsg *> m_MQ;
     bool m_inGlobal; //是否在全局队列中
     MutexLock m_lock;
     

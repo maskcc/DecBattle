@@ -52,7 +52,7 @@ function handler.release(argc)
     print("del ok")
     gate.users = nil
 
-    collectgarbage()
+    collectgarbage("collect")
     print("after collect")
 
 end

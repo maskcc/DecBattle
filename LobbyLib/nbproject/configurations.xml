@@ -40,6 +40,7 @@
             <pElem>third</pElem>
             <pElem>../LobbyServer</pElem>
           </incDir>
+          <commandLine>-pg</commandLine>
         </ccTool>
         <linkerTool>
           <output>../libs/lobbylib.so</output>

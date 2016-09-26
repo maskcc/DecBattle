@@ -22,7 +22,9 @@
 #define GAMEDEF_H
 #include "lua.hpp"
 #include <stdint.h>
+#include <string>
 
+using namespace std;
 #define SAFEDEL(p) do{\
     if(NULL != p) {   \
         delete(p);    \
@@ -32,11 +34,11 @@
 /*
  Log Color define
  */
-const int _DEBUG = 1;   // green
+const int _DEBUG = 0;   // green
 const int _WARN = 2;  //yellow
 const int _ERROR = 4; //red
 
-const int32_t NOLOG = 0;
+const int32_t NOLOG = 1;
 const int32_t LOG_LEVEL = _ERROR;
 typedef struct  event_t {
 	void * s; //每个event附带的信息
@@ -109,15 +111,7 @@ typedef struct BaseMsg_t
  */
 const int32_t MSG_TYPE_INNER = 1;//内部消息 
 const int32_t MSG_TYPE_NET = 2;  //转发的网络消息
-typedef struct InerMsg_t
-{
-    char service[SERVICE_NAME_LENGTH];  //服务id, 目的服务地址
-    char source[SERVICE_NAME_LENGTH];   //源id 
-    uint32_t type;     // 内部消息还是外部消息
-    uint32_t sz;
-    char *msg;
-    
-}InerMsg;
+
 
 typedef struct Addr_t
 {

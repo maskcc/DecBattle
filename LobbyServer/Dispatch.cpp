@@ -57,10 +57,10 @@ Dispatch::dealMsg(MQueue* q)
             //还需要一些其他处理
             continue;
         }
-        __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "get msg type[%d]  msg[%s] sz[%d]", msg->type, msg->msg, msg->sz);
+        //__log(_WARN, __FILE__, __LINE__, __FUNCTION__, "get msg type[%d]  msg[%s] sz[%d]", msg->type, msg->msg, msg->sz);
         ctxMgr->call(msg->type, msg->msg, msg->sz);
   
-        SAFEDEL(msg->msg);
+        
         SAFEDEL(msg);
         ++count;        
         msg = q->pop();

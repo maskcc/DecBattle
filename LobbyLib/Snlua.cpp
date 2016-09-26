@@ -7,7 +7,7 @@
 #include "Snlua.h"
 
 static int 
-_cb(Context *ctx, int type, void* msg, int sz)
+_cb(Context *ctx, int type, char* msg, int sz)
 {
     lua_State *l = ctx->state;
     if(NULL == l)
@@ -18,7 +18,7 @@ _cb(Context *ctx, int type, void* msg, int sz)
     lua_rawgetp(l, LUA_REGISTRYINDEX, (void*)_cb);
  
     lua_pushinteger(l, type);
-    lua_pushlstring(l, static_cast<const char*>(msg), sz);
+    lua_pushlstring(l, msg, sz);
     lua_pushinteger(l, sz);
     
     int r = lua_pcall(l, 3, 0, 0);
@@ -36,7 +36,7 @@ _cb(Context *ctx, int type, void* msg, int sz)
             _LOG(_ERROR, "run fail but no error msg show");
         }
         if(NULL != msg)
-            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, static_cast<const char*>(msg));
+            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, msg);
         else
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "msg is null");
         return -1;       

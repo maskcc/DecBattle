@@ -37,7 +37,7 @@ const int _WARN = 2;  //yellow
 const int _ERROR = 4; //red
 
 const int32_t NOLOG = 0;
-const int32_t LOG_LEVEL = _DEBUG;
+const int32_t LOG_LEVEL = _ERROR;
 typedef struct  event_t {
 	void * s; //每个event附带的信息
 	bool read;

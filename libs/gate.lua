@@ -5,7 +5,8 @@ local cjson = require("cjson")
 
 local gate = {}
 local handler = {}
-local users = {}
+--local users = {}
+gate.users = {}
 
 gate._F = "gate"
 
@@ -19,14 +20,14 @@ function handler.accept(argc)
         print("malloc table item fail")
         print("fd"..argc.fd)
     end
-	users[p.userid] = p
+	gate.users[p.userid] = p
 end
 
 -- 添加用户信息
 -- argc.userid 用户userid
 -- argc 注册用户其他信息
 function handler.add(argc)
-	local p = users[argc.userid]	
+	local p = gate.users[argc.userid]	
     if nil ~= p then
 	    p:init(argc)
     else
@@ -37,7 +38,7 @@ end
 -- 显示用户信息
 -- argc.userid 需要显示的用户id
 function handler.show(argc)
-	local p = users[argc.userid]	
+	local p = gate.users[argc.userid]	
     if(nil ~= p) then
 	    p:show()
     else
@@ -45,11 +46,11 @@ function handler.show(argc)
     end
 end
 function handler.release(argc)
-    for _,v in pairs (users) do
+    for _,v in pairs (gate.users) do
         v:dtor()
     end
     print("del ok")
-    users = nil
+    gate.users = nil
 
     collectgarbage()
     print("after collect")
@@ -58,28 +59,18 @@ end
 
 -- 这是这个服务的回调函数
 svc.register(function(typeid, msg, size)
-	tmsg = cjson.decode(msg)
+	local tmsg = cjson.decode(msg)
     if(nil == tmsg.cmd) then
         print("msg's cmd is nil")
         return 
     end
 	local f = handler[tmsg.cmd]
 	if nil ~= f then
-		f(tmsg)
+	    pcall(f, tmsg)
     else 
         print("can not find function ")
 	end
 end)
-
-
-
-
-
-
-
-
-
-
 
 
 

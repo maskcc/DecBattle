@@ -58,7 +58,17 @@ lcall(lua_State *L)
     int32_t type = luaL_checkinteger(L, -3);
     const char *msg = luaL_checkstring(L, -2);
     int32_t sz = luaL_checkinteger(L, -1);
-    int32_t ret = mgr->call(type, (void*)msg, sz);
+    
+    //添加上\0
+    char *smsg = (char*)malloc(sz + 1);
+    
+    memcpy(smsg, msg, sz + 1);
+    
+    int32_t ret = mgr->call(type, smsg, sz);
+    
+    free(smsg);
+    
+    
     
     lua_pushinteger(L, ret);
     return 1;  
@@ -87,9 +97,9 @@ int lsend(lua_State *L)
     m->type = type;
     memcpy(m->service, service, SERVICE_NAME_LENGTH);
     memcpy(m->source, source, SERVICE_NAME_LENGTH);
-    m->msg = (char*)malloc(m->sz);
-    memset(m->msg, 0, m->sz);
-    memcpy(m->msg, msg, m->sz);
+    m->msg = (char*)malloc(m->sz + 1);
+    memset(m->msg, 0, m->sz + 1);
+    memcpy(m->msg, msg, m->sz + 1);
     
     __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "send msg sz[%d] type[%d] service[%s] source[%s]",
                     sz, type, m->service, m->source);

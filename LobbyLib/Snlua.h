@@ -25,7 +25,7 @@
  * @return 
  */
 static int 
-_cb(Context *ctx, int type, void* msg, int sz);
+_cb(Context *ctx, int type, char* msg, int sz);
 
 
 

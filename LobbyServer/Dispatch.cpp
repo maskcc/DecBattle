@@ -50,7 +50,14 @@ Dispatch::dealMsg(MQueue* q)
     while(NULL != msg)
     {
         ContextMgr *ctxMgr = ContextMap::getInstance()->find(msg->service);
-        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "get msg type[%d] sz[%d]", msg->type, msg->sz);
+        if(NULL == ctxMgr)
+        {
+            _LOG(_ERROR, "cannot find context");
+            msg = q->pop();
+            //还需要一些其他处理
+            continue;
+        }
+        __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "get msg type[%d]  msg[%s] sz[%d]", msg->type, msg->msg, msg->sz);
         ctxMgr->call(msg->type, msg->msg, msg->sz);
   
         SAFEDEL(msg->msg);

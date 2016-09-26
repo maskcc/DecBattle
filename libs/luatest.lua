@@ -10,6 +10,7 @@ local cjson = require "cjson"
 
 require "class"
 
+--[[
 p = class()
 
 function p:ctor(x)
@@ -38,13 +39,15 @@ ret = core.call("gate", 3, data, #data)
 data = cjson.encode({cmd="show", userid=12})
 ret = core.call("gate", 3, data, #data)
 
+--]]
 
+local core = require("lobbylib.core")
 
 t = {}
-n = 72000 
+n = 200 
 for i = 1, n do
     local data1 = cjson.encode({cmd="accept", fd=i, userid=i})
-    ret = core.call("gate", 1000000 + i, data1, #data1)
+    ret = core.send("gate", "ss",1000000 + i, #data1, data1)
 end
 
 for i = 1, n do
@@ -53,11 +56,11 @@ for i = 1, n do
 end
 for i = 1, n do
     local data3 = cjson.encode({cmd="show", userid=i})
-    ret = core.call("gate", 3000000 + i, data3, #data3)
+    ret = core.send("gate", "abc", 3000000 + i, #data3, data3)
 end
 print("send an show ok")
     local data4 = cjson.encode({cmd="release"})
-    ret = core.call("gate", 4000000 + 18, data4, #data4)
+    ret = core.send("gate", "abc", 4000000 , #data4, data4)
 print("end")
 --require "luatest"
 --

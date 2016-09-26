@@ -100,7 +100,7 @@ ContextMgr::getLuaState()
 }
 
 int32_t 
-ContextMgr::call(int32_t type, void *msg, int32_t sz)
+ContextMgr::call(int32_t type, char *msg, int32_t sz)
 {
     if(NULL == this->m_Ctx || NULL == this->m_Ctx->cb)
     {        

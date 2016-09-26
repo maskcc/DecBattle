@@ -19,7 +19,7 @@ LobbyServer::start()
 {    
     __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "------------- main LobbyServer started!-----");
     
-     for(int c = 0; c < 1; c++)
+     for(int c = 0; c < 3; c++)
         m_threads.spawn(dispatchMessage, NULL);
      
     //sleep(1);

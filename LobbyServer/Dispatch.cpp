@@ -62,6 +62,7 @@ Dispatch::dealMsg(MQueue* q)
   
         
         SAFEDEL(msg);
+        msg = NULL;
         ++count;        
         msg = q->pop();
     }

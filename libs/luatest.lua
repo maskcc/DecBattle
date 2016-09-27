@@ -54,7 +54,6 @@ function test()
         local data3 = cjson.encode({cmd="show", userid=i})
         ret = core.send("gate", "abc", 3000000 + i, #data3, data3)
     end
-    print("send an show ok")
     local data4 = cjson.encode({cmd="release"})
     ret = core.send("gate", "abc", 4000000 , #data4, data4)
     print("end")
@@ -63,6 +62,8 @@ function test()
     print("lua mem "..collectgarbage("count"))
 end
 
+test()
+test()
 test()
 test()
 test()

@@ -60,6 +60,7 @@ InerMsg* MQueue::pop()
     {
         m_inGlobal = false;
     }
+    std::cout<< "msg count is" << m_MQ.size() <<std::endl;
     m_lock.unlock();
     return m;
 }

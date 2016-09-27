@@ -322,7 +322,7 @@ void* test9(void*)
 
 }
 	vector<int> List;
-	for(int c = 0; c < 100; c++)
+	for(int c = 0; c < 3; c++)
 	{
 		int32_t sockfd = socket(AF_INET, SOCK_STREAM, 0);
 		if(sockfd < 0)
@@ -358,7 +358,7 @@ void* test9(void*)
 
 void test10()
 {
-	int threads = 30;
+	int threads = 1;
 	pthread_t th[threads];
 	for(int c = 0; c < threads; c++ )
 		pthread_create(&th[c],NULL, test9, NULL);

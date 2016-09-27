@@ -10,7 +10,16 @@
 #include "ContextMap.h"
 
 uint32_t SockServer::HANDLER = 0;
+SockServer* SockServer::ins =  new SockServer;
+SockServer* SockServer::getInstance()
+{
+    return ins;
+}
 
+int32_t SockServer::getSendFD()
+{
+    return m_sendctrFD;    
+}
 SockServer::SockServer()
 {
     m_stop = false;
@@ -28,15 +37,21 @@ SockServer::~SockServer()
 
  int32_t 
  SockServer::initServer(Addr *addr)
- {     
-     this->addListen(addr->ip, addr->port);
-     m_sendctrFD = addr->fd[0];
-     m_readctrFD = addr->fd[1];
-     
+ {   
+    m_readctrFD = addr->fd[0];
+    m_sendctrFD = addr->fd[1];
     if(0 != this->initEPoll())
     {
         return -1;
+    }    
+    
+    if (0 != sp_add(m_epollFD, m_readctrFD, NULL))
+    {        
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
+        return -1;
     }
+     
+    
      
     return 0;
  }
@@ -60,6 +75,11 @@ SockServer::~SockServer()
     
     m_listenSock.push_back(sock);
      
+    if (0 != sp_add(m_epollFD, sock.getFD(), (void *)&sock))    
+    {        
+            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
+            return -1;
+    }
     return 0;
  }
  
@@ -69,8 +89,9 @@ SockServer::~SockServer()
     /*init epoll server*/
     
     m_epollFD = sp_create(MAX_SOCKET_COUNT);  
-    sp_add(m_epollFD, m_readctrFD, NULL);
+    
     m_checkCtr = 1;
+    FD_ZERO(&m_rfds);
     
     for(int c = 0; c < m_listenSock.size(); c++)
     {
@@ -144,7 +165,7 @@ SockServer::epollWait()
         }
         
         n = this->epollWait();
-        m_checkCtr = 1;
+        
         if( n <= 0)
         {
             //EINTR 在写的时候出现中断 (例如 Ctrl + C 捕获到)           
@@ -162,7 +183,8 @@ SockServer::epollWait()
             event *e = &m_ev[index++];
             Socket *s = static_cast<Socket* >(e->s);
             if(NULL == s)
-            {            
+            {     
+                 m_checkCtr = 1;
                 __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "find the null socket!");
                 
                 //这里s == NULL 表示有管道信息到来
@@ -317,6 +339,13 @@ SockServer::ctrlCmd()
             request_close *close = (request_close*)buffer;
             Socket *s = m_connMgr.getPeer(close->idx);
             this->disconnect(s);            
+        }
+            break;
+        case 'S':
+        {
+            request_start *conf = (request_start*)buffer;
+            
+            this->addListen(conf->ip, conf->port);            
         }
             break;
         default:

@@ -8,6 +8,7 @@ Socket::Socket()
 {
     m_fd = -1;
     m_idx = -1;
+    m_port = -1;
     m_addr = "";
     m_lastRecvTime = 0;
     m_connType = CONN_TYPE_NONE;

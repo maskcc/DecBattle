@@ -42,7 +42,7 @@ protected:
     SockStream m_stream;
 protected:
     string   m_addr;   //地址
-    uint16_t m_port;   //端口号
+    int32_t m_port;   //端口号
     int32_t  m_fd;     //连接信息
     int32_t m_connType; //连接类型 CONN_TYPE_CLIENT(和客户端的连接), CONN_TYPE_SERVER(和别的服务器连接)
     int32_t m_idx;      //在列表中的位置

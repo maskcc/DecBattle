@@ -132,13 +132,14 @@ typedef struct request_open_t
 
 typedef struct request_send_t
 {
-    
+    int32_t sz;
+    void *msg;
 }request_send;
 
 typedef struct request_start_t
 {
     int32_t port;
-    char    ip[128];
+    char    ip[0];
 }request_start;
 
 

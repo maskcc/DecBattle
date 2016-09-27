@@ -22,6 +22,7 @@
 #include "ContextMgr.h"
 #include "GameDef.h"
 #include "InerMsg.h"
+#include "SockServer.h"
 
 
 extern "C" int luaopen_lobbylib_core(lua_State *L);
@@ -30,6 +31,7 @@ int llaunch(lua_State *L);
 int lcall(lua_State *L);
 int lsend(lua_State *L);
 int lexit(lua_State *L);
+int lstart(lua_State *L);
 
 
 

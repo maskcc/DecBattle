@@ -119,6 +119,42 @@ int lsend(lua_State *L)
 }
 
 
+int lstart(lua_State *L)
+{
+ 
+    const char *ip = luaL_checkstring(L, 1);    
+    int32_t port = luaL_checkinteger(L, 2);
+    int fd = SockServer::getInstance()->getSendFD();
+    RequestMsg request;
+    int len;
+    len = sizeof(request_start) + sizeof(ip);
+    request.u.start.port = port;
+    memcpy(request.u.start.ip, ip, sizeof(ip));
+    request.header[6] = (uint8_t)'S';
+    request.header[7] = (uint8_t)len;
+    
+    
+    
+	for (;;) {
+        int n = write(fd, &request.header[6], len + 2);
+        if (n < 0) {
+            if (errno != EINTR) {
+                fprintf(stderr, "socket-server : send ctrl command error %s.\n", strerror(errno));
+            }
+            continue;
+        }
+        
+        return 0;
+    }
+    
+    
+    
+    
+    
+    return 1;
+}
+
+
 int lexit(lua_State *L)
 {
     exit(0);
@@ -132,6 +168,7 @@ luaopen_lobbylib_core(lua_State *L)
         { "call", lcall }, 
         { "send", lsend }, 
         { "exit", lexit },
+        { "start", lstart },
         
         { NULL, NULL },
     };

@@ -27,7 +27,7 @@ using namespace std;
 class SockServer
 {
 public:
-    SockServer();
+   
     ~SockServer();
     int32_t initServer(Addr *addr);
    // int32_t initSock(const char* listenip, int32_t port);
@@ -40,15 +40,19 @@ public:
     
     int32_t epollWait();
     int32_t run();
+    int32_t getSendFD();
     void disconnect(Socket *s); 
     bool hasCmd();
-    void ctrlCmd();
+    void ctrlCmd();    
     void blockReadpipe(void *buffer, int sz);
     
+    static SockServer *getInstance();
+    static SockServer *ins;
     static uint32_t HANDLER;
 protected:
     //和客户端的连接管理
     //它有自己的一套idx
+     SockServer();
     
     int32_t m_epollFD;
     int32_t m_sendctrFD;

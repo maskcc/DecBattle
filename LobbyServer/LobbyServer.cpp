@@ -21,11 +21,12 @@ LobbyServer::start()
     
      for(int c = 0; c < 3; c++)
         m_threads.spawn(dispatchMessage, NULL);
+    this->runSockServer();
      
     //sleep(1);
     this->loadConfig();
     ContextMap::getInstance()->newContext(this->config, "bootstrap");
-    this->runSockServer();
+    
     
     //多线程处理逻辑
    
@@ -65,7 +66,7 @@ LobbyServer::sockServer(void *argc)
         
     }
     Addr *addr = (Addr *)argc;
-    SockServer *svr = new SockServer();
+    SockServer *svr = SockServer::getInstance();
     if(0 != svr->initServer(addr))
     {
         free(addr);        

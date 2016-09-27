@@ -55,6 +55,11 @@ Socket::getIdx() const
 {
     return m_idx;
 }
+int32_t
+Socket::getType() const
+{
+    return m_connType;
+}
 
 void
 Socket::setIdx(int32_t idx)
@@ -92,7 +97,7 @@ Socket::writeHandle()
 bool 
 operator==(const Socket &lsh, const Socket& rhs)
 {
-    return lsh.getFD() == rhs.getFD();
+    return lsh.getIdx() == rhs.getIdx();
     
 }
 

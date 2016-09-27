@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/ContextMap.o \
 	${OBJECTDIR}/ContextMgr.o \
 	${OBJECTDIR}/Dispatch.o \
+	${OBJECTDIR}/Gate.o \
 	${OBJECTDIR}/GlobalQueue.o \
 	${OBJECTDIR}/LobbyServer.o \
 	${OBJECTDIR}/MQueue.o \
@@ -96,6 +97,11 @@ ${OBJECTDIR}/Dispatch.o: Dispatch.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Dispatch.o Dispatch.cpp
+
+${OBJECTDIR}/Gate.o: Gate.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Gate.o Gate.cpp
 
 ${OBJECTDIR}/GlobalQueue.o: GlobalQueue.cpp 
 	${MKDIR} -p ${OBJECTDIR}

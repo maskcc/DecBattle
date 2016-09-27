@@ -45,7 +45,7 @@ local core = require("lobbylib.core")
 
 function test() 
     print(collectgarbage("count"))
-    local n = 100000 
+    local n = 5 
     for i = 1, n do
         local data1 = cjson.encode({cmd="accept", fd=i, userid=i})
         local ret = core.send("gate", "ss",1000000 + i, #data1, data1)
@@ -62,9 +62,4 @@ function test()
     print("lua mem "..collectgarbage("count"))
 end
 
-test()
-test()
-test()
-test()
-test()
 test()

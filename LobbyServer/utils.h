@@ -58,7 +58,6 @@ namespace LOG{
         char buff[1024] = {0};  
         char last[2048] = {0};
         
-        time_t stamp = time(NULL);
         //ctime 函数在多线程下可能会有问题
         struct timeval tv;
         gettimeofday(&tv, NULL);
@@ -73,11 +72,7 @@ namespace LOG{
         char timestamp[128] = {0};
         sprintf(timestamp, "%04d-%02d-%02d %02d:%02d:%02d.%03ld[%ld] ",
                      stm.tm_year, stm.tm_mon, stm.tm_mday, stm.tm_hour, stm.tm_min, stm.tm_sec, (long)tv.tv_usec >> 10, (long)syscall(SYS_gettid));
-
-        //const char *timestr = ctime(&stamp);
-        
-        //memcpy(timestamp, timestr, strlen(timestr) - 1);
-                
+               
         switch (level)
         {
             case _DEBUG:
@@ -95,12 +90,9 @@ namespace LOG{
         }
         
         vsnprintf(last, 2048, buff, vlist);
-        if(level >= LOG_LEVEL)
-    {
-       // return;
-    
+  
         std::cout << last << std::endl;
-    }
+    
         va_end(vlist);
        
         
@@ -116,7 +108,7 @@ static void __log(int level, const char *filename,  int32_t line, const char* fu
     }
     if(level < LOG_LEVEL)
     {
-       // return;
+        return;
     }
     va_list vlist;
     va_start(vlist, format);

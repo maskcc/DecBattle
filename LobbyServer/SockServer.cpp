@@ -9,6 +9,8 @@
 #include "GlobalQueue.h"
 #include "ContextMap.h"
 
+uint32_t SockServer::HANDLER = 0;
+
 SockServer::SockServer()
 {
     m_stop = false;
@@ -27,29 +29,33 @@ SockServer::~SockServer()
  int32_t 
  SockServer::initServer(const char* listenip, int32_t port)
  {     
-     if(0 != this->initSock(listenip, port))
-     {
-         return -1;
-     }
-     if(0 != this->initEPoll())
-     {
-         return -1;
-     }
+     this->addListen(listenip, port);
+    if(0 != this->initEPoll())
+    {
+        return -1;
+    }
      
     return 0;
  }
  
  
  int32_t 
- SockServer::initSock(const char* listenip, int32_t port)
+ SockServer::addListen(const char* listenip, int32_t port)
  {     
      /*start listen port*/
     int32_t sockfd = sp_socket();
+    
+    //监听错误会退出
     sp_bindListen(sockfd, listenip, port);
     
-    //m_sock 的idx设置为-1
-    m_sock.init(sockfd, -1,CONN_TYPE_NONE, listenip);
-    sp_nonblocking(m_sock.getFD());
+    //监听端口Socket的idx和ConnectionMgr的意义不同
+    uint32_t idx = (++HANDLER) % MAX_SOCKET_COUNT;
+    
+    Socket sock;
+    sock.init(sockfd, idx,CONN_TYPE_NONE, listenip);
+    sp_nonblocking(sock.getFD());
+    
+    m_listenSock.push_back(sock);
      
     return 0;
  }
@@ -59,11 +65,15 @@ SockServer::~SockServer()
  {   
     /*init epoll server*/
     
-    m_epollFD = sp_create(MAX_SOCKET_COUNT);   
-    if (0 != sp_add(m_epollFD, m_sock.getFD(), (void *)&m_sock))    
-    {        
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
-        return -1;
+    m_epollFD = sp_create(MAX_SOCKET_COUNT);  
+    
+    for(int c = 0; c < m_listenSock.size(); c++)
+    {
+        if (0 != sp_add(m_epollFD, m_listenSock[c].getFD(), (void *)&m_listenSock[c]))    
+        {        
+            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
+            return -1;
+        }
     }
     
     return 0;
@@ -142,7 +152,7 @@ SockServer::epollWait()
 
             if(e->read)
             {
-                if(*s == m_sock)                
+                if(isListener(s))                
                 {        
                     Socket *client = NULL;
                     int accRet = m_connMgr.acceptPeer(s, client); //等价于 m_sock;
@@ -222,8 +232,37 @@ SockServer::epollWait()
      }
  }
  
-  void SockServer::disconnect(Socket *s)
+void 
+SockServer::disconnect(Socket *s)
 {
     sp_del(m_epollFD, s->getFD());//这个要在disconnect 前, disconnect会将 fd 置为-1
     m_connMgr.disconnect(s);            
+}
+
+bool    
+SockServer::isListener(const Socket* s)
+{
+    
+    bool ret = false;
+    
+    if (NULL == s )
+    {
+        _LOG(_ERROR, "socket is null");
+        return ret;
+    }
+    
+    //CONN_TYPE_NONE 表示这是监听socket 
+    if(CONN_TYPE_NONE != s->getType() )
+    {
+        return ret;
+    }
+    for(int c = 0; c < m_listenSock.size(); c++)
+    {
+        if(m_listenSock[c] == *s)
+        {
+            ret = true;
+            break;
+        }
+    }
+    return ret;
 }

@@ -44,6 +44,13 @@ LobbyServer::runSockServer()
     const char *ip = "0.0.0.0";
     strncpy(addr->ip, ip, strlen(ip) + 1);
     addr->port = 10077;
+    if(pipe(addr->fd))
+    {
+        close(addr->fd[0]);
+        close(addr->fd[1]);
+        _LOG(_ERROR, "pipe fail");
+        exit(-1);
+    }
     m_threads.spawn(sockServer, (void*)addr);
     
     
@@ -59,7 +66,7 @@ LobbyServer::sockServer(void *argc)
     }
     Addr *addr = (Addr *)argc;
     SockServer *svr = new SockServer();
-    if(0 != svr->initServer(addr->ip, addr->port))
+    if(0 != svr->initServer(addr))
     {
         free(addr);        
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "Init Sock Server failed");

@@ -117,10 +117,64 @@ typedef struct Addr_t
 {
     char ip[64];
     int32_t port;
+    int32_t fd[2];//管道
 }Addr;
 
 //服务名称
 const int MAX_SERVER_NAME_LEN = 128;
 
-#endif /* GAMEDEF_H */
 
+typedef struct request_open_t
+{
+    
+}request_open;
+
+
+typedef struct request_send_t
+{
+    
+}request_send;
+
+typedef struct request_start_t
+{
+    int32_t port;
+    char    ip[128];
+}request_start;
+
+
+typedef struct request_close_t
+{
+    int32_t idx;
+}request_close;
+
+/*
+	The first byte is TYPE
+
+	S Start socket
+	B Bind socket
+	L Listen socket
+	K Close socket
+	O Connect to (Open)
+	X Exit
+	D Send package (high)
+	P Send package (low)
+	A Send UDP package
+	T Set opt
+	U Create UDP socket
+	C set udp address
+ */
+typedef struct RequestMsg_t
+{
+    uint8_t header[8];
+    union{
+       char buffer[256];
+       request_open open;
+       request_close close; //'K'
+       request_send  send;
+       request_start start;
+    } u;
+    
+}RequestMsg;
+
+
+#endif /* GAMEDEF_H */

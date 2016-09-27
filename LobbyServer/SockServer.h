@@ -29,7 +29,7 @@ class SockServer
 public:
     SockServer();
     ~SockServer();
-    int32_t initServer(const char* listenip, int32_t port);
+    int32_t initServer(Addr *addr);
    // int32_t initSock(const char* listenip, int32_t port);
     int32_t addListen(const char* listenip, int32_t port);
     bool    isListener(const Socket*);
@@ -40,7 +40,10 @@ public:
     
     int32_t epollWait();
     int32_t run();
-    void disconnect(Socket *s);    
+    void disconnect(Socket *s); 
+    bool hasCmd();
+    void ctrlCmd();
+    void blockReadpipe(void *buffer, int sz);
     
     static uint32_t HANDLER;
 protected:
@@ -48,7 +51,12 @@ protected:
     //它有自己的一套idx
     
     int32_t m_epollFD;
-    //Socket m_sock;           //服务器监听的socket信息
+    int32_t m_sendctrFD;
+    int32_t m_readctrFD;
+    fd_set m_rfds;
+    bool m_checkCtr;
+    
+    
     event  m_ev[MAX_EVENTS];
     EPOLL_EV m_tmpev[MAX_EVENTS];
     ConnectionMgr m_connMgr;

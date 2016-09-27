@@ -27,9 +27,12 @@ SockServer::~SockServer()
 }
 
  int32_t 
- SockServer::initServer(const char* listenip, int32_t port)
+ SockServer::initServer(Addr *addr)
  {     
-     this->addListen(listenip, port);
+     this->addListen(addr->ip, addr->port);
+     m_sendctrFD = addr->fd[0];
+     m_readctrFD = addr->fd[1];
+     
     if(0 != this->initEPoll())
     {
         return -1;
@@ -66,6 +69,8 @@ SockServer::~SockServer()
     /*init epoll server*/
     
     m_epollFD = sp_create(MAX_SOCKET_COUNT);  
+    sp_add(m_epollFD, m_readctrFD, NULL);
+    m_checkCtr = 1;
     
     for(int c = 0; c < m_listenSock.size(); c++)
     {
@@ -126,8 +131,20 @@ SockServer::epollWait()
             __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "EPoll server has been closed.");
             return ERROR_TYPE_STOP_SERVER;
         }
+        if(m_checkCtr)
+        {
+            if(hasCmd())
+            {
+                ctrlCmd();
+            }
+            else
+            {
+                m_checkCtr = 0;
+            }
+        }
         
         n = this->epollWait();
+        m_checkCtr = 1;
         if( n <= 0)
         {
             //EINTR 在写的时候出现中断 (例如 Ctrl + C 捕获到)           
@@ -146,8 +163,10 @@ SockServer::epollWait()
             Socket *s = static_cast<Socket* >(e->s);
             if(NULL == s)
             {            
-                __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "find the null socket!");
-                return ERROR_TYPE_NULL_SOCKET;
+                __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "find the null socket!");
+                
+                //这里s == NULL 表示有管道信息到来
+                continue;
             }
 
             if(e->read)
@@ -265,4 +284,67 @@ SockServer::isListener(const Socket* s)
         }
     }
     return ret;
+}
+
+bool
+SockServer::hasCmd() 
+{
+    struct timeval tv = {0, 0};
+    int retval;
+
+    FD_SET(m_readctrFD, &m_rfds);
+
+    retval = select(m_readctrFD + 1, &m_rfds, NULL, NULL, &tv);
+    if (retval == 1) {
+        return true;
+    }
+    return false;
+}
+void 
+SockServer::ctrlCmd()
+{
+    uint8_t buffer[256];
+    uint8_t header[2];
+    blockReadpipe(header, sizeof (header));
+    int type = header[0];
+    int len = header[1];
+    blockReadpipe(buffer, len);
+    
+    switch(type)
+    {
+        case 'K':
+        {
+            request_close *close = (request_close*)buffer;
+            Socket *s = m_connMgr.getPeer(close->idx);
+            this->disconnect(s);            
+        }
+            break;
+        default:
+            break;
+    }
+    
+}
+
+void
+SockServer::blockReadpipe(void *buffer, int sz) {
+    for (;;) 
+    {
+        int n = read(m_readctrFD, buffer, sz);
+        if (n < 0) 
+        {
+            if (errno == EINTR)
+                continue;
+            
+            _LOG(_ERROR, "block read pipe error");
+            return;
+        }
+        // must atomic read from a pipe
+        if(n != sz)
+        {
+            _LOG(_ERROR, "receive pipe msg error");
+            exit(-1);
+        }
+        
+        return;
+    }
 }

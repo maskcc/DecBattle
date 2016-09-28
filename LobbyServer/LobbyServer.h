@@ -34,6 +34,7 @@ public:
     
     static void dispatchMessage(void *);
     static void sockServer(void *);
+    static void gateServer(void *);
        
 protected:
 

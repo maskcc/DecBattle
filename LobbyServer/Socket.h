@@ -33,6 +33,7 @@ public:
     int32_t getFD() const;
     int32_t getIdx() const;
     int32_t getType() const;
+    const char* getAddr();
     void setIdx(int32_t idx);
     friend bool operator==(const Socket &lsh, const Socket &rhs);
     friend bool operator!=(const Socket &lsh, const Socket &rhs);

@@ -8,6 +8,7 @@
 #include "MQueue.h"
 #include "GlobalQueue.h"
 #include "ContextMap.h"
+#include "ParseQueue.h"
 
 uint32_t SockServer::HANDLER = 0;
 SockServer* SockServer::ins =  new SockServer;
@@ -75,7 +76,8 @@ SockServer::~SockServer()
     
     m_listenSock.push_back(sock);
      
-    if (0 != sp_add(m_epollFD, sock.getFD(), (void *)&sock))    
+    //sp_add 的userdata不要是栈上的数据, m_listenSock.back()返回的是刚推入数据的引用)
+    if (0 != sp_add(m_epollFD, sock.getFD(), (void *)&m_listenSock.back()))    
     {        
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
             return -1;
@@ -212,8 +214,8 @@ SockServer::epollWait()
                         }
                     }
                     
-                    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Acceept succeed, connidx[%d],connfd is[%d] and now connection count is[%d]", 
-                                client->getIdx(),client->getFD(), m_connMgr.getConnectionCount());
+                    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Acceept succeed, connidx[%d],connfd is[%d] remote ip[%s] and now connection count is[%d]", 
+                                client->getIdx(),client->getFD(), client->getAddr() ,m_connMgr.getConnectionCount());
                     
                     if(0 != sp_add(m_epollFD, client->getFD(), (void*)client))
                     {
@@ -256,6 +258,7 @@ SockServer::epollWait()
                     //处理消息
                     if(NULL != msg)
                     {//这个应该在别的地方将其转换成内部队列
+                        ParseQueue::getInstance()->push(msg);
                         
 
                     }
@@ -284,27 +287,25 @@ bool
 SockServer::isListener(const Socket* s)
 {
     
-    bool ret = false;
-    
+    bool ret = false;    
     if (NULL == s )
-    {
-        _LOG(_ERROR, "socket is null");
+    {        
         return ret;
     }
     
     //CONN_TYPE_NONE 表示这是监听socket 
     if(CONN_TYPE_NONE != s->getType() )
-    {
+    {        
         return ret;
     }
     for(int c = 0; c < m_listenSock.size(); c++)
     {
         if(m_listenSock[c] == *s)
-        {
+        {            
             ret = true;
             break;
         }
-    }
+    }    
     return ret;
 }
 

@@ -5,20 +5,19 @@
  */
 
 /* 
- * File:   GlobalQueue.h
+ * File:   ParseQueue.h
  * Author: admin
  *
- * Created on 2016年9月12日, 下午7:12
+ * Created on 2016年9月28日, 上午11:19
  */
 
-#ifndef GLOBALQUEUE_H
-#define GLOBALQUEUE_H
+#ifndef PARSEQUEUE_H
+#define PARSEQUEUE_H
 #include <queue>
 #include <pthread.h>
 
 #include "GameDef.h"
 #include "utils.h"
-#include "MQueue.h"
 #include "MutexLock.h"
 
 using namespace std;
@@ -27,23 +26,23 @@ using namespace std;
  */
 
 class MQueue;
-class GlobalQueue
+class ParseQueue
 {
 public:
-    static GlobalQueue* getInstance();
-    void push(MQueue* msg);
-    MQueue* pop();
+    static ParseQueue* getInstance();
+    void push(BaseMsg* msg);
+    BaseMsg* pop();
     void lockQ();
     void unlockQ();
     void waitQ();
-    ~GlobalQueue();
+    ~ParseQueue();
     
      
  
 protected:
-    
-     static GlobalQueue* m_instance;
-     queue<MQueue*> m_msgQueue; 
+    ParseQueue();
+     static ParseQueue* m_instance;
+     queue<BaseMsg*> m_msgQueue; 
      
     MutexLock m_lock;
      
@@ -54,12 +53,14 @@ protected:
     
    
 private:
-    GlobalQueue();
+    
     
     
     
     
 };
 
-#endif /* GLOBALQUEUE_H */
+
+
+#endif /* PARSEQUEUE_H */
 

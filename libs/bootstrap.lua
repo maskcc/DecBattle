@@ -13,4 +13,8 @@ utils.log(bootstrap._F, "none", "------ bootstrap start ------", utils._ERROR)
 
 core.launch("gate.lua", "gate")
 core.start("0.0.0.0", 10077)
+core.start("0.0.0.0", 10071)
+core.start("0.0.0.0", 10072)
+while true do
+end
 --require"luatest"

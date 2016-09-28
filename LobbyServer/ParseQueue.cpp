@@ -3,21 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-#include "GlobalQueue.h"
 
-GlobalQueue* GlobalQueue::m_instance = new GlobalQueue;
+#include "ParseQueue.h"
 
-GlobalQueue* 
-GlobalQueue::getInstance()
+ParseQueue* ParseQueue::m_instance = new ParseQueue;
+
+ParseQueue* 
+ParseQueue::getInstance()
 {
-
     return m_instance;
-        
     
 }
 
  void 
-GlobalQueue::push(MQueue* q)
+ParseQueue::push(BaseMsg* q)
  {    
     lockQ();
     m_msgQueue.push(q);
@@ -27,11 +26,11 @@ GlobalQueue::push(MQueue* q)
 
 
  
- MQueue* 
- GlobalQueue::pop()
+ BaseMsg* 
+ ParseQueue::pop()
  {
     lockQ();
-    MQueue *q = NULL;
+    BaseMsg *q = NULL;
     if(!m_msgQueue.empty())
     {
         q = m_msgQueue.front();
@@ -43,7 +42,7 @@ GlobalQueue::push(MQueue* q)
  }
  
  void
- GlobalQueue::lockQ()
+ ParseQueue::lockQ()
  {
      
     m_lock.lock();
@@ -51,23 +50,21 @@ GlobalQueue::push(MQueue* q)
  }
  
  void
- GlobalQueue::unlockQ()
+ ParseQueue::unlockQ()
  {     
     m_lock.unlock(); 
      
  }
  
  void 
- GlobalQueue::waitQ()
- {       
-   // __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "I am waiting here");
+ ParseQueue::waitQ()
+ { 
     pthread_cond_wait(&m_conditoin, m_lock.get());
-    //__log(_WARN, __FILE__, __LINE__, __FUNCTION__, "stop wait");
-    //当没有消息时, 会阻塞在这
-     
+    
+    //当没有消息时, 会阻塞在这     
  }
  
- GlobalQueue::GlobalQueue()
+ ParseQueue::ParseQueue()
  {
     
     if(0 != pthread_cond_init(&m_conditoin, NULL))
@@ -76,7 +73,7 @@ GlobalQueue::push(MQueue* q)
      }
  }
  
-GlobalQueue:: ~GlobalQueue()
+ParseQueue:: ~ParseQueue()
  {
      if(0 != pthread_cond_destroy(&m_conditoin))
      {         

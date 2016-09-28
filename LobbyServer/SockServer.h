@@ -22,6 +22,7 @@
 #include "ConnectionMgr.h"
 #include "utils.h"
 #include "SocketEPoll.h"
+#include "ParseQueue.h"
 using namespace std;
 
 class SockServer

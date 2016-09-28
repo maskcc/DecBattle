@@ -61,6 +61,11 @@ Socket::getType() const
 {
     return m_connType;
 }
+const char*
+Socket::getAddr() 
+{
+    return m_addr.c_str();
+}
 
 void
 Socket::setIdx(int32_t idx)

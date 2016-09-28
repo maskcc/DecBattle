@@ -8,6 +8,7 @@
 #include "SockServer.h"
 #include "GlobalQueue.h"
 #include "Dispatch.h"
+#include "Gate.h"
 
 void 
 LobbyServer::loadConfig()
@@ -23,14 +24,14 @@ LobbyServer::start()
         m_threads.spawn(dispatchMessage, NULL);
     this->runSockServer();
      
-    //sleep(1);
+    
+    //等sock服务器启动完成后再启动bootstrap(应该有更好的方法)
+    sleep(1);
     this->loadConfig();
     ContextMap::getInstance()->newContext(this->config, "bootstrap");
     
-    
+     m_threads.spawn(gateServer, NULL);
     //多线程处理逻辑
-   
-    
    m_threads.join();
     
 }
@@ -51,21 +52,8 @@ LobbyServer::runSockServer()
         close(addr->fd[1]);
         _LOG(_ERROR, "pipe fail");
         exit(-1);
-    }
-    m_threads.spawn(sockServer, (void*)addr);
+    }     
     
-    
-}
-
-void 
-LobbyServer::sockServer(void *argc)
-{
-    if(NULL == argc)
-    {        
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "the argc is null, can not run sock server");
-        
-    }
-    Addr *addr = (Addr *)argc;
     SockServer *svr = SockServer::getInstance();
     if(0 != svr->initServer(addr))
     {
@@ -74,7 +62,21 @@ LobbyServer::sockServer(void *argc)
         return;
     }
     free(addr);
+    m_threads.spawn(sockServer, (void*)svr);
     
+    
+}
+
+void 
+LobbyServer::sockServer(void *argc)
+{
+     if(NULL == argc)
+    {        
+        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "the argc is null, can not run sock server");
+        
+    }    
+     
+    SockServer *svr = (SockServer *)argc;
     __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Init sock server success");
     if(0 != svr->run())
     {       
@@ -87,9 +89,24 @@ LobbyServer::sockServer(void *argc)
 void 
 LobbyServer::dispatchMessage(void *)
 {
-    Dispatch dis;
+    Dispatch *dis = new Dispatch;
 
-    dis.dispatch();
+    dis->dispatch();
+    
+    _LOG(_ERROR, "dispatch has been shutdown");
 
+    
+}
+
+void 
+LobbyServer::gateServer(void *argc)
+{ 
+    Gate *gate = new Gate();
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Gate Init success");
+    gate->dispatch();
+    
+    _LOG(_ERROR, "gate has been shutdown");
+    
+    
     
 }

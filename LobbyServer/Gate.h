@@ -15,9 +15,20 @@
 #define GATE_H
 #include <queue>
 #include "Socket.h"
+#include "InerMsg.h"
+#include "ParseQueue.h"
+#include "ContextMgr.h"
+#include "ContextMap.h"
 class Gate
 {
 public:
+    Gate();
+    ~Gate();
+    int32_t dispatch();
+    void dealMsg(BaseMsg* q);
+ 
+    
+protected:
     
     
 };

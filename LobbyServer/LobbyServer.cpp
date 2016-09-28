@@ -91,6 +91,7 @@ LobbyServer::dispatchMessage(void *)
 {
     Dispatch *dis = new Dispatch;
 
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "dispatch Init success");
     dis->dispatch();
     
     _LOG(_ERROR, "dispatch has been shutdown");

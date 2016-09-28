@@ -30,7 +30,7 @@ class SockStream
 {
 public:
     SockStream();
-    int32_t reciveMsg(int32_t fd, BaseMsg *msg);
+    int32_t reciveMsg(int32_t fd, BaseMsg *&msg);
     int32_t sendMsg(int32_t fd, BaseMsg *msg);
     int32_t reset();
     virtual ~SockStream();

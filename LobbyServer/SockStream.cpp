@@ -19,7 +19,7 @@ SockStream::~SockStream()
  * @return 
  */
 int32_t 
-SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
+SockStream::reciveMsg(int32_t fd, BaseMsg *&msg)
 {
     //先读取4字节长度的包头
     if(STEP_READ_SIZE == this->m_readStep)
@@ -69,7 +69,7 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *msg)
         memset(m_stream, 0, MSG_SIZE_LENGTH);
         
         //这里不需要返回, 读完头结点直接读包体
-        return MSG_TYPE_MORE;
+       // return MSG_TYPE_MORE;
     }
     
     //读取body

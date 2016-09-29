@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/ConfigMgr.o \
 	${OBJECTDIR}/ConnectionMgr.o \
 	${OBJECTDIR}/ContextMap.o \
 	${OBJECTDIR}/ContextMgr.o \
@@ -79,95 +80,100 @@ LDLIBSOPTIONS=-llua
 	${MKDIR} -p ../libs
 	${LINK.cc} -o ../libs/Lobby ${OBJECTFILES} ${LDLIBSOPTIONS} -lpthread -ldl -Wl,-E
 
+${OBJECTDIR}/ConfigMgr.o: ConfigMgr.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ConfigMgr.o ConfigMgr.cpp
+
 ${OBJECTDIR}/ConnectionMgr.o: ConnectionMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ConnectionMgr.o ConnectionMgr.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ConnectionMgr.o ConnectionMgr.cpp
 
 ${OBJECTDIR}/ContextMap.o: ContextMap.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ContextMap.o ContextMap.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ContextMap.o ContextMap.cpp
 
 ${OBJECTDIR}/ContextMgr.o: ContextMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ContextMgr.o ContextMgr.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ContextMgr.o ContextMgr.cpp
 
 ${OBJECTDIR}/Dispatch.o: Dispatch.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Dispatch.o Dispatch.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Dispatch.o Dispatch.cpp
 
 ${OBJECTDIR}/Gate.o: Gate.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Gate.o Gate.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Gate.o Gate.cpp
 
 ${OBJECTDIR}/GlobalQueue.o: GlobalQueue.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GlobalQueue.o GlobalQueue.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GlobalQueue.o GlobalQueue.cpp
 
 ${OBJECTDIR}/LobbyServer.o: LobbyServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LobbyServer.o LobbyServer.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LobbyServer.o LobbyServer.cpp
 
 ${OBJECTDIR}/MQueue.o: MQueue.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MQueue.o MQueue.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MQueue.o MQueue.cpp
 
 ${OBJECTDIR}/MutexLock.o: MutexLock.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MutexLock.o MutexLock.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MutexLock.o MutexLock.cpp
 
 ${OBJECTDIR}/NameService.o: NameService.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NameService.o NameService.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NameService.o NameService.cpp
 
 ${OBJECTDIR}/ParseQueue.o: ParseQueue.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParseQueue.o ParseQueue.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ParseQueue.o ParseQueue.cpp
 
 ${OBJECTDIR}/SockServer.o: SockServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SockServer.o SockServer.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SockServer.o SockServer.cpp
 
 ${OBJECTDIR}/SockStream.o: SockStream.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SockStream.o SockStream.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SockStream.o SockStream.cpp
 
 ${OBJECTDIR}/Socket.o: Socket.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
 
 ${OBJECTDIR}/Thread.o: Thread.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Thread.o Thread.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Thread.o Thread.cpp
 
 ${OBJECTDIR}/ThreadBase.o: ThreadBase.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ThreadBase.o ThreadBase.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ThreadBase.o ThreadBase.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/utils.o: utils.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.cpp
+	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.cpp
 
 # Subprojects
 .build-subprojects:

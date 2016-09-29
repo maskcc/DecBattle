@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/ConfigMgr.o \
 	${OBJECTDIR}/ConnectionMgr.o \
 	${OBJECTDIR}/ContextMap.o \
 	${OBJECTDIR}/ContextMgr.o \
@@ -78,6 +79,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lobbyserver: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lobbyserver ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/ConfigMgr.o: ConfigMgr.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ConfigMgr.o ConfigMgr.cpp
 
 ${OBJECTDIR}/ConnectionMgr.o: ConnectionMgr.cpp 
 	${MKDIR} -p ${OBJECTDIR}

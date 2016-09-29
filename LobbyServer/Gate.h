@@ -19,6 +19,9 @@
 #include "ParseQueue.h"
 #include "ContextMgr.h"
 #include "ContextMap.h"
+#include "ConfigMgr.h"
+
+
 class Gate
 {
 public:
@@ -26,6 +29,7 @@ public:
     ~Gate();
     int32_t dispatch();
     void dealMsg(BaseMsg* q);
+     
  
     
 protected:

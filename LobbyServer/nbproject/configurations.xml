@@ -2,6 +2,7 @@
 <configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles" displayName="头文件" projectFiles="true">
+      <itemPath>ConfigMgr.h</itemPath>
       <itemPath>ConnectionMgr.h</itemPath>
       <itemPath>ContextMap.h</itemPath>
       <itemPath>ContextMgr.h</itemPath>
@@ -24,6 +25,7 @@
       <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
+      <itemPath>ConfigMgr.cpp</itemPath>
       <itemPath>ConnectionMgr.cpp</itemPath>
       <itemPath>ContextMap.cpp</itemPath>
       <itemPath>ContextMgr.cpp</itemPath>
@@ -70,6 +72,7 @@
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>../LobbyLib</pElem>
+            <pElem>../third</pElem>
           </incDir>
           <commandLine>-pg</commandLine>
         </ccTool>
@@ -81,6 +84,10 @@
           <commandLine>-lpthread -ldl -Wl,-E</commandLine>
         </linkerTool>
       </compileType>
+      <item path="ConfigMgr.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ConfigMgr.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ConnectionMgr.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ConnectionMgr.h" ex="false" tool="3" flavor2="0">
@@ -178,6 +185,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="ConfigMgr.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ConfigMgr.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ConnectionMgr.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ConnectionMgr.h" ex="false" tool="3" flavor2="0">

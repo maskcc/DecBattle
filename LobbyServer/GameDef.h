@@ -178,4 +178,30 @@ typedef struct RequestMsg_t
 }RequestMsg;
 
 
+/*具体游戏相关的协议*/
+
+
+int m_AlignmentByte[4];  //对齐值
+
+
+static const unsigned char IDENTIFY_VER = 0x05;
+static const unsigned char MESSAGE_VER  = 0x03;
+
+static const unsigned char ENCODE_NONE  = 0x00;
+static const unsigned char ENCODE_AES   = 0x01;
+
+static const unsigned short NM_KEEP_ALIVE = 0xF0F1;
+
+
+typedef struct MsgHeadDef
+{
+    unsigned char  identity;
+    unsigned char  encode;
+    unsigned short length;
+    unsigned char  version;
+    unsigned char  reserve;
+    unsigned short cMsgType;
+}MsgHeadDef, *PMsgHeader;
+
+
 #endif /* GAMEDEF_H */

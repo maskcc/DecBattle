@@ -8,7 +8,7 @@
 
 Gate::Gate()
 {
-    
+    ConfigMgr mgr;
 }
 Gate::~Gate()
 {

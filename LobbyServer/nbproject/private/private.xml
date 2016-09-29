@@ -14,19 +14,21 @@
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/LobbyServer.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Socket.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ContextMap.cpp</file>
-            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Gate.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/main.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Gate.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ContextMap.h</file>
-            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ParseQueue.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockStream.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ParseQueue.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ContextMgr.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ConfigMgr.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ConnectionMgr.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ParseQueue.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/LobbyServer.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ConfigMgr.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockStream.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Gate.cpp</file>
-            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockServer.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/ConnectionMgr.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockServer.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/InerMsg.h</file>
         </group>
     </open-files>

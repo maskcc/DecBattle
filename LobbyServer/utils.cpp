@@ -13,3 +13,11 @@ readInt(int32_t& ret, char* stream)
     return true;
     
 }
+
+bool 
+readShort(uint16_t& ret, char* stream)
+{
+    ret = ntohl(*(uint16_t*)stream);
+    return true;
+    
+}

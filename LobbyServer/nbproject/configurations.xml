@@ -15,6 +15,7 @@
       <itemPath>MQueue.h</itemPath>
       <itemPath>MutexLock.h</itemPath>
       <itemPath>NameService.h</itemPath>
+      <itemPath>NetMessageManager.h</itemPath>
       <itemPath>ParseQueue.h</itemPath>
       <itemPath>SockServer.h</itemPath>
       <itemPath>SockStream.h</itemPath>
@@ -36,6 +37,7 @@
       <itemPath>MQueue.cpp</itemPath>
       <itemPath>MutexLock.cpp</itemPath>
       <itemPath>NameService.cpp</itemPath>
+      <itemPath>NetMessageManager.cpp</itemPath>
       <itemPath>ParseQueue.cpp</itemPath>
       <itemPath>SockServer.cpp</itemPath>
       <itemPath>SockStream.cpp</itemPath>
@@ -131,6 +133,10 @@
       <item path="NameService.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="NameService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetMessageManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetMessageManager.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ParseQueue.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -232,6 +238,10 @@
       <item path="NameService.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="NameService.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetMessageManager.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetMessageManager.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ParseQueue.cpp" ex="false" tool="1" flavor2="0">
       </item>

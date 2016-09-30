@@ -23,18 +23,24 @@
 
 #include <cstdio>
 #include <iostream>
+
 #include "utils.h"
-using namespace rapidjson;
+#include "GameDef.h"
+
 using namespace std;
 class ConfigMgr
 {
 public:
     ConfigMgr();
-    int32_t readJsonFile(string name);
-    Document* find(string name);
+    int32_t readJsonFile(string name, rapidjson::Document& d);
+    
+ 
+
+    
+    
 protected:
-    vector<string> files;
-    map<string, Document*> m_configs;
+    
+    
     
     
     

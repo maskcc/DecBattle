@@ -42,7 +42,7 @@ const int32_t NOLOG = false;
 const int32_t LOG_LEVEL = _DEBUG;
 typedef struct  event_t {
 	void * s; //每个event附带的信息
-	bool read;
+	bool read;  
 	bool write;
 }event;
 
@@ -181,7 +181,7 @@ typedef struct RequestMsg_t
 /*具体游戏相关的协议*/
 
 
-int m_AlignmentByte[4];  //对齐值
+//int m_AlignmentByte[4];  //对齐值
 
 
 static const unsigned char IDENTIFY_VER = 0x05;
@@ -203,5 +203,11 @@ typedef struct MsgHeadDef
     unsigned short cMsgType;
 }MsgHeadDef, *PMsgHeader;
 
+typedef struct MsgBase
+{
+    MsgHeadDef head;
+    void*      msg;
+    
+}MsgBase, *PMsgBase;
 
 #endif /* GAMEDEF_H */

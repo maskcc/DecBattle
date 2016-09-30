@@ -46,6 +46,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/MQueue.o \
 	${OBJECTDIR}/MutexLock.o \
 	${OBJECTDIR}/NameService.o \
+	${OBJECTDIR}/NetMessageManager.o \
 	${OBJECTDIR}/ParseQueue.o \
 	${OBJECTDIR}/SockServer.o \
 	${OBJECTDIR}/SockStream.o \
@@ -134,6 +135,11 @@ ${OBJECTDIR}/NameService.o: NameService.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NameService.o NameService.cpp
+
+${OBJECTDIR}/NetMessageManager.o: NetMessageManager.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NetMessageManager.o NetMessageManager.cpp
 
 ${OBJECTDIR}/ParseQueue.o: ParseQueue.cpp 
 	${MKDIR} -p ${OBJECTDIR}

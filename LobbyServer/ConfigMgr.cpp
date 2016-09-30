@@ -7,23 +7,24 @@
 #include "ConfigMgr.h"
 
 int32_t
-ConfigMgr::readJsonFile(string name)
+ConfigMgr::readJsonFile(string name, rapidjson::Document& d)
 {
     string fname = name + ".json";
     char readBuffer[65535] = {0};
     FILE *fp = fopen(fname.c_str(), "r");
-    FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-    Document *d = new Document();
-    if(d->ParseStream(is).HasParseError())
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    
+    if(d.ParseStream(is).HasParseError())
     {
         _LOGX(_ERROR, "parse config file failed %s", name.c_str());
         fclose(fp);
-        exit(-1);
+    
+        return -1;
     }
     
-    m_configs.insert(make_pair(name, d));
+    
     fclose(fp);
-    //tests
+    return 0;
     
     
     
@@ -43,12 +44,7 @@ ConfigMgr::readJsonFile(string name)
 }
 ConfigMgr::ConfigMgr()
 {
-    readJsonFile("NJZnetMessage");
+   
     
 }
 
-Document*
-ConfigMgr::find(string name)
-{
-    
-}

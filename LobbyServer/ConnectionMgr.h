@@ -48,7 +48,7 @@ public:
     //主动断开连接
     void disconnect(Socket *s);
     //接收到消息
-    int32_t receiveMsg(Socket *s, BaseMsg *&msg);
+    int32_t receiveMsg(Socket *s, PMsgBase &msg);
     //发送消息
     int32_t sendMsg(Socket *s);
     Socket* getPeer(int32_t idx);

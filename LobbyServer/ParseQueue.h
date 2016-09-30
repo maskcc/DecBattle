@@ -30,8 +30,8 @@ class ParseQueue
 {
 public:
     static ParseQueue* getInstance();
-    void push(BaseMsg* msg);
-    BaseMsg* pop();
+    void push(PMsgBase msg);
+    PMsgBase pop();
     void lockQ();
     void unlockQ();
     void waitQ();
@@ -42,7 +42,7 @@ public:
 protected:
     ParseQueue();
      static ParseQueue* m_instance;
-     queue<BaseMsg*> m_msgQueue; 
+     queue<PMsgBase> m_msgQueue; 
      
     MutexLock m_lock;
      

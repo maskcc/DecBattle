@@ -123,6 +123,7 @@ static void __log(int level, const char *filename,  int32_t line, const char* fu
 
 //以网络字节序读出一个整型
 bool readInt(int32_t& ret, char* stream);
+bool readShort(uint16_t& ret, char* stream);
     
 
 #endif /* UTILS_H */

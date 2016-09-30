@@ -16,7 +16,7 @@ ParseQueue::getInstance()
 }
 
  void 
-ParseQueue::push(BaseMsg* q)
+ParseQueue::push(PMsgBase q)
  {    
     lockQ();
     m_msgQueue.push(q);
@@ -26,11 +26,11 @@ ParseQueue::push(BaseMsg* q)
 
 
  
- BaseMsg* 
+ PMsgBase 
  ParseQueue::pop()
  {
     lockQ();
-    BaseMsg *q = NULL;
+    PMsgBase q = NULL;
     if(!m_msgQueue.empty())
     {
         q = m_msgQueue.front();

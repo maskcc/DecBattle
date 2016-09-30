@@ -19,7 +19,7 @@ SockStream::~SockStream()
  * @return 
  */
 int32_t 
-SockStream::reciveMsg(int32_t fd, BaseMsg *&msg)
+SockStream::reciveMsg(int32_t fd, PMsgBase &msg)
 {
     //先读取4字节长度的包头
     if(STEP_READ_SIZE == this->m_readStep)
@@ -39,9 +39,14 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *&msg)
             return MSG_TYPE_MORE; //size  都没读完整            
         }
         
-        //读出字符串大小
-        bool ret = readInt(m_bodySize, m_stream);
-        if( false == ret)
+        memset(&m_head, 0, sizeof(MsgHeadDef));
+        
+        m_head = *((MsgHeadDef*)&m_stream);
+        m_head.cMsgType = ntohs(m_head.cMsgType);
+        m_head.length = ntohs(m_head.length);
+        m_bodySize =  m_head.length - MSG_SIZE_LENGTH;
+ 
+        
         {            
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "read int fail!");
             this->reset();
@@ -55,7 +60,7 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *&msg)
             return ERROR_TYPE_BODY_OVER_FLOW;  //包体超过缓冲区, 客户端不可能发送这么大的包体, 错误
                                                //防止发送大包体导致内存超标 
         }
-        //内存模型::
+        //内存模型:: 已经修改了... Head / Body
         //  _______
         // |sz|body|
         //  -------
@@ -65,13 +70,15 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *&msg)
         this->m_readStep = STEP_READ_BODY;
         this->m_readSize = 0;
         
-        //将缓冲区清理, 这里只填写了前面4个字节
-        memset(m_stream, 0, MSG_SIZE_LENGTH);
+       
         
         //这里不需要返回, 读完头结点直接读包体
        // return MSG_TYPE_MORE;
     }
     
+    
+     //将缓冲区清理
+    memset(m_stream, 0, MSG_SIZE_LENGTH);
     //读取body
     int n = read(fd, m_stream + m_readSize, m_bodySize - m_readSize);
     if (n <= 0)
@@ -85,12 +92,13 @@ SockStream::reciveMsg(int32_t fd, BaseMsg *&msg)
         return MSG_TYPE_MORE; //m_sizeToRead  都没读完整           
     }
     
-    msg = static_cast<BaseMsg*>(malloc(sizeof(BaseMsg_t)));
+    msg = static_cast<PMsgBase>(malloc(sizeof(MsgBase)));
     msg->msg = malloc(m_bodySize);
+    memcpy(&msg->head, &m_head, sizeof(MsgHeadDef));
     memcpy(msg->msg, this->m_stream, m_bodySize);
-    msg->sz = m_bodySize;
+    
   
-    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "recived msg, msg size[%d] msg msg[%s]", msg->sz, (char*)msg->msg);
+    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "recived msg, msg size[%d] type[%d]", msg->head.length, msg->head.cMsgType);
     
     
     //还要将消息加入特定的队列中, 也可以将消息写成自解析类

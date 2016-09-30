@@ -8,7 +8,7 @@
 
 Gate::Gate()
 {
-    ConfigMgr mgr;
+    NetMessageManager::getInstance()->loadCfg("NJZnetMessage");
 }
 Gate::~Gate()
 {
@@ -19,7 +19,7 @@ Gate::~Gate()
 int32_t 
 Gate::dispatch()
 {
-    BaseMsg *q = NULL;
+    PMsgBase q = NULL;
     for(;;)
     {
         q = ParseQueue::getInstance()->pop();
@@ -40,7 +40,7 @@ Gate::dispatch()
 }
 
 void 
-Gate::dealMsg(BaseMsg* q)
+Gate::dealMsg(PMsgBase q)
 {
     InerMsg *m;
     ContextMgr* ctx = ContextMap::getInstance()->find(m->service);

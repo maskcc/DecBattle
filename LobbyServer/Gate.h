@@ -20,6 +20,7 @@
 #include "ContextMgr.h"
 #include "ContextMap.h"
 #include "ConfigMgr.h"
+#include "NetMessageManager.h"
 
 
 class Gate
@@ -28,11 +29,12 @@ public:
     Gate();
     ~Gate();
     int32_t dispatch();
-    void dealMsg(BaseMsg* q);
+    void dealMsg(PMsgBase q);
      
  
     
 protected:
+    
     
     
 };

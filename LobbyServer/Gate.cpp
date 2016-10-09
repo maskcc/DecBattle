@@ -32,7 +32,7 @@ Gate::dispatch()
             ParseQueue::getInstance()->waitQ();            
             ParseQueue::getInstance()->unlockQ();
         }               
-        delete q;
+        SAFEDEL( q );
         q = NULL;
         
     }

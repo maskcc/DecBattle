@@ -299,7 +299,7 @@ std::string NetMessageManager::writeOneMessageToJson(std::vector<char>* data)
     jsonstr = buffer.GetString();
     
     _LOGX(_DEBUG, "jsonstr[%s]", jsonstr.c_str());
-    delete m_pReadBuf;
+    SAFEDEL( m_pReadBuf );
     return jsonstr;
     
 }

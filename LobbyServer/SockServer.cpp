@@ -186,7 +186,7 @@ SockServer::epollWait()
             Socket *s = static_cast<Socket* >(e->s);
             if(NULL == s)
             {     
-                 m_checkCtr = 1;
+                m_checkCtr = 1;
                 __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "socket is null, the pipe msg come");
                 
                 //这里s == NULL 表示有管道信息到来
@@ -294,6 +294,7 @@ SockServer::isListener(const Socket* s)
     }
     
     //CONN_TYPE_NONE 表示这是监听socket 
+    //为啥这里的s会是别的值, 没有初始化的值???直接返回错误可能有问题 
     if(CONN_TYPE_NONE != s->getType() )
     {        
         return ret;
@@ -301,7 +302,8 @@ SockServer::isListener(const Socket* s)
     for(int c = 0; c < m_listenSock.size(); c++)
     {
         if(m_listenSock[c] == *s)
-        {            
+        { 
+            //上面没找到的话肯定会在这找到, 如果在这找不到就是出问题了...!!!
             ret = true;
             break;
         }

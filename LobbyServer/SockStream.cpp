@@ -19,12 +19,12 @@ SockStream::~SockStream()
  * @return 
  */
 int32_t 
-SockStream::reciveMsg(int32_t fd, PMsgBase &msg)
+SockStream::reciveMsg(int32_t fd, MsgBase* &msg)
 {
     //先读取4字节长度的包头
     if(STEP_READ_SIZE == this->m_readStep)
     {
-        int n = read(fd, m_stream + m_readSize, MSG_SIZE_LENGTH - m_readSize);
+        int n = read(fd, m_headBuf + m_readSize, MSG_SIZE_LENGTH - m_readSize);
         
         //关闭连接的消息...n < 0 暂时还未处理!
         if( n <= 0 )  
@@ -39,19 +39,12 @@ SockStream::reciveMsg(int32_t fd, PMsgBase &msg)
             return MSG_TYPE_MORE; //size  都没读完整            
         }
         
-        memset(&m_head, 0, sizeof(MsgHeadDef));
+        memset(&m_head, 0, MSG_SIZE_LENGTH);
         
-        m_head = *((MsgHeadDef*)&m_stream);
+        m_head = *((MsgHeadDef*)&m_headBuf);
         m_head.cMsgType = ntohs(m_head.cMsgType);
         m_head.length = ntohs(m_head.length);
         m_bodySize =  m_head.length - MSG_SIZE_LENGTH;
- 
-        
-        {            
-            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "read int fail!");
-            this->reset();
-            return ERROR_TYPE_READNUM_FAIL;
-        }   
         
         if(m_bodySize > BUFF_LENGTH)
         {            
@@ -60,30 +53,35 @@ SockStream::reciveMsg(int32_t fd, PMsgBase &msg)
             return ERROR_TYPE_BODY_OVER_FLOW;  //包体超过缓冲区, 客户端不可能发送这么大的包体, 错误
                                                //防止发送大包体导致内存超标 
         }
-        //内存模型:: 已经修改了... Head / Body
-        //  _______
-        // |sz|body|
-        //  -------
-        // sz = sizeof(body)
-
+      
         //修改接收状态
         this->m_readStep = STEP_READ_BODY;
         this->m_readSize = 0;
-        
        
-        
-        //这里不需要返回, 读完头结点直接读包体
-       // return MSG_TYPE_MORE;
     }
     
+    if( STEP_READ_BODY != this->m_readStep )
+    {
+        //包体读取错误, 重新连接
+        _LOG(_ERROR, "read buff error, step not right");
+        this->reset();
+        return MSG_TYPE_DISCONNECT;
+           
+    }
     
-     //将缓冲区清理
-    memset(m_stream, 0, MSG_SIZE_LENGTH);
-    //读取body
-    int n = read(fd, m_stream + m_readSize, m_bodySize - m_readSize);
-    if (n <= 0)
-    {           
-        return MSG_TYPE_DISCONNECT;        
+    //将缓冲区清理
+    m_stream.clear();
+    m_stream.resize(m_bodySize);
+    
+    //读取body, 当有不是只发送头时
+    int n = 0;
+    if(0 != m_bodySize)
+    {
+        n = read(fd, &m_stream[0] + m_readSize, m_bodySize - m_readSize);
+        if (n <= 0)
+        {           
+            return MSG_TYPE_DISCONNECT;        
+        }
     }
     
     m_readSize += n;
@@ -92,20 +90,13 @@ SockStream::reciveMsg(int32_t fd, PMsgBase &msg)
         return MSG_TYPE_MORE; //m_sizeToRead  都没读完整           
     }
     
-    msg = static_cast<PMsgBase>(malloc(sizeof(MsgBase)));
-    msg->msg = malloc(m_bodySize);
-    memcpy(&msg->head, &m_head, sizeof(MsgHeadDef));
-    memcpy(msg->msg, this->m_stream, m_bodySize);
-    
+    msg = new MsgBase;
+    msg->msg.assign(m_stream.begin(), m_stream.end());
+    memcpy(&msg->head, &m_head, MSG_SIZE_LENGTH);   
   
-    __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "recived msg, msg size[%d] type[%d]", msg->head.length, msg->head.cMsgType);
-    
-    
-    //还要将消息加入特定的队列中, 也可以将消息写成自解析类
-    
+    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "recived msg, msg size[%d] type[%d]", msg->head.length, msg->head.cMsgType);
     
     this->reset(); 
-    
     return 0;
     
 }
@@ -116,6 +107,7 @@ SockStream::reset()
     m_bodySize = 0;   //包体长度
     m_readStep = STEP_READ_SIZE;  //当前读取进度
     m_readSize = 0;  //已经读取的长度
-    memset(m_stream, 0, sizeof(BUFF_LENGTH));
-    
+    m_stream.clear();
+    memset(m_headBuf, 0, sizeof(BUFF_LENGTH));
+      
 }

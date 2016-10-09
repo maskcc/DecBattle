@@ -74,7 +74,7 @@ Socket::setIdx(int32_t idx)
 }
 
 int32_t 
-Socket::readHandle(PMsgBase &msg)
+Socket::readHandle(MsgBase* &msg)
 {
     int ret = -1;    
     ret = m_stream.reciveMsg(this->m_fd, msg);

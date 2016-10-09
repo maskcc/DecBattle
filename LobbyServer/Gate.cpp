@@ -19,29 +19,40 @@ Gate::~Gate()
 int32_t 
 Gate::dispatch()
 {
-    PMsgBase q = NULL;
+     MsgBase* q = NULL;
     for(;;)
     {
         q = ParseQueue::getInstance()->pop();
         
-        _LOG(_WARN, "get msg parsed");
-        //暂时不知道如何解析外部消息 
-        //dealMsg(q);
+        dealMsg(q);
         if(NULL == q)
         {
             ParseQueue::getInstance()->lockQ();
             //没消息来时, 会阻塞在这
             ParseQueue::getInstance()->waitQ();            
             ParseQueue::getInstance()->unlockQ();
-        }        
+        }               
+        delete q;
+        q = NULL;
         
     }
     return 0;
 }
 
 void 
-Gate::dealMsg(PMsgBase q)
+Gate::dealMsg( MsgBase* q)
 {
+    if(NULL == q)
+    {
+        return;
+    }
+    
+    string msg;    
+    msg = NetMessageManager::getInstance()->writeMessageToJson(q);    
+    _LOGX(_DEBUG, "read ok msg[%s]", msg.c_str());
+    return;
+    
+    //将外部消息转换成内部消息
     InerMsg *m;
     ContextMgr* ctx = ContextMap::getInstance()->find(m->service);
     if(NULL == ctx)

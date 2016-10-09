@@ -39,7 +39,7 @@ public:
     static NetMessageManager* getInstance();
     void loadCfg(std::string name);
     std::vector<char> readMessageByJson(const char* buf);
-    std::vector<std::string> writeMessageToJson(std::vector<char>* data);
+    string writeMessageToJson( MsgBase* q);
     std::string writeOneMessageToJson(std::vector<char>* data);
     void setMessageType(std::string msgKey,std::string msgType);
     

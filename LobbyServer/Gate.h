@@ -22,14 +22,13 @@
 #include "ConfigMgr.h"
 #include "NetMessageManager.h"
 
-
 class Gate
 {
 public:
     Gate();
     ~Gate();
     int32_t dispatch();
-    void dealMsg(PMsgBase q);
+    void dealMsg( MsgBase* q);
      
  
     

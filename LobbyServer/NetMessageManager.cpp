@@ -56,7 +56,7 @@ std::vector<char> NetMessageManager::readMessageByJson(const char* buf)
     m_pNewBuf = NULL;
     
     MsgHeadDef msgHead;
-    unsigned short msgHeadLen = sizeof(MsgHeadDef);
+    unsigned short msgHeadLen = MSG_SIZE_LENGTH;
     const rapidjson::Value& msg_header = game_data["HEADER"];
  
     msgHead.identity = IDENTIFY_VER;
@@ -241,43 +241,17 @@ void NetMessageManager::readMessageByObj(const rapidjson::Value& object_cfg,cons
 }
 
 
-std::vector<std::string> NetMessageManager::writeMessageToJson(vector<char>* data)
-{
-    std::vector<std::string> msgs;
-    int dataSize = data->size();
-    char* tempBuf;
-    int tempLen = 0;
+//std::vector<std::string> NetMessageManager::writeMessageToJson(vector<char>* data)
+string NetMessageManager::writeMessageToJson( MsgBase* data)
+{    
+    int dataSize = data->head.length;
+    vector<char> tmpdata(dataSize);
+    memcpy(&tmpdata[0], &data->head, MSG_SIZE_LENGTH);
+    tmpdata.insert(tmpdata.begin() + MSG_SIZE_LENGTH, data->msg.begin(), data->msg.end());
+        
+    std::string msg = writeOneMessageToJson(&tmpdata);
     
-    tempBuf= (char*)malloc(data->size());
-    memcpy(tempBuf, &((*data)[0]), data->size());
-    
-    while (1) {
-        
-        MsgHeadDef* pHead = ( MsgHeadDef*)(tempBuf + tempLen);
-        pHead->cMsgType = ntohs(pHead->cMsgType);
-        pHead->length = ntohs(pHead->length);
-        if(tempLen <= dataSize)
-        {
-            std::vector<char> tempdata;
-            tempdata.assign(data->begin() + tempLen,data->begin() + tempLen + pHead->length);
-            std::string msg = writeOneMessageToJson(&tempdata);
-            msgs.push_back(msg);
-        }
-        else
-        {
-            break;
-        }
-        
-        tempLen = tempLen + pHead->length;
-        
-        if(tempLen >= dataSize)
-        {
-            break;
-        }
-        
-    }
-    delete tempBuf;
-    return msgs;
+    return msg;
 }
 
 std::string NetMessageManager::writeOneMessageToJson(std::vector<char>* data)
@@ -290,8 +264,8 @@ std::string NetMessageManager::writeOneMessageToJson(std::vector<char>* data)
     memcpy(m_pReadBuf, &((*data)[0]), data->size());
     
     MsgHeadDef* pHead = ( MsgHeadDef*)m_pReadBuf + m_ireadPos;
-    pHead->cMsgType = ntohs(pHead->cMsgType);
-    pHead->length = ntohs(pHead->length);
+    pHead->cMsgType = (pHead->cMsgType);
+    pHead->length = (pHead->length);
     
     rapidjson::Document game_data;
     game_data.SetObject();
@@ -335,7 +309,7 @@ void NetMessageManager::writeMessageByObj(const rapidjson::Value& object_cfg,rap
 {
     if (head)
     {
-      m_ireadPos = m_ireadPos + sizeof(MsgHeadDef);
+      m_ireadPos = m_ireadPos + MSG_SIZE_LENGTH;
     }
     
     rapidjson::Document::AllocatorType& allocator = game_data.GetAllocator();
@@ -356,7 +330,7 @@ void NetMessageManager::writeMessageByObj(const rapidjson::Value& object_cfg,rap
         rapidjson::Value valueKey(rapidjson::kStringType);
         valueKey.SetString(value_name.GetString(), allocator);
         
-        _LOGX(_DEBUG, "value_name :%s",value_name.GetString());
+       // _LOGX(_DEBUG, "value_name :%s",value_name.GetString());
         if(cfg_valueType == "OP_STRUCT")
         {
             rapidjson::Value array(rapidjson::kArrayType);
@@ -364,7 +338,7 @@ void NetMessageManager::writeMessageByObj(const rapidjson::Value& object_cfg,rap
             int structLen = 0;
             const string struct_key_str = value_name.GetString();
             
-            _LOGX(_DEBUG, "struct_key_str :%s",struct_key_str.c_str());
+        //    _LOGX(_DEBUG, "struct_key_str :%s",struct_key_str.c_str());
         
             const rapidjson::Value& struct_Objs = m_docCfg["STRUCT"];//从配置表读出结构体
             const rapidjson::Value& struct_Obj = struct_Objs[struct_key_str.c_str()];
@@ -402,7 +376,7 @@ void NetMessageManager::writeMessageByObj(const rapidjson::Value& object_cfg,rap
             int structLen = 0;
             const string struct_key_str = value_name.GetString();
             
-            _LOGX(_DEBUG, "struct_key_str :%s",struct_key_str.c_str());
+        //    _LOGX(_DEBUG, "struct_key_str :%s",struct_key_str.c_str());
             
             const rapidjson::Value& struct_type = cfg_value["struct_type"];
             const string struct_type_str = struct_type.GetString();
@@ -505,7 +479,7 @@ void NetMessageManager::writeMessageByObj(const rapidjson::Value& object_cfg,rap
             int byte = value_btye.GetInt();
             
             string value = string((m_pReadBuf + m_ireadPos),byte);
-            _LOGX(_DEBUG, "strvalue : %s",value.c_str());
+        //    _LOGX(_DEBUG, "strvalue : %s",value.c_str());
          
             //转换成UTF-8的函数还需要添加
            //     value = ToolManager::getInstance()->GBKToUTF8(value.c_str());
@@ -602,14 +576,14 @@ void NetMessageManager::writeMessageByArray(const rapidjson::Value& object_cfg,r
         rapidjson::Value valueKey(rapidjson::kStringType);
         valueKey.SetString(value_name.GetString(), allocator);
         
-        _LOGX(_DEBUG, "value_name :%s",value_name.GetString());
+    //    _LOGX(_DEBUG, "value_name :%s",value_name.GetString());
         if(cfg_valueType == "OP_STRUCT")
         {
             
             int structLen = 0;
             
             const string struct_key_str = value_name.GetString();
-            _LOGX(_DEBUG, "struct_key_str :%s",struct_key_str.c_str());
+        //    _LOGX(_DEBUG, "struct_key_str :%s",struct_key_str.c_str());
             
             rapidjson::Value array(rapidjson::kArrayType);
             
@@ -650,7 +624,7 @@ void NetMessageManager::writeMessageByArray(const rapidjson::Value& object_cfg,r
             
             int structLen = 0;
             const string struct_key_str = value_name.GetString();
-            _LOGX(_DEBUG, "struct_key_str :%s",struct_key_str.c_str());
+        //    _LOGX(_DEBUG, "struct_key_str :%s",struct_key_str.c_str());
             
             const rapidjson::Value& struct_type = cfg_value["struct_type"];
             const string struct_type_str = struct_type.GetString();
@@ -937,7 +911,7 @@ std::string NetMessageManager::modifyMsgKey(std::string msgKey)
                 
                 if (strcmp(value_name.GetString(), "cError") == 0) {
                     
-					ireadPos = ireadPos + sizeof(MsgHeadDef);
+					ireadPos = ireadPos + MSG_SIZE_LENGTH;
 					iError = *(int8_t*)(m_pReadBuf + ireadPos);
 					break;
                 }

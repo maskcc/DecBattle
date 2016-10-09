@@ -229,7 +229,7 @@ SockServer::epollWait()
                 else
                 {
                     //有消息到来      
-                    PMsgBase msg = NULL;
+                    MsgBase *msg = new MsgBase;
                     int readret = m_connMgr.receiveMsg(s, msg);
                     
                     //读取出现错误

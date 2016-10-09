@@ -120,7 +120,7 @@ ConnectionMgr::disconnect(Socket *sock)
 }
 
 int32_t
-ConnectionMgr::receiveMsg(Socket *s, PMsgBase &msg) 
+ConnectionMgr::receiveMsg(Socket *s, MsgBase* &msg) 
 {
     if(NULL == s)
     {        

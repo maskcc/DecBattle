@@ -23,6 +23,7 @@
 #include "lua.hpp"
 #include <stdint.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 #define SAFEDEL(p) do{\
@@ -203,11 +204,14 @@ typedef struct MsgHeadDef
     unsigned short cMsgType;
 }MsgHeadDef, *PMsgHeader;
 
-typedef struct MsgBase
+//typedef struct MsgBase
+class MsgBase
 {
+public:
     MsgHeadDef head;
-    void*      msg;
+    vector<char> msg;
+    //void*      msg;
     
-}MsgBase, *PMsgBase;
-
+};
+const uint32_t MSG_SIZE_LENGTH = sizeof(MsgHeadDef);
 #endif /* GAMEDEF_H */

@@ -126,9 +126,9 @@ int lstart(lua_State *L)
     int fd = SockServer::getInstance()->getSendFD();
     RequestMsg request;
     int len;
-    len = sizeof(request_start) + sizeof(ip);
+    len = sizeof(request_start) + strlen(ip) + 1;
     request.u.start.port = port;
-    memcpy(request.u.start.ip, ip, sizeof(ip));
+    memcpy(request.u.start.ip, ip, strlen(ip) + 1);
     request.header[6] = (uint8_t)'S';
     request.header[7] = (uint8_t)len;
     

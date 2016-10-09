@@ -187,7 +187,7 @@ SockServer::epollWait()
             if(NULL == s)
             {     
                  m_checkCtr = 1;
-                __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "find the null socket!");
+                __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "socket is null, the pipe msg come");
                 
                 //这里s == NULL 表示有管道信息到来
                 continue;

@@ -213,5 +213,5 @@ public:
     //void*      msg;
     
 };
-const uint32_t MSG_SIZE_LENGTH = sizeof(MsgHeadDef);
+const int32_t MSG_SIZE_LENGTH = sizeof(MsgHeadDef);
 #endif /* GAMEDEF_H */

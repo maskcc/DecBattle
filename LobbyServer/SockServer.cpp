@@ -70,14 +70,14 @@ SockServer::~SockServer()
     //监听端口Socket的idx和ConnectionMgr的意义不同
     uint32_t idx = (++HANDLER) % MAX_SOCKET_COUNT;
     
-    Socket sock;
-    sock.init(sockfd, idx,CONN_TYPE_NONE, listenip);
-    sp_nonblocking(sock.getFD());
+    Socket *sock = new Socket;
+    sock->init(sockfd, idx,CONN_TYPE_NONE, listenip);
+    sp_nonblocking(sock->getFD());
     
     m_listenSock.push_back(sock);
      
     //sp_add 的userdata不要是栈上的数据, m_listenSock.back()返回的是刚推入数据的引用)
-    if (0 != sp_add(m_epollFD, sock.getFD(), (void *)&m_listenSock.back()))    
+    if (0 != sp_add(m_epollFD, sock->getFD(), (void *)m_listenSock.back()))    
     {        
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
             return -1;
@@ -97,7 +97,7 @@ SockServer::~SockServer()
     
     for(int c = 0; c < m_listenSock.size(); c++)
     {
-        if (0 != sp_add(m_epollFD, m_listenSock[c].getFD(), (void *)&m_listenSock[c]))    
+        if (0 != sp_add(m_epollFD, m_listenSock[c]->getFD(), (void *)m_listenSock[c]))    
         {        
             __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "epoll open fail!");
             return -1;
@@ -195,7 +195,7 @@ SockServer::epollWait()
 
             if(e->read)
             {
-                if(isListener(s))                
+                if(isListener(s))                    
                 {        
                     Socket *client = NULL;
                     int accRet = m_connMgr.acceptPeer(s, client); //等价于 m_sock;
@@ -228,22 +228,25 @@ SockServer::epollWait()
                 }   
                 else
                 {
-                    //有消息到来      
-                    MsgBase *msg = new MsgBase;
+                    //有消息到来, 将消息接收完成后会new 一个MsgBase      
+                    MsgBase *msg = NULL;
                     int readret = m_connMgr.receiveMsg(s, msg);
                     
                     //读取出现错误
                     if( readret < 0 )
                     {
-                         disconnect(s);                           
-                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "read sock error errno[%d], close peer.", readret );
+                         disconnect(s);  
+                         SAFEDEL(msg);
+                        _LOGX(_DEBUG,  "read sock error errno[%d], close peer.now connection count[%d]", 
+                                readret, m_connMgr.getConnectionCount());
                         continue;
                         
                     }
                     if( readret == MSG_TYPE_DISCONNECT)
                     {
-                         disconnect(s);   
-                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "connection has been closed by peer! now connection count[%d]",
+                         disconnect(s); 
+                         SAFEDEL(msg);
+                        _LOGX(_DEBUG, "connection has been closed by peer! now connection count[%d]",
                                m_connMgr.getConnectionCount() );
                         continue;
 
@@ -251,7 +254,15 @@ SockServer::epollWait()
                     if( readret == ERROR_TYPE_BODY_OVER_FLOW)  
                     {
                         disconnect(s); 
-                        __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "read body size over flow.");
+                        SAFEDEL(msg);
+                        _LOGX(_DEBUG,  "read body size over flow.now connection count[%d]",
+                                 m_connMgr.getConnectionCount());
+                        continue;
+                    }
+                    
+                    if( MSG_TYPE_MORE == readret)
+                    {
+                        //还没有读完
                         continue;
                     }
                     
@@ -301,7 +312,7 @@ SockServer::isListener(const Socket* s)
     }
     for(int c = 0; c < m_listenSock.size(); c++)
     {
-        if(m_listenSock[c] == *s)
+        if(m_listenSock[c] == s)
         { 
             //上面没找到的话肯定会在这找到, 如果在这找不到就是出问题了...!!!
             ret = true;

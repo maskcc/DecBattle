@@ -32,23 +32,20 @@ SockStream::reciveMsg(int32_t fd, MsgBase* &msg)
             return MSG_TYPE_DISCONNECT;
         }
         
-        m_readSize += n;
-        
+        m_readSize += n;        
         if( n > 0 && m_readSize < MSG_SIZE_LENGTH)
-        {            
+        {           
             return MSG_TYPE_MORE; //size  都没读完整            
         }
-        
         memset(&m_head, 0, MSG_SIZE_LENGTH);
-        
         m_head = *((MsgHeadDef*)&m_headBuf);
         m_head.cMsgType = ntohs(m_head.cMsgType);
         m_head.length = ntohs(m_head.length);
         m_bodySize =  m_head.length - MSG_SIZE_LENGTH;
         
-        if(m_bodySize > BUFF_LENGTH)
+        if(m_bodySize > BUFF_LENGTH || m_bodySize < 0)
         {            
-            __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "read body size over flow!");
+            _LOGX(_WARN, "read body size over flow or body size not right! m_head.length[%d]", m_head.length);
             this->reset();
             return ERROR_TYPE_BODY_OVER_FLOW;  //包体超过缓冲区, 客户端不可能发送这么大的包体, 错误
                                                //防止发送大包体导致内存超标 

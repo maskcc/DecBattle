@@ -65,7 +65,7 @@ protected:
     event  m_ev[MAX_EVENTS];
     EPOLL_EV m_tmpev[MAX_EVENTS];
     ConnectionMgr m_connMgr;
-    vector<Socket> m_listenSock;
+    vector<Socket*> m_listenSock;
     bool m_stop;
     
 };

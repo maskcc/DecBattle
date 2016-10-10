@@ -99,20 +99,17 @@ int lsend(lua_State *L)
     m->source = source;
     m->msg = msg;
      
-    __log(_DEBUG, __FILE__, __LINE__, __FUNCTION__, "send msg sz[%d] type[%d] service[%s] source[%s]",
+    _LOGX(_DEBUG,  "send msg sz[%d] type[%d] service[%s] source[%s]",
                     sz, type, m->service.c_str(), m->source.c_str());
      
     ContextMgr* ctx = ContextMap::getInstance()->find(m->service);
     if(NULL == ctx)
     {
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "can not find service name[%s]!", m->service.c_str());
+        _LOGX(_ERROR,  "can not find service name[%s]!", m->service.c_str());
         return 1;
     }
     
     ctx->putMsg(m);
-    
-    
-    
     
     return 1;
 }

@@ -365,7 +365,7 @@ void test10()
 	
 	for(int c = 0; c < threads; c++ )
 		pthread_join(th[c], NULL);
-	sleep(20);
+	sleep(10);
 	cout << "i am alive" <<endl;
 
 }

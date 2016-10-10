@@ -195,7 +195,8 @@ SockServer::epollWait()
 
             if(e->read)
             {
-                if(isListener(s))                    
+                int32_t ilisten = isListener(s);
+                if(1 == ilisten)                    
                 {        
                     Socket *client = NULL;
                     int accRet = m_connMgr.acceptPeer(s, client); //等价于 m_sock;
@@ -226,7 +227,7 @@ SockServer::epollWait()
                     }
                     
                 }   
-                else
+                else if(0 == ilisten)
                 {
                     //有消息到来, 将消息接收完成后会new 一个MsgBase      
                     MsgBase *msg = NULL;
@@ -273,7 +274,11 @@ SockServer::epollWait()
                         
 
                     }
-                }      
+                } 
+                else
+                {
+                    _LOGX(_ERROR, "socket isListener not right ilisten[%d]", ilisten);
+                }
             }
             if(e->write)
             {            
@@ -294,32 +299,32 @@ SockServer::disconnect(Socket *s)
     m_connMgr.disconnect(s);            
 }
 
-bool    
+int32_t    
 SockServer::isListener(const Socket* s)
 {
     
-    bool ret = false;    
+     
     if (NULL == s )
     {        
-        return ret;
+        return ERROR_TYPE_NULL_SOCKET;
     }
     
     //CONN_TYPE_NONE 表示这是监听socket 
-    //为啥这里的s会是别的值, 没有初始化的值???直接返回错误可能有问题 
+    //如果不是监听socket, 就表示是和其他服务器连接的或者客户端的连接  
     if(CONN_TYPE_NONE != s->getType() )
     {        
-        return ret;
+        //返回0 表示不是连接接收者
+        return 0;
     }
     for(int c = 0; c < m_listenSock.size(); c++)
     {
         if(m_listenSock[c] == s)
         { 
-            //上面没找到的话肯定会在这找到, 如果在这找不到就是出问题了...!!!
-            ret = true;
-            break;
+            //是监听连接的端口
+            return 1;
         }
     }    
-    return ret;
+    return ERROR_TYPE_NOT_LISTEN_NOR_ACCEPT;
 }
 
 bool

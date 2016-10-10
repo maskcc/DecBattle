@@ -33,7 +33,9 @@ public:
     int32_t initServer(Addr *addr);
    // int32_t initSock(const char* listenip, int32_t port);
     int32_t addListen(const char* listenip, int32_t port);
-    bool    isListener(const Socket*);
+    
+    //返回0 表示不是监听者,1表示是监听, 小于0 错误
+    int32_t    isListener(const Socket*);
     int32_t initEPoll();
     int32_t connectServer();
     

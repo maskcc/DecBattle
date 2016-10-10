@@ -89,6 +89,8 @@ const int32_t ERROR_TYPE_READNUM_FAIL = -0x010006;
 const int32_t ERROR_TYPE_NONE_THREAD = -0x010007;
 const int32_t ERROR_TYPE_BODY_OVER_FLOW = -0x010008;
 const int32_t ERROR_TYPE_TOO_MANY_CONNECTOIN = -0x010008;
+// SockServer::isListener 返回, 是监听者但在监听队列找不到
+const int32_t ERROR_TYPE_NOT_LISTEN_NOR_ACCEPT = -0x010009;
 
 
 /*******

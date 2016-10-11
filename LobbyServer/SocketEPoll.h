@@ -93,7 +93,8 @@ sp_add(int32_t efd, int32_t sock, void *ud) {
 
 static int32_t 
 sp_del(int32_t efd, int sock) {
-	epoll_ctl(efd, EPOLL_CTL_DEL, sock , NULL);
+	return epoll_ctl(efd, EPOLL_CTL_DEL, sock , NULL);
+         
 }
 
 static void 

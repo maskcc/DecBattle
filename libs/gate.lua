@@ -2,6 +2,7 @@ local svc = require("service")
 local player = require("player")
 local utils = require("utils")
 local cjson = require("cjson")
+require("functions")
 
 local gate = {}
 local handler = {}
@@ -59,7 +60,10 @@ end
 
 -- 这是这个服务的回调函数
 svc.register(function(typeid, msg, size)
+    print(msg)
 	local tmsg = cjson.decode(msg)
+    dump(tmsg)
+    --[[
     if(nil == tmsg.cmd) then
         print("msg's cmd is nil")
         return 
@@ -70,6 +74,7 @@ svc.register(function(typeid, msg, size)
     else 
         print("can not find function ")
 	end
+    --]]
 end)
 
 

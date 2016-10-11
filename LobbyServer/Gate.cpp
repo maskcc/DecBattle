@@ -50,18 +50,32 @@ Gate::dealMsg( MsgBase* q)
     string msg;    
     msg = NetMessageManager::getInstance()->writeMessageToJson(q);    
     _LOGX(_DEBUG, "read ok msg[%s]", msg.c_str());
-    return;
+   
     
-    //将外部消息转换成内部消息
-    InerMsg *m;
+    InerMsg *m = new InerMsg;
+    if(NULL == m)
+    {
+        _LOG(_ERROR, "malloc InerMsg fail");
+    }
+    
+    m->sz = msg.size();
+    m->type = 3;
+    m->service = "gate";
+    m->source = "";
+    m->msg = msg;
+     
+   
+     
     ContextMgr* ctx = ContextMap::getInstance()->find(m->service);
     if(NULL == ctx)
     {
-        __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "can not find service name[%s]!", m->service.c_str());
+        _LOGX(_ERROR,  "can not find service name[%s]!", m->service.c_str());
         return;
-        
     }
     
     ctx->putMsg(m);
+    
+    return;
+    
     
 }

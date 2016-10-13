@@ -24,6 +24,7 @@
 #include <sys/syscall.h> 
 #include <sys/time.h>
 #include <time.h>
+#include <cstdarg>
 
 namespace LOG{
     #define NONE                 "\e[0m"

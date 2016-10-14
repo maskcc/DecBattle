@@ -292,7 +292,8 @@ void* test9(void*)
 {
 	int port = 0;
 	char *addr;
-	int type = 0;
+	int type = 5;
+    int range = 2000;
 	if(0 == type)
 {
 	port = 10077;	
@@ -321,8 +322,14 @@ void* test9(void*)
 	addr = "127.0.0.1";
 
 }
+	else if(5 == type)
+{
+	port = 10001;
+	addr = "127.0.0.1";
+
+}
 	vector<int> List;
-	for(int c = 0; c < 3000; c++)
+	for(int c = 0; c < range; c++)
 	{
 		int32_t sockfd = socket(AF_INET, SOCK_STREAM, 0);
 		if(sockfd < 0)

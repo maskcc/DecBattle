@@ -25,6 +25,7 @@
 #include "ParseQueue.h"
 using namespace std;
 
+//在此线程做了对连接的心跳检测, 在 MAX_TIMEOUT_KICK * TIME_OUT_SECONDS 时间内没有收到心跳包就断开连接
 class SockServer
 {
 public:
@@ -41,7 +42,8 @@ public:
     
     int32_t semdMsg();
     
-    int32_t epollWait();
+    int32_t timeOut(int32_t tm);//超过了定时时间, 自动踢掉没有发送消息的连接, 默认30秒
+    int32_t epollWait(int32_t);
     int32_t run();
     int32_t getSendFD();
     void disconnect(Socket *s); 

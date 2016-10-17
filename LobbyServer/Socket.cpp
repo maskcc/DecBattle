@@ -116,3 +116,13 @@ operator!=(const Socket &lsh, const Socket& rhs)
     
 }
 
+
+bool
+Socket::isTimeOut(int32_t tm)
+{
+    if( MAX_TIMEOUT_KICK*TIME_OUT_SECONDS > tm - m_lastRecvTime )
+    {//还没到 超时次数
+        return false;
+    }
+    return true;
+}

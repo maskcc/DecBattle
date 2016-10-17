@@ -2,11 +2,11 @@ import socket
 import time
 i = 0
 sock = []
-n = 20000
+n = 2000
 for x in range(1, n):
     sock.append(socket.socket())
 for x in sock: 
-    x.connect(("127.0.0.1", 10001))
+    x.connect(("127.0.0.1", 10077))
     if x:
         i = i + 1
         sr = "connect count is" + str(i)
@@ -15,5 +15,5 @@ for x in sock:
     print(sr)
 
 print("run over")
-time.sleep(3)
+time.sleep(300)
 

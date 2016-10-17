@@ -122,13 +122,26 @@ SockServer::semdMsg()
         
         
 }
+int32_t 
+SockServer::timeOut(int32_t tm)
+{
+    vector<int32_t> list;
+    m_connMgr.checkTimeOut(tm, list);
+    vector<int32_t>::iterator iter;
+    for(iter = list.begin(); iter != list.end(); ++iter)
+    {
+        _LOGX(_DEBUG, "connection closed timeout fd[%d] idx[%d]", m_connMgr.getPeer(*iter)->getFD(), m_connMgr.getPeer(*iter)->getIdx());
+        this->disconnect(m_connMgr.getPeer(*iter));        
+    }
+        
+}
 
 
 int32_t
-SockServer::epollWait() 
+SockServer::epollWait(int32_t miliseconds) 
 {    
     memset(m_tmpev, 0, MAX_EVENTS*sizeof(EPOLL_EV));
-    int n = epoll_wait(m_epollFD, m_tmpev, MAX_EVENTS, -1);
+    int n = epoll_wait(m_epollFD, m_tmpev, MAX_EVENTS, miliseconds);
     int i;
     for (i = 0; i < n; i++) 
     {
@@ -166,11 +179,18 @@ SockServer::epollWait()
             }
         }
         
-        n = this->epollWait();
+        n = this->epollWait(TIME_OUT);
         
         if( n <= 0)
         {
-            //EINTR 在写的时候出现中断 (例如 Ctrl + C 捕获到)           
+            //EINTR 在写的时候出现中断 (例如 Ctrl + C 捕获到) 
+            //定时器到了时间, 自动踢出没发送消息的角色
+            if( 0 == n)
+            {
+                timeOut((int)time(NULL));//最多运行到2038年
+                continue;
+                
+            }
             if(EINTR == errno)
             {
                 __log(_WARN, __FILE__, __LINE__, __FUNCTION__, "EINTR");

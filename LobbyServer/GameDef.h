@@ -216,4 +216,8 @@ public:
     
 };
 const int32_t MSG_SIZE_LENGTH = sizeof(MsgHeadDef);
+
+const int32_t TIME_OUT_SECONDS = 20; // 多少秒处理定时器, 在主线程处理(主要是踢掉长时间不在线的角色,没有发送 keepalive))
+const int32_t TIME_OUT = TIME_OUT_SECONDS * 1000;
+const int32_t MAX_TIMEOUT_KICK = 2;  //连续多久没收到消息关闭连接
 #endif /* GAMEDEF_H */

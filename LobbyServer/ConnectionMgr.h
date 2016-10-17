@@ -20,7 +20,9 @@
 #include "GameDef.h"
 #include "Socket.h"
 #include "SocketEPoll.h"
-
+#include <list>
+#include <vector>
+#include <stdint.h>
 using namespace std;
 /**
  * 管理客户端连接
@@ -56,6 +58,13 @@ public:
     int32_t getConnectionCount();
     uint32_t getOnlineCount();
     
+    
+    int32_t insertList(int32_t idx);
+    int32_t delList(int32_t idx);
+    int32_t checkTimeOut(int32_t tm, vector<int32_t>& l);
+    
+
+    
     static uint32_t HANDLER;
     
 protected:    
@@ -63,6 +72,8 @@ protected:
     //可以添加一个用来表示已经连接和还未连接id的位示图, 寻找时找到空闲连接的时间为O(1)
     Socket m_connMap[MAX_SOCKET_COUNT];
     uint32_t m_connCount;            //连接数量
+    list<int32_t> m_accList;         //已经接受连接的列表, 里面存储的都是有顺序的, 加入时折半查找到合适位置插入, 断开连接时也折半查找
+    
     
 };
 

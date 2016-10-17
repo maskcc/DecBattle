@@ -35,6 +35,7 @@ public:
     int32_t getType() const;
     const char* getAddr();
     void setIdx(int32_t idx);
+    bool isTimeOut(int32_t tm);  //是否是超时
     friend bool operator==(const Socket &lsh, const Socket &rhs);
     friend bool operator!=(const Socket &lsh, const Socket &rhs);
     

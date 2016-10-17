@@ -72,9 +72,9 @@ ConnectionMgr::acceptPeer(Socket* s, Socket*& client)
     
     
     client = newSock(connfd, CONN_TYPE_CLIENT, inet_ntoa(raddr.sin_addr));    
-    addConnection(client);
+    this->addConnection(client);
     sp_nonblocking(connfd);
-  
+    this->insertList(client->getIdx());
     return connfd;
 
 }
@@ -114,6 +114,7 @@ ConnectionMgr::disconnect(Socket *sock)
         __log(_ERROR, __FILE__, __LINE__, __FUNCTION__, "disconnect s is null");
         return;
     }
+    this->delList(s->getIdx());
     s->closeHandle();
     --m_connCount;    
     
@@ -185,4 +186,43 @@ uint32_t
 ConnectionMgr::getOnlineCount()
 {
     return this->m_connCount;
+}
+
+int32_t
+ConnectionMgr::insertList(int32_t idx)
+{
+    m_accList.push_back(idx);
+    
+}
+
+int32_t
+ConnectionMgr::delList(int32_t idx)
+{
+    list<int32_t>::iterator iter = m_accList.begin();
+    for(; iter != m_accList.end(); iter++)
+    {
+        if(idx == *iter)
+        {
+            m_accList.erase(iter);
+            return 0;
+        }
+    }
+    
+    return -1; //在已连接列表中居然没找到?
+    
+}
+
+int32_t 
+ConnectionMgr::checkTimeOut(int32_t tm, vector<int32_t>& l)
+{   
+    list<int32_t>::iterator iter = m_accList.begin();
+    
+    for(; iter != m_accList.end(); iter++)
+    {
+        if(this->getPeer(*iter)->isTimeOut(tm))
+        {
+            l.push_back(*iter);            
+        }
+    }
+    return 0;
 }

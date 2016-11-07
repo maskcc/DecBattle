@@ -11,11 +11,10 @@
  * Created on 2016年9月1日, 下午3:14
  */
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef LOG_H
+#define LOG_H
 #include <cstring>
 #include <iostream>
-#include "GameDef.h"
 #include <errno.h>
 #include <netinet/in.h>
 #include <stdio.h>
@@ -26,7 +25,21 @@
 #include <time.h>
 #include <cstdarg>
 
+  
+/*
+ Log Color define
+ */
+const int _DEBUG = 0; // green
+const int _WARN = 2;  //yellow
+const int _ERROR = 4; //red
+
+const int32_t NOLOG = false;
+const int32_t LOG_LEVEL = _DEBUG;
+
+
 namespace LOG{
+  
+
     #define NONE                 "\e[0m"
     #define BLACK                "\e[0;30m"
     #define L_BLACK              "\e[1;30m"
@@ -116,16 +129,11 @@ static void __log(int level, const char *filename,  int32_t line, const char* fu
     LOG::log(level, filename,  line, funcname, format,vlist);
     va_end(vlist);
 }
-//有参数的LOG
-#define _LOGX(level,fmt, ...) (__log(level, __FILE__,  __LINE__, __FUNCTION__, fmt, __VA_ARGS__))
-
-//没有参数的log LOGX
-#define _LOG(level,msg) (__log(level, __FILE__,  __LINE__, __FUNCTION__, msg))
 
 //以网络字节序读出一个整型
 bool readInt(int32_t& ret, char* stream);
 bool readShort(uint16_t& ret, char* stream);
     
 
-#endif /* UTILS_H */
+#endif /* LOG_H */
 

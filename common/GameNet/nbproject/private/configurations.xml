@@ -2,7 +2,7 @@
 <configurationDescriptor version="97">
   <projectmakefile>Makefile</projectmakefile>
   <confs>
-    <conf name="Debug" type="1">
+    <conf name="Debug" type="3">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <platform>2</platform>
@@ -25,12 +25,9 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
-          <runcommandpicklistitem>../libs/</runcommandpicklistitem>
-          <runcommandpicklistitem>../libs/LobbyServer</runcommandpicklistitem>
-          <runcommandpicklistitem>../libs/Lobby</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>../libs/Lobby</runcommand>
-        <rundir>../libs/</rundir>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>
@@ -38,7 +35,7 @@
         </environment>
       </runprofile>
     </conf>
-    <conf name="Release" type="1">
+    <conf name="Release" type="3">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <platform>2</platform>

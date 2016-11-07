@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles" displayName="头文件" projectFiles="true">
+      <itemPath>DataBuffer.h</itemPath>
+      <itemPath>IOStream.h</itemPath>
+      <itemPath>NetWork.h</itemPath>
+      <itemPath>Runnable.h</itemPath>
+      <itemPath>Thread.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
+      <itemPath>DataBuffer.cpp</itemPath>
+      <itemPath>IOStream.cpp</itemPath>
+      <itemPath>NetWork.cpp</itemPath>
+      <itemPath>Thread.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles" displayName="资源文件" projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="测试文件"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="重要文件"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="3">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>../Utils</pElem>
+          </incDir>
+          <commandLine>-std=c++11</commandLine>
+        </ccTool>
+        <asmTool>
+          <commandLine>-lutils -lpthread</commandLine>
+        </asmTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+      <item path="DataBuffer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DataBuffer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="IOStream.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="IOStream.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetWork.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetWork.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Runnable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="3">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+      <item path="DataBuffer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DataBuffer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="IOStream.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="IOStream.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NetWork.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NetWork.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Runnable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

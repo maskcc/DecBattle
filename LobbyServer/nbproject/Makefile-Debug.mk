@@ -53,8 +53,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Socket.o \
 	${OBJECTDIR}/Thread.o \
 	${OBJECTDIR}/ThreadBase.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/utils.o
+	${OBJECTDIR}/main.o
 
 
 # C Compiler Flags
@@ -175,11 +174,6 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
-
-${OBJECTDIR}/utils.o: utils.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../LobbyLib -I../third -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/utils.o utils.cpp
 
 # Subprojects
 .build-subprojects:

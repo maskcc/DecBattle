@@ -23,7 +23,6 @@
       <itemPath>SocketEPoll.h</itemPath>
       <itemPath>Thread.h</itemPath>
       <itemPath>ThreadBase.h</itemPath>
-      <itemPath>utils.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
       <itemPath>ConfigMgr.cpp</itemPath>
@@ -45,7 +44,6 @@
       <itemPath>Thread.cpp</itemPath>
       <itemPath>ThreadBase.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
-      <itemPath>utils.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles" displayName="资源文件" projectFiles="true">
     </logicalFolder>
@@ -166,10 +164,6 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="utils.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="utils.h" ex="false" tool="3" flavor2="0">
-      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -270,10 +264,6 @@
       <item path="ThreadBase.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="utils.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="utils.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

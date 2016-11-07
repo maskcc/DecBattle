@@ -10,5 +10,6 @@
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyLib/LuaService.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyLib/Snlua.cpp</file>
         </group>
+        <group name="Group_ali"/>
     </open-files>
 </project-private>

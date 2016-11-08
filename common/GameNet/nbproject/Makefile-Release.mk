@@ -36,8 +36,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/DataBuffer.o \
+	${OBJECTDIR}/IOComponent.o \
 	${OBJECTDIR}/IOStream.o \
 	${OBJECTDIR}/NetWork.o \
+	${OBJECTDIR}/ServerSocket.o \
+	${OBJECTDIR}/Socket.o \
 	${OBJECTDIR}/Thread.o
 
 
@@ -72,6 +75,11 @@ ${OBJECTDIR}/DataBuffer.o: DataBuffer.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DataBuffer.o DataBuffer.cpp
 
+${OBJECTDIR}/IOComponent.o: IOComponent.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/IOComponent.o IOComponent.cpp
+
 ${OBJECTDIR}/IOStream.o: IOStream.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -81,6 +89,16 @@ ${OBJECTDIR}/NetWork.o: NetWork.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NetWork.o NetWork.cpp
+
+${OBJECTDIR}/ServerSocket.o: ServerSocket.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServerSocket.o ServerSocket.cpp
+
+${OBJECTDIR}/Socket.o: Socket.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Socket.o Socket.cpp
 
 ${OBJECTDIR}/Thread.o: Thread.cpp 
 	${MKDIR} -p ${OBJECTDIR}

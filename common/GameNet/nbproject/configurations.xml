@@ -3,15 +3,22 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles" displayName="头文件" projectFiles="true">
       <itemPath>DataBuffer.h</itemPath>
+      <itemPath>IOComponent.h</itemPath>
       <itemPath>IOStream.h</itemPath>
       <itemPath>NetWork.h</itemPath>
       <itemPath>Runnable.h</itemPath>
+      <itemPath>ServerSocket.h</itemPath>
+      <itemPath>Socket.h</itemPath>
+      <itemPath>Stats.h</itemPath>
       <itemPath>Thread.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
       <itemPath>DataBuffer.cpp</itemPath>
+      <itemPath>IOComponent.cpp</itemPath>
       <itemPath>IOStream.cpp</itemPath>
       <itemPath>NetWork.cpp</itemPath>
+      <itemPath>ServerSocket.cpp</itemPath>
+      <itemPath>Socket.cpp</itemPath>
       <itemPath>Thread.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles" displayName="资源文件" projectFiles="true">
@@ -53,6 +60,10 @@
       </item>
       <item path="DataBuffer.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="IOComponent.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="IOComponent.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="IOStream.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="IOStream.h" ex="false" tool="3" flavor2="0">
@@ -62,6 +73,16 @@
       <item path="NetWork.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Runnable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ServerSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ServerSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Socket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Stats.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -94,6 +115,10 @@
       </item>
       <item path="DataBuffer.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="IOComponent.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="IOComponent.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="IOStream.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="IOStream.h" ex="false" tool="3" flavor2="0">
@@ -103,6 +128,16 @@
       <item path="NetWork.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Runnable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ServerSocket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ServerSocket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Socket.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Socket.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Stats.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>

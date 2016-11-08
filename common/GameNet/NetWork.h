@@ -30,7 +30,7 @@ public:
     
 
 private:
-    void run(CThread* thread, void* arg);
+    void run(CThread* thread, void* arg) ;
 private:
     //超时踢人线程
     CThread m_timeoutThread;

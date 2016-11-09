@@ -7,11 +7,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="Group_ali">
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/Socket.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/IOComponent.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/TCPAcceptor.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/DataBuffer.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/ServerSocket.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/DataBuffer.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/NetWork.h</file>
-            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/Runnable.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/Stats.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/ServerSocket.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/IOComponent.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/NetWork.cpp</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/common/GameNet/Socket.h</file>
         </group>
     </open-files>
 </project-private>

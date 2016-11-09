@@ -21,11 +21,12 @@
 #include <utils.h>
 #include <errno.h>
 #include <memory>
+#include <fcntl.h>
 
 #include "Stats.h"
 #include "IOComponent.h"
 using namespace std;
-
+class IOComponent;
 class Socket {
 public:
     Socket();
@@ -34,10 +35,13 @@ public:
 public:
     //连接服务端, 返回connfd
     bool connect(const string& addr, unsigned short port);
+    bool setSoBlocking(bool block);
     void close();
     void shutdown();
+    
+public:
     int32_t write(const void *data, int len);
-    int32_t read(void *data, int len);
+    int32_t read(void *data, int len);    
     
 public:
     int32_t getLastError();
@@ -45,13 +49,14 @@ public:
     void getAddr(string &addr);
     void setUp(int32_t fd, struct sockaddr_in addr);
     shared_ptr<IOComponent> getIOComponent();
+    
 protected:
     struct sockaddr_in m_addr; //地址
     int32_t m_sock; //socket文件描述符
     shared_ptr<IOComponent> m_ioComponent;  //io操作组成       
 private:
     //初始化socket, 返回fd
-    int init();
+    void init();
 
 };
 

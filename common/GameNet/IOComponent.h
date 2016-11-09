@@ -14,10 +14,22 @@
 #ifndef IOCOMPONENT_H
 #define IOCOMPONENT_H
 
+#include <memory>
+#include <map>
+#include "Socket.h"
+
+using namespace std;
+class Socket;
 class IOComponent {
 public:
     IOComponent();
     ~IOComponent();
+    
+    virtual void readHandler(shared_ptr<Socket> sock);
+    virtual void writeHandler(shared_ptr<Socket> sock);
+    
+private:
+    
 
 };
 

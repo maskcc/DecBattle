@@ -17,7 +17,7 @@ Socket::~Socket() {
 
 
 bool Socket::connect(const string& addr, unsigned short port) {
-    m_sock = this->init();
+    this->init();
     struct sockaddr_in connAddr = {0};
     connAddr.sin_family = SOCK_STREAM;
     connAddr.sin_port = htons(port);
@@ -64,7 +64,7 @@ int32_t Socket::write(const void *data, int len){
 }
 
 int32_t Socket::read(void *data, int len){
-    if( -1 ==m_sock){
+    if( -1 == m_sock){
         return -1;
     }
     
@@ -79,6 +79,23 @@ int32_t Socket::read(void *data, int len){
     return res;
 }
 
+bool Socket::setSoBlocking(bool block){
+    bool rc = false;
+    this->init();    
+    int32_t flags = fcntl(m_sock, F_GETFL, NULL);
+    if( flags >= 0 ){
+        if(block){
+            flags &= ~O_NONBLOCK; // clear blocking
+        }else{
+            flags |= O_NONBLOCK;
+        }
+    }
+    if(fcntl(m_sock, F_SETFL, flags) >= 0){
+        rc = true;
+    }
+        
+    return rc;
+}
 void Socket::setUp(int32_t fd, struct sockaddr_in addr) {
     m_sock = fd;
     memcpy(&m_addr, &addr, sizeof(struct sockaddr_in));
@@ -108,13 +125,15 @@ void Socket::getAddr(string &addr) {
 }
 
 
-int32_t Socket::init() {
-    int32_t sockfd = -1;
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (-1 == sockfd) {
+void Socket::init() {
+    if(m_sock != -1){
+        return;
+    }
+    m_sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (-1 == m_sock) {
         _LOG(_ERROR, "socket init fail");
         exit(-1);
     }
-    return sockfd;
+    
 
 }

@@ -84,6 +84,8 @@
       </item>
       <item path="Stats.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="TCPAcceptor.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Thread.h" ex="false" tool="3" flavor2="0">
@@ -138,6 +140,8 @@
       <item path="Socket.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Stats.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TCPAcceptor.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Thread.cpp" ex="false" tool="1" flavor2="0">
       </item>

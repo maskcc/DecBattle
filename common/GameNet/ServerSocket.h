@@ -14,6 +14,7 @@
 #ifndef SERVERSOCKET_H
 #define SERVERSOCKET_H
 
+#include <sys/socket.h>
 #include <memory>
 #include "Socket.h"
 

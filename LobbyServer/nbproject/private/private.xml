@@ -22,6 +22,7 @@
         </group>
         <group name="Group_ali">
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Socket.h</file>
+            <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/Socket.cpp</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SocketEPoll.h</file>
             <file>rfs://cmio@120.25.92.230:7777/home/cmio/projects/DecBattle/LobbyServer/SockStream.h</file>
         </group>
